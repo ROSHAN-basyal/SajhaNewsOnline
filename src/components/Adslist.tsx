@@ -110,12 +110,6 @@ export default function AdsList({
     });
   };
 
-  const calculateCTR = (impressions?: number, clicks?: number) => {
-    if (!impressions || impressions === 0) return "0.00";
-    const ctr = ((clicks || 0) / impressions) * 100;
-    return ctr.toFixed(2);
-  };
-
   const isAdExpired = (ad: Advertisement) => {
     if (!ad.end_date) return false;
     return new Date(ad.end_date) < new Date();
@@ -175,8 +169,6 @@ export default function AdsList({
               <option value="status">Status</option>
               <option value="placement">Placement</option>
               <option value="priority">Priority</option>
-              <option value="impressions">Impressions</option>
-              <option value="clicks">Clicks</option>
             </select>
           </div>
 
@@ -296,57 +288,6 @@ export default function AdsList({
                 </div>
               </div>
 
-              {/* Performance Metrics */}
-              <div className="ad-metrics">
-                <div className="metric">
-                  <div className="metric-value">
-                    {(ad.impressions || 0).toLocaleString()}
-                  </div>
-                  <div className="metric-label">Impressions</div>
-                  {ad.target_impressions > 0 && (
-                    <div className="metric-progress">
-                      <div
-                        className="progress-bar"
-                        style={{
-                          width: `${Math.min(
-                            ((ad.impressions || 0) / ad.target_impressions) *
-                              100,
-                            100
-                          )}%`,
-                        }}
-                      ></div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="metric">
-                  <div className="metric-value">
-                    {(ad.clicks || 0).toLocaleString()}
-                  </div>
-                  <div className="metric-label">Clicks</div>
-                  {ad.target_clicks > 0 && (
-                    <div className="metric-progress">
-                      <div
-                        className="progress-bar"
-                        style={{
-                          width: `${Math.min(
-                            ((ad.clicks || 0) / ad.target_clicks) * 100,
-                            100
-                          )}%`,
-                        }}
-                      ></div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="metric">
-                  <div className="metric-value">
-                    {calculateCTR(ad.impressions, ad.clicks)}%
-                  </div>
-                  <div className="metric-label">CTR</div>
-                </div>
-              </div>
-
               {/* Ad Footer */}
               <div className="ad-card-footer">
                 <div className="ad-dates">
@@ -368,7 +309,9 @@ export default function AdsList({
                     <>
                       <button
                         className="btn-icon btn-confirm-delete"
-                        onClick={() => handleDelete(ad.id)}
+                        onClick={() => {
+                          if (ad.id) handleDelete(ad.id);
+                        }}
                         disabled={deleting === ad.id}
                         title="Confirm Delete"
                       >
@@ -386,7 +329,7 @@ export default function AdsList({
                   ) : (
                     <button
                       className="btn-icon btn-delete"
-                      onClick={() => setDeleteConfirm(ad.id)}
+                      onClick={() => setDeleteConfirm(ad.id ?? null)}
                       title="Delete"
                     >
                       🗑️

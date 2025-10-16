@@ -90,9 +90,8 @@ export default function AdAnalytics({ ads }: AdAnalyticsProps) {
       if (!placementMap[ad.placement]) {
         placementMap[ad.placement] = { impressions: 0, clicks: 0, count: 0 };
       }
-      placementMap[ad.placement].impressions +=
-        analytics?.impressions || ad.impressions || 0;
-      placementMap[ad.placement].clicks += analytics?.clicks || ad.clicks || 0;
+      placementMap[ad.placement].impressions += analytics?.impressions || 0;
+      placementMap[ad.placement].clicks += analytics?.clicks || 0;
       placementMap[ad.placement].count++;
     });
 
