@@ -1,0 +1,1 @@
+This file replaces the problematic auth.tsx file
