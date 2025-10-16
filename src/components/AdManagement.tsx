@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import AdPlacementSelector from "./AdPlacementSelector";
 import AdForm from "./AdForm";
-// import AdsList from './AdsList'
-// import AdAnalytics from './AdAnalytics'
+import AdsList from "./AdsList";
+import AdAnalytics from "./AdAnalytics";
 import { Advertisement } from "../app/api/ads/route";
 import "../styles/ad-management.css";
 
