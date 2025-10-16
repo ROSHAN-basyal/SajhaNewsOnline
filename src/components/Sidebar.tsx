@@ -1,81 +1,85 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import NewsletterForm from './NewsletterForm'
-import '../styles/sidebar.css'
+import { useState, useEffect } from "react";
+import NewsletterForm from "./NewsletterForm";
+import "../styles/sidebar.css";
 
 const initialWeatherData = {
-  kathmandu: { temp: '22°C', condition: '☀️ Sunny' },
-  pokhara: { temp: '19°C', condition: '⛅ Partly Cloudy' },
-  chitwan: { temp: '26°C', condition: '🌤️ Clear' }
-}
+  kathmandu: { temp: "22°C", condition: "☀️ Sunny" },
+  pokhara: { temp: "19°C", condition: "⛅ Partly Cloudy" },
+  chitwan: { temp: "26°C", condition: "🌤️ Clear" },
+};
 
 const trendingTopics = [
-  '#NepalPolitics',
-  '#MountEverest',
-  '#KathmanduValley',
-  '#NepalTourism',
-  '#Dashain2025',
-  '#NepalEconomy'
-]
+  "#NepalPolitics",
+  "#MountEverest",
+  "#KathmanduValley",
+  "#NepalTourism",
+  "#Tihar2025",
+  "#NepalEconomy",
+];
 
 const quickStats = [
-  { label: 'Today&apos;s Stories', value: '12' },
-  { label: 'Breaking News', value: '3' },
-  { label: 'Total Views', value: '1.2M' },
-  { label: 'Active Readers', value: '450' }
-]
+  { label: "Today&apos;s Stories", value: "12" },
+  { label: "Breaking News", value: "3" },
+  { label: "Total Views", value: "1.2M" },
+  { label: "Active Readers", value: "450" },
+];
 
 export default function Sidebar() {
-  const [currentTime, setCurrentTime] = useState('')
-  const [nepaliDate, setNepaliDate] = useState('')
-  const [weatherData, setWeatherData] = useState(initialWeatherData)
-  const [weatherLoading, setWeatherLoading] = useState(true)
+  const [currentTime, setCurrentTime] = useState("");
+  const [nepaliDate, setNepaliDate] = useState("");
+  const [weatherData, setWeatherData] = useState(initialWeatherData);
+  const [weatherLoading, setWeatherLoading] = useState(true);
 
   useEffect(() => {
     const updateTime = () => {
-      const now = new Date()
-      setCurrentTime(now.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        timeZone: 'Asia/Kathmandu'
-      }))
-      setNepaliDate(now.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      }))
-    }
+      const now = new Date();
+      setCurrentTime(
+        now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          timeZone: "Asia/Kathmandu",
+        })
+      );
+      setNepaliDate(
+        now.toLocaleDateString("en-US", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      );
+    };
 
-    updateTime()
-    const interval = setInterval(updateTime, 1000)
-    return () => clearInterval(interval)
-  }, [])
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await fetch('/api/weather')
+        const response = await fetch("/api/weather");
         if (response.ok) {
-          const data = await response.json()
+          const data = await response.json();
           if (data.success) {
-            setWeatherData(data.data)
+            setWeatherData(data.data);
           }
         }
       } catch (error) {
-        console.error('Failed to fetch weather data:', error)
+        console.error("Failed to fetch weather data:", error);
       } finally {
-        setWeatherLoading(false)
+        setWeatherLoading(false);
       }
-    }
+    };
 
-    fetchWeather()
+    fetchWeather();
     // Update weather every 30 minutes
-    const weatherInterval = setInterval(fetchWeather, 30 * 60 * 1000)
-    return () => clearInterval(weatherInterval)
-  }, [])
+    const weatherInterval = setInterval(fetchWeather, 30 * 60 * 1000);
+    return () => clearInterval(weatherInterval);
+  }, []);
 
   return (
     <aside className="sidebar">
@@ -97,7 +101,9 @@ export default function Sidebar() {
           ) : (
             Object.entries(weatherData).map(([city, data]) => (
               <div key={city} className="weather-item">
-                <span className="city-name">{city.charAt(0).toUpperCase() + city.slice(1)}</span>
+                <span className="city-name">
+                  {city.charAt(0).toUpperCase() + city.slice(1)}
+                </span>
                 <span className="weather-info">
                   {data.condition} {data.temp}
                 </span>
@@ -141,7 +147,6 @@ export default function Sidebar() {
           <NewsletterForm />
         </div>
       </div>
-
     </aside>
-  )
+  );
 }
