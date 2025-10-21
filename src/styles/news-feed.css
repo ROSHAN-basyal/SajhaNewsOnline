@@ -218,11 +218,24 @@
 }
 
 .post-full-content {
-  color: var(--text-primary);
+  color: #1a202c !important; /* Dark text for light mode - fallback with !important */
   font-size: 16px;
   line-height: 1.7;
   margin-bottom: 16px;
   white-space: pre-wrap;
+  opacity: 1 !important; /* Ensure text is always visible */
+}
+
+/* Dark mode override */
+[data-theme="dark"] .post-full-content {
+  color: #f7fafc !important; /* Light text for dark mode */
+}
+
+/* Additional safety for system dark mode */
+@media (prefers-color-scheme: dark) {
+  .post-full-content {
+    color: #f7fafc !important;
+  }
 }
 
 .post-actions {
