@@ -224,27 +224,28 @@
   margin-bottom: 16px;
   white-space: pre-wrap;
   opacity: 1; /* Ensure text is always visible */
+  font-weight: 400;
 }
 
-/* Light theme explicit override */
-[data-theme="light"] .post-full-content {
-  color: #1a202c !important; /* Dark text for light mode */
+/* Use CSS custom properties for better theme support */
+.post-full-content {
+  color: var(--post-content-color, #1a202c);
 }
 
-/* Dark theme override */
-[data-theme="dark"] .post-full-content {
-  color: #f7fafc !important; /* Light text for dark mode */
+/* Light theme */
+[data-theme="light"] {
+  --post-content-color: #1a202c;
 }
 
-/* System dark mode preference - works during SSR */
+/* Dark theme */
+[data-theme="dark"] {
+  --post-content-color: #f7fafc;
+}
+
+/* System dark mode preference */
 @media (prefers-color-scheme: dark) {
   .post-full-content {
-    color: #f7fafc !important; /* Light text for dark mode */
-  }
-  
-  /* Override with light theme when explicitly set */
-  [data-theme="light"] .post-full-content {
-    color: #1a202c !important; /* Dark text for light mode */
+    color: var(--post-content-color, #f7fafc);
   }
 }
 

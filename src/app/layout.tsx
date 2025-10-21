@@ -26,8 +26,17 @@ export default function RootLayout({
                 const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
+                
+                // Also set CSS custom property for immediate styling
+                const root = document.documentElement;
+                if (theme === 'dark') {
+                  root.style.setProperty('--post-content-color', '#f7fafc');
+                } else {
+                  root.style.setProperty('--post-content-color', '#1a202c');
+                }
               } catch (e) {
                 document.documentElement.setAttribute('data-theme', 'light');
+                document.documentElement.style.setProperty('--post-content-color', '#1a202c');
               }
             `,
           }}

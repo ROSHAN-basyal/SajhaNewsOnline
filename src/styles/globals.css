@@ -9,6 +9,7 @@
   --text-primary: #1a202c;
   --text-secondary: #4a5568;
   --text-muted: #718096;
+  --post-content-color: #1a202c;
   --border-color: rgba(0, 0, 0, 0.05);
   --shadow-light: rgba(0, 0, 0, 0.08);
   --shadow-medium: rgba(0, 0, 0, 0.12);
@@ -24,6 +25,7 @@
   --text-primary: #f7fafc;
   --text-secondary: #e2e8f0;
   --text-muted: #a0aec0;
+  --post-content-color: #f7fafc;
   --border-color: rgba(255, 255, 255, 0.1);
   --shadow-light: rgba(0, 0, 0, 0.3);
   --shadow-medium: rgba(0, 0, 0, 0.4);
