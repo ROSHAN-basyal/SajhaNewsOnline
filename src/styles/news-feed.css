@@ -218,7 +218,7 @@
 }
 
 .post-full-content {
-  color: #1a202c; /* Dark text for light mode - default */
+  color: #1a202c; /* Dark text for light mode - SSR safe default */
   font-size: 16px;
   line-height: 1.7;
   margin-bottom: 16px;
@@ -236,10 +236,15 @@
   color: #f7fafc !important; /* Light text for dark mode */
 }
 
-/* System dark mode preference - only when no explicit theme is set */
+/* System dark mode preference - works during SSR */
 @media (prefers-color-scheme: dark) {
-  html:not([data-theme]) .post-full-content {
-    color: #f7fafc !important;
+  .post-full-content {
+    color: #f7fafc !important; /* Light text for dark mode */
+  }
+  
+  /* Override with light theme when explicitly set */
+  [data-theme="light"] .post-full-content {
+    color: #1a202c !important; /* Dark text for light mode */
   }
 }
 
