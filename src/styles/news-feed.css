@@ -249,6 +249,60 @@
   }
 }
 
+/* Mobile-specific overrides for better compatibility */
+@media (max-width: 768px) {
+  .post-full-content {
+    color: #1a202c !important; /* Force dark text on mobile light mode */
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #1a202c !important; /* Safari mobile fix */
+  }
+  
+  /* Dark mode mobile override */
+  [data-theme="dark"] .post-full-content {
+    color: #f7fafc !important;
+    -webkit-text-fill-color: #f7fafc !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-full-content {
+    color: #1a202c !important;
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #1a202c !important;
+  }
+  
+  /* Dark mode small mobile override */
+  [data-theme="dark"] .post-full-content {
+    color: #f7fafc !important;
+    -webkit-text-fill-color: #f7fafc !important;
+  }
+}
+
+/* Forced colors mode support for accessibility */
+@media (forced-colors: active) {
+  .post-full-content {
+    color: ButtonText !important;
+    -webkit-text-fill-color: ButtonText !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .post-full-content {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+  
+  [data-theme="dark"] .post-full-content {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+}
+
 .post-actions {
   display: flex;
   justify-content: space-between;

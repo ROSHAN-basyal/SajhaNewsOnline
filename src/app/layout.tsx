@@ -27,12 +27,27 @@ export default function RootLayout({
                 const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
                 
-                // Also set CSS custom property for immediate styling
+                // Set CSS custom property for immediate styling
                 const root = document.documentElement;
                 if (theme === 'dark') {
                   root.style.setProperty('--post-content-color', '#f7fafc');
                 } else {
                   root.style.setProperty('--post-content-color', '#1a202c');
+                }
+                
+                // Mobile-specific fixes
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                if (isMobile) {
+                  // Force immediate color application on mobile
+                  const style = document.createElement('style');
+                  style.textContent = \`
+                    .post-full-content {
+                      color: \${theme === 'dark' ? '#f7fafc' : '#1a202c'} !important;
+                      -webkit-text-fill-color: \${theme === 'dark' ? '#f7fafc' : '#1a202c'} !important;
+                      opacity: 1 !important;
+                    }
+                  \`;
+                  document.head.appendChild(style);
                 }
               } catch (e) {
                 document.documentElement.setAttribute('data-theme', 'light');
