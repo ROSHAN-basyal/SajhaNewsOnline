@@ -218,22 +218,27 @@
 }
 
 .post-full-content {
-  color: #1a202c !important; /* Dark text for light mode - fallback with !important */
+  color: #1a202c; /* Dark text for light mode - default */
   font-size: 16px;
   line-height: 1.7;
   margin-bottom: 16px;
   white-space: pre-wrap;
-  opacity: 1 !important; /* Ensure text is always visible */
+  opacity: 1; /* Ensure text is always visible */
 }
 
-/* Dark mode override */
+/* Light theme explicit override */
+[data-theme="light"] .post-full-content {
+  color: #1a202c !important; /* Dark text for light mode */
+}
+
+/* Dark theme override */
 [data-theme="dark"] .post-full-content {
   color: #f7fafc !important; /* Light text for dark mode */
 }
 
-/* Additional safety for system dark mode */
+/* System dark mode preference - only when no explicit theme is set */
 @media (prefers-color-scheme: dark) {
-  .post-full-content {
+  html:not([data-theme]) .post-full-content {
     color: #f7fafc !important;
   }
 }
