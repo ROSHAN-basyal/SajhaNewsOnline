@@ -218,7 +218,7 @@
 }
 
 .post-full-content {
-  color: #1a202c; /* Dark text for light mode - SSR safe default */
+  color: #1a202c; /* Dark text for light theme - SSR safe default */
   font-size: 16px;
   line-height: 1.7;
   margin-bottom: 16px;
@@ -227,42 +227,19 @@
   font-weight: 400;
 }
 
-/* Use CSS custom properties for better theme support */
+/* Use CSS custom properties for consistency */
 .post-full-content {
   color: var(--post-content-color, #1a202c);
-}
-
-/* Light theme */
-[data-theme="light"] {
-  --post-content-color: #1a202c;
-}
-
-/* Dark theme */
-[data-theme="dark"] {
-  --post-content-color: #f7fafc;
-}
-
-/* System dark mode preference */
-@media (prefers-color-scheme: dark) {
-  .post-full-content {
-    color: var(--post-content-color, #f7fafc);
-  }
 }
 
 /* Mobile-specific overrides for better compatibility */
 @media (max-width: 768px) {
   .post-full-content {
-    color: #1a202c !important; /* Force dark text on mobile light mode */
+    color: #1a202c !important; /* Force dark text on mobile */
     font-size: 16px;
     line-height: 1.7;
     opacity: 1 !important;
     -webkit-text-fill-color: #1a202c !important; /* Safari mobile fix */
-  }
-  
-  /* Dark mode mobile override */
-  [data-theme="dark"] .post-full-content {
-    color: #f7fafc !important;
-    -webkit-text-fill-color: #f7fafc !important;
   }
 }
 
@@ -273,12 +250,6 @@
     line-height: 1.6;
     opacity: 1 !important;
     -webkit-text-fill-color: #1a202c !important;
-  }
-  
-  /* Dark mode small mobile override */
-  [data-theme="dark"] .post-full-content {
-    color: #f7fafc !important;
-    -webkit-text-fill-color: #f7fafc !important;
   }
 }
 
@@ -295,11 +266,6 @@
   .post-full-content {
     color: #000000 !important;
     -webkit-text-fill-color: #000000 !important;
-  }
-  
-  [data-theme="dark"] .post-full-content {
-    color: #ffffff !important;
-    -webkit-text-fill-color: #ffffff !important;
   }
 }
 

@@ -1,21 +1,7 @@
 'use client'
 
 import { NEWS_CATEGORIES, NewsCategory, getCategoryLabel } from '../lib/supabase'
-import dynamic from 'next/dynamic'
 import '../styles/header.css'
-
-const ThemeToggle = dynamic(() => import('./ThemeToggle'), { 
-  ssr: false, 
-  loading: () => (
-    <button className="theme-toggle" disabled aria-label="Loading theme toggle">
-      <div className="theme-toggle-track">
-        <div className="theme-toggle-thumb">
-          <span className="theme-icon">🌙</span>
-        </div>
-      </div>
-    </button>
-  )
-})
 
 interface HeaderProps {
   activeCategory: string
@@ -26,7 +12,6 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
   const handleCategoryClick = (category: NewsCategory | 'all') => {
     onCategoryChange(category)
   }
-
 
   return (
     <header className="header" role="banner">
@@ -60,7 +45,6 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
                 </button>
               ))}
             </nav>
-            <ThemeToggle />
           </div>
         </div>
       </div>

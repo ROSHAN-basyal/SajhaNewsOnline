@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import LazyImage from "./LazyImage";
 import { NewsPost } from "../lib/supabase";
-import { useTheme } from "../lib/themeContext";
 import "../styles/lazy-image.css";
 
 interface NewsPostCardProps {
@@ -18,7 +17,6 @@ export default function NewsPostCard({
 }: NewsPostCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
-  const { theme } = useTheme();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -96,8 +94,8 @@ export default function NewsPostCard({
             <div 
               className="post-full-content"
               style={{
-                color: theme === 'dark' ? '#f7fafc' : '#1a202c',
-                WebkitTextFillColor: theme === 'dark' ? '#f7fafc' : '#1a202c',
+                color: '#1a202c',
+                WebkitTextFillColor: '#1a202c',
                 opacity: 1,
                 fontSize: '16px',
                 lineHeight: '1.7',

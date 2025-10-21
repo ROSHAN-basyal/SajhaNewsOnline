@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase, NewsPost } from "../../../lib/supabase";
 import LazyImage from "../../../components/LazyImage";
-import { useTheme } from "../../../lib/themeContext";
 
 interface PageProps {
   params: { id: string };
@@ -14,7 +13,6 @@ export default function PostPage({ params }: PageProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const { theme } = useTheme();
 
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
@@ -208,8 +206,8 @@ export default function PostPage({ params }: PageProps) {
             <div 
               className="post-full-content"
               style={{
-                color: theme === 'dark' ? '#f7fafc' : '#1a202c',
-                WebkitTextFillColor: theme === 'dark' ? '#f7fafc' : '#1a202c',
+                color: '#1a202c',
+                WebkitTextFillColor: '#1a202c',
                 opacity: 1,
                 fontSize: '16px',
                 lineHeight: '1.7',
