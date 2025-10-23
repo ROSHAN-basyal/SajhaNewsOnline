@@ -120,13 +120,10 @@ export default function PostPage({ params }: PageProps) {
                   aria-label="Share this article"
                   title="Share"
                 >
-                  <svg
-                    className="icon"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M15 8a3 3 0 1 0-2.83-4H12a3 3 0 0 0 0 6h.17A3 3 0 0 0 15 8Zm-6 8a3 3 0 1 0-2.83-4H6a3 3 0 0 0 0 6h.17A3 3 0 0 0 9 16Zm9 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM9.64 13.23l4.72 2.36a1 1 0 1 0 .9-1.79l-4.72-2.36a1 1 0 0 0-.9 1.79Z" />
+                  <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12" />
+                    <polyline points="16 6 12 2 8 6" />
+                    <line x1="12" y1="2" x2="12" y2="15" />
                   </svg>
                 </button>
                 <button
@@ -135,13 +132,9 @@ export default function PostPage({ params }: PageProps) {
                   aria-label="Copy link"
                   title="Copy link"
                 >
-                  <svg
-                    className="icon"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M9 3a3 3 0 0 0-3 3v9a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V6a3 3 0 0 0-3-3H9Zm-5 6a2 2 0 0 0-2 2v7a3 3 0 0 0 3 3h8a2 2 0 1 0 0-4H5v-6a2 2 0 0 0-2-2Z" />
+                  <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1-7 7l-1-1" />
+                    <path d="M14 11a5 5 0 0 1-7 0l-1-1a5 5 0 0 1 7-7l1 1" />
                   </svg>
                 </button>
                 <a
@@ -154,13 +147,9 @@ export default function PostPage({ params }: PageProps) {
                   aria-label="Share on Facebook"
                   title="Facebook"
                 >
-                  <svg
-                    className="icon"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M13 22v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2h-3a5 5 0 0 0-5 5v3H6v4h3v8h4Z" />
+                  <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M22 12a10 10 0 1 1-11.6-9.9A10 10 0 0 1 22 12Z" fill="currentColor" opacity=".08"/>
+                    <path d="M15 8h2.5l-1 4H15v8h-4v-8H8V8h3V6.5A3.5 3.5 0 0 1 14.5 3H18v3h-2a1 1 0 0 0-1 1V8Z" fill="currentColor"/>
                   </svg>
                 </a>
                 <a
@@ -173,13 +162,8 @@ export default function PostPage({ params }: PageProps) {
                   aria-label="Share on X"
                   title="X"
                 >
-                  <svg
-                    className="icon"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M4 3l7.5 9.5L4 21h3l6-7.5L18.5 21H21l-7.5-9.5L21 3h-3l-5.5 6.9L7 3H4Z" />
+                  <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M18.244 2H21l-6.529 7.46L22 22h-6.828l-4.804-6.253L4.9 22H2.142l6.99-7.987L2 2h6.914l4.41 5.79L18.244 2Zm-1.195 18h1.872L7.03 4H5.06L17.05 20Z"/>
                   </svg>
                 </a>
                 <a
@@ -192,13 +176,8 @@ export default function PostPage({ params }: PageProps) {
                   aria-label="Share on WhatsApp"
                   title="WhatsApp"
                 >
-                  <svg
-                    className="icon"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d="M20 4a10 10 0 0 0-16 12l-2 6 6-2A10 10 0 1 0 20 4Zm-5.4 12.6c-2.7 0-5.9-2.3-6.7-5-.2-.7 0-1.4.5-1.9l1-.9a.9.9 0 0 1 1.3.1l1 1.4c.3.4.3.9-.1 1.3l-.3.3c.6 1.3 1.7 2.4 3 3l.3-.3c.4-.4.9-.4 1.3-.1l1.4 1c.5.3.7 1 .4 1.6-.4.9-1.3 1.5-2.1 1.5Z" />
+                  <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.52 3.48A11.94 11.94 0 0 0 12.06 0C5.44 0 .04 5.4.04 12.08c0 2.13.56 4.14 1.63 5.95L0 24l6.13-1.6a11.96 11.96 0 0 0 5.92 1.56h.01c6.62 0 12.02-5.4 12.02-12.07 0-3.22-1.26-6.25-3.56-8.41Zm-8.47 17.3h-.01a10.1 10.1 0 0 1-5.15-1.41l-.37-.22-3.64.95.97-3.55-.24-.36a10.12 10.12 0 0 1-1.57-5.47c0-5.6 4.56-10.15 10.17-10.15 2.72 0 5.27 1.06 7.2 2.98a10.05 10.05 0 0 1 2.99 7.16c0 5.6-4.56 10.15-10.15 10.15Zm5.56-7.6c-.3-.15-1.78-.88-2.06-.98-.28-.1-.48-.15-.69.15-.2.3-.79.98-.97 1.18-.18.2-.36.23-.66.08-.3-.15-1.24-.46-2.35-1.47-.87-.77-1.45-1.71-1.62-2.01-.17-.3-.02-.46.13-.61.13-.13.3-.33.44-.49.15-.17.2-.28.3-.48.1-.2.05-.37-.03-.52-.08-.15-.69-1.66-.95-2.28-.25-.6-.5-.52-.69-.53l-.58-.01c-.2 0-.52.08-.79.37-.27.3-1.03 1-.99 2.45.04 1.45 1.06 2.84 1.21 3.04.15.2 2.08 3.17 5.04 4.45.7.3 1.25.48 1.67.61.7.22 1.33.19 1.83.12.56-.08 1.78-.73 2.03-1.43.25-.7.25-1.29.18-1.43-.07-.14-.27-.22-.57-.37Z" />
                   </svg>
                 </a>
               </div>
