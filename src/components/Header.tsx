@@ -37,55 +37,53 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
             </h1>
             <p className="logo-slogan">विश्वसनीय समचार हाम्रो प्रतिबद्धता</p>
           </div>
-          <div className="header-right">
+          <button
+            type="button"
+            className={`hamburger ${isMenuOpen ? 'is-active' : ''}`}
+            aria-label="Toggle navigation menu"
+            aria-controls="primary-navigation"
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen((v) => !v)}
+          >
+            <span className="hamburger-box">
+              <span className="hamburger-inner" />
+            </span>
+          </button>
+
+          <nav
+            id="primary-navigation"
+            className={`nav-menu ${isMenuOpen ? 'open' : ''}`}
+            role="navigation"
+            aria-label="News categories"
+          >
+            <button 
+              className={`nav-link ${activeCategory === 'all' ? 'active' : ''}`}
+              onClick={() => handleCategoryClick('all')}
+              aria-pressed={activeCategory === 'all'}
+              aria-label="Show all news articles"
+            >
+              {getCategoryLabel('all')}
+            </button>
+            {NEWS_CATEGORIES.map((category) => (
+              <button
+                key={category}
+                className={`nav-link ${activeCategory === category ? 'active' : ''}`}
+                onClick={() => handleCategoryClick(category)}
+                aria-pressed={activeCategory === category}
+                aria-label={`Show ${category} news articles`}
+              >
+                {getCategoryLabel(category)}
+              </button>
+            ))}
+          </nav>
+          {isMenuOpen && (
             <button
               type="button"
-              className={`hamburger ${isMenuOpen ? 'is-active' : ''}`}
-              aria-label="Toggle navigation menu"
-              aria-controls="primary-navigation"
-              aria-expanded={isMenuOpen}
-              onClick={() => setIsMenuOpen((v) => !v)}
-            >
-              <span className="hamburger-box">
-                <span className="hamburger-inner" />
-              </span>
-            </button>
-
-            <nav
-              id="primary-navigation"
-              className={`nav-menu ${isMenuOpen ? 'open' : ''}`}
-              role="navigation"
-              aria-label="News categories"
-            >
-              <button 
-                className={`nav-link ${activeCategory === 'all' ? 'active' : ''}`}
-                onClick={() => handleCategoryClick('all')}
-                aria-pressed={activeCategory === 'all'}
-                aria-label="Show all news articles"
-              >
-                {getCategoryLabel('all')}
-              </button>
-              {NEWS_CATEGORIES.map((category) => (
-                <button
-                  key={category}
-                  className={`nav-link ${activeCategory === category ? 'active' : ''}`}
-                  onClick={() => handleCategoryClick(category)}
-                  aria-pressed={activeCategory === category}
-                  aria-label={`Show ${category} news articles`}
-                >
-                  {getCategoryLabel(category)}
-                </button>
-              ))}
-            </nav>
-            {isMenuOpen && (
-              <button
-                type="button"
-                className="nav-backdrop"
-                aria-label="Close navigation menu"
-                onClick={() => setIsMenuOpen(false)}
-              />
-            )}
-          </div>
+              className="nav-backdrop"
+              aria-label="Close navigation menu"
+              onClick={() => setIsMenuOpen(false)}
+            />
+          )}
         </div>
       </div>
     </header>

@@ -17,9 +17,10 @@
 }
 
 .header-content {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
+  column-gap: 24px;
   min-height: 64px;
 }
 
@@ -75,6 +76,7 @@
   align-items: center;
   margin: 0;
   padding: 0;
+  justify-self: end;
 }
 
 .nav-link {
@@ -300,6 +302,17 @@
   }
 }
 
+/* Grid-based header layout overrides */
+/* Desktop defaults are above; refine mobile grid placement */
+@media (max-width: 768px) {
+  .header-content {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+  }
+  .nav-menu { justify-self: stretch; }
+}
+
 /* Dark mode enhancements */
 @media (prefers-color-scheme: dark) {
   .header {
@@ -360,4 +373,3 @@
     color: black !important;
   }
 }
-
