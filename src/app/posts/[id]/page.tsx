@@ -182,20 +182,7 @@ export default function PostPage({ params }: PageProps) {
                 </a>
               </div>
             </div>
-            <div 
-              className="post-full-content"
-              style={{
-                color: '#1a202c',
-                WebkitTextFillColor: '#1a202c',
-                opacity: 1,
-                fontSize: '16px',
-                lineHeight: '1.7',
-                fontWeight: '400',
-                whiteSpace: 'pre-wrap'
-              }}
-            >
-              {post.content}
-            </div>
+            <div className="post-full-content">{post.content}</div>
           </div>
         </article>
       </div>

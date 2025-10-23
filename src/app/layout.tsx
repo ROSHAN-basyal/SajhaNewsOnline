@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { Inter, Noto_Sans_Devanagari } from "next/font/google";
 import CSSLoader from "../components/CSSLoader";
 import "../styles/critical.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const noto = Noto_Sans_Devanagari({
+  subsets: ["latin", "devanagari"],
+  weight: ["400", "500", "700"],
+  variable: "--font-devanagari",
+});
 
 export const metadata: Metadata = {
   title: "NewzNepal.com - Breaking News & Latest Updates from Nepal",
@@ -15,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${noto.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
