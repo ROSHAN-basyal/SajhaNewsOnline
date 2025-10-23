@@ -90,6 +90,30 @@ export default function PostPage({ params }: PageProps) {
   return (
     <main className="post-page">
       <div className="container">
+        {post && (
+          <script
+            type="application/ld+json"
+            suppressHydrationWarning
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'NewsArticle',
+                headline: post.title,
+                datePublished: post.created_at,
+                dateModified: post.updated_at || post.created_at,
+                mainEntityOfPage: `${typeof window !== 'undefined' ? window.location.origin : ''}/posts/${post.id}`,
+                description: post.summary,
+                author: { '@type': 'Organization', name: 'NewzNepal.com' },
+                publisher: {
+                  '@type': 'Organization',
+                  name: 'NewzNepal.com',
+                  logo: { '@type': 'ImageObject', url: '/og-default.jpg' }
+                },
+                image: post.image_url ? [post.image_url] : ['/og-default.jpg']
+              })
+            }}
+          />
+        )}
         <article
           className="news-post"
           role="article"
