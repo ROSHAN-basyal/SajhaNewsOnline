@@ -14,11 +14,11 @@ const noto = Noto_Sans_Devanagari({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com"),
   title: {
-    default: "NewzNepal.com - Breaking News & Latest Updates from Nepal",
-    template: "%s | NewzNepal.com",
+    default: "NEWZNEPAL - Stay Informed Stay ahead",
+    template: "%s | NEWZNEPAL",
   },
   description:
-    "NewzNepal.com - Your trusted source for breaking news, politics, sports, entertainment, and latest updates from Nepal and around the world. Stay informed 24/7.",
+    "NEWZNEPAL - Stay informed, stay ahead with breaking news, politics, sports, entertainment, and the latest updates from Nepal and around the world.",
   keywords: [
     "Nepali News",
     "Best Nepali News",
@@ -32,16 +32,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "/",
-    siteName: "NewzNepal.com",
-    title: "NewzNepal.com - Breaking News & Latest Updates from Nepal",
+    siteName: "NEWZNEPAL",
+    title: "NEWZNEPAL - Stay Informed Stay ahead",
     description:
-      "Your trusted source for breaking news, politics, sports, entertainment, and latest updates from Nepal and worldwide.",
+      "Stay informed, stay ahead with breaking news and the latest updates from Nepal and worldwide.",
     images: [
       {
-        url: "/og-default.jpg",
-        width: 1200,
-        height: 630,
-        alt: "NewzNepal.com",
+        url: "/images/logo.png",
+        width: 512,
+        height: 512,
+        alt: "NEWZNEPAL",
       },
     ],
     locale: "en_US",
@@ -62,33 +62,34 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${noto.variable}`}>
       <head>
-        {/* Organization + WebSite JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Organization',
-              name: 'NewzNepal.com',
-              url: process.env.NEXT_PUBLIC_SITE_URL || 'https://newznepal.com',
-              logo: '/og-default.jpg'
-            })
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "NEWZNEPAL",
+              url: process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com",
+              logo: "/images/logo.png",
+            }),
           }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'WebSite',
-              name: 'NewzNepal.com',
-              url: process.env.NEXT_PUBLIC_SITE_URL || 'https://newznepal.com',
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "NEWZNEPAL",
+              url: process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com",
               potentialAction: {
-                '@type': 'SearchAction',
-                target: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://newznepal.com'}/search?q={search_term_string}`,
-                'query-input': 'required name=search_term_string'
-              }
-            })
+                "@type": "SearchAction",
+                target: `${
+                  process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com"
+                }/search?q={search_term_string}`,
+                "query-input": "required name=search_term_string",
+              },
+            }),
           }}
         />
         <script
@@ -103,10 +104,9 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning={true}>
         <CSSLoader />
-        <Suspense fallback={<div className="loading">Loading...</div>}>
-          {children}
-        </Suspense>
+        <Suspense fallback={<div className="loading">Loading...</div>}>{children}</Suspense>
       </body>
     </html>
   );
 }
+

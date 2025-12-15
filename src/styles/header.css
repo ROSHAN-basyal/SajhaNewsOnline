@@ -32,17 +32,11 @@
 }
 
 .logo {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 900;
   text-transform: none;
-  letter-spacing: 2px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(45deg, #ffffff, #fef7f7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  letter-spacing: 1px;
   transition: all 0.3s ease;
-  cursor: pointer;
   font-family: 'Inter', 'Noto Sans Devanagari', 'Helvetica Neue', sans-serif;
   margin: 0;
 }
@@ -50,6 +44,36 @@
 .logo:hover {
   transform: scale(1.03) rotate(-1deg);
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.logo-link {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-image {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.logo-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 64px;
+}
+
+.logo-text {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  letter-spacing: 1px;
+  line-height: 1.05;
 }
 
 .logo-slogan {
@@ -159,15 +183,15 @@
   .container {
     padding: 0 24px;
   }
-  
+
   .header-right {
     gap: 24px;
   }
-  
+
   .nav-menu {
     gap: 20px;
   }
-  
+
   .nav-link {
     font-size: 14px;
     padding: 10px 16px;
@@ -178,24 +202,33 @@
   .header {
     padding: 20px 0;
   }
-  
+
   .container {
     padding: 0 20px;
   }
-  
+
   .logo {
-    font-size: 32px;
-    letter-spacing: 2.5px;
+    font-size: 26px;
+    letter-spacing: 1px;
   }
-  
+
+  .logo-image {
+    width: 58px;
+    height: 58px;
+  }
+
+  .logo-copy {
+    height: 58px;
+  }
+
   .header-right {
     gap: 20px;
   }
-  
+
   .nav-menu {
     gap: 16px;
   }
-  
+
   .nav-link {
     font-size: 14px;
     padding: 10px 14px;
@@ -206,29 +239,38 @@
   .header {
     padding: 18px 0;
   }
-  
+
   .container {
     padding: 0 16px;
   }
-  
+
   .header-content {
     flex-direction: column;
     gap: 20px;
     min-height: auto;
   }
-  
+
   .logo {
-    font-size: 30px;
-    letter-spacing: 2px;
+    font-size: 24px;
+    letter-spacing: 1px;
     text-align: center;
   }
-  
+
+  .logo-image {
+    width: 54px;
+    height: 54px;
+  }
+
+  .logo-copy {
+    height: 54px;
+  }
+
   .header-right {
     width: 100%;
     justify-content: center;
     gap: 16px;
   }
-  
+
   .nav-menu {
     gap: 12px;
     flex-wrap: wrap;
@@ -236,7 +278,7 @@
     width: 100%;
     margin: 0;
   }
-  
+
   .nav-link {
     font-size: 13px;
     padding: 8px 12px;
@@ -248,24 +290,33 @@
   .header {
     padding: 16px 0;
   }
-  
+
   .container {
     padding: 0 16px;
   }
-  
+
   .header-content {
     gap: 16px;
   }
-  
+
   .logo {
-    font-size: 26px;
-    letter-spacing: 1.5px;
+    font-size: 22px;
+    letter-spacing: 0.8px;
   }
-  
+
+  .logo-image {
+    width: 48px;
+    height: 48px;
+  }
+
+  .logo-copy {
+    height: 48px;
+  }
+
   .nav-menu {
     gap: 8px;
   }
-  
+
   .nav-link {
     font-size: 12px;
     padding: 7px 10px;
@@ -277,24 +328,33 @@
   .header {
     padding: 14px 0;
   }
-  
+
   .container {
     padding: 0 12px;
   }
-  
+
   .header-content {
     gap: 14px;
   }
-  
+
   .logo {
-    font-size: 22px;
-    letter-spacing: 1px;
+    font-size: 20px;
+    letter-spacing: 0.6px;
   }
-  
+
+  .logo-image {
+    width: 44px;
+    height: 44px;
+  }
+
+  .logo-copy {
+    height: 44px;
+  }
+
   .nav-menu {
     gap: 6px;
   }
-  
+
   .nav-link {
     font-size: 11px;
     padding: 6px 8px;
@@ -310,7 +370,9 @@
     grid-template-rows: auto auto;
     row-gap: 10px;
   }
-  .nav-menu { justify-self: stretch; }
+  .nav-menu {
+    justify-self: stretch;
+  }
 }
 
 /* Dark mode enhancements */
@@ -325,11 +387,11 @@
   .header {
     border-bottom: 2px solid white;
   }
-  
+
   .nav-link {
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
-  
+
   .nav-link.active {
     border: 2px solid white;
     background: rgba(255, 255, 255, 0.2);
@@ -345,11 +407,11 @@
   .nav-link::after {
     transition: none;
   }
-  
+
   .logo:hover {
     transform: none;
   }
-  
+
   .nav-link:hover {
     transform: none;
   }
@@ -363,12 +425,12 @@
     box-shadow: none;
     border-bottom: 2px solid black;
   }
-  
+
   .logo {
     color: black !important;
     text-shadow: none;
   }
-  
+
   .nav-link {
     color: black !important;
   }

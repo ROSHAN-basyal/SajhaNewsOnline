@@ -1,9 +1,10 @@
 "use client"
 
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { NEWS_CATEGORIES, NewsCategory, getCategoryLabel } from '../lib/supabase'
 import '../styles/header.css'
 import '../styles/header-mobile.css'
-import { useEffect, useState } from 'react'
 
 interface HeaderProps {
   activeCategory: string
@@ -18,7 +19,6 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
     setIsMenuOpen(false)
   }
 
-  // Close on Escape
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsMenuOpen(false)
@@ -33,10 +33,16 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
         <div className="header-content">
           <div className="logo-container">
             <h1 className="logo">
-              <span aria-label="Newznepal.com - Home">Newznepal.com</span>
+              <Link href="/" aria-label="NEWZNEPAL - Home" className="logo-link">
+                <img className="logo-image" src="/images/logo.png" alt="NEWZNEPAL" />
+                <span className="logo-copy">
+                  <span className="logo-text">NEWZNEPAL</span>
+                  <span className="logo-slogan">Stay Informed Stay ahead</span>
+                </span>
+              </Link>
             </h1>
-            <p className="logo-slogan">विश्वसनीय समचार हाम्रो प्रतिबद्धता</p>
           </div>
+
           <button
             type="button"
             className={`hamburger ${isMenuOpen ? 'is-active' : ''}`}
@@ -56,7 +62,7 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
             role="navigation"
             aria-label="News categories"
           >
-            <button 
+            <button
               className={`nav-link ${activeCategory === 'all' ? 'active' : ''}`}
               onClick={() => handleCategoryClick('all')}
               aria-pressed={activeCategory === 'all'}
@@ -76,6 +82,7 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
               </button>
             ))}
           </nav>
+
           {isMenuOpen && (
             <button
               type="button"
