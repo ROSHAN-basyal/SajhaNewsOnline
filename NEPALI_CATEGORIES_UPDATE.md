@@ -70,7 +70,7 @@ export const getCategoryLabel = (category: NewsCategory | 'all'): string => {
 - 📱 **Responsive Design** - Works perfectly on all devices
 
 ### **User Experience:**
-Visitors to NewzNepal.com now see:
+Visitors to SajhaNewsOnline.com now see:
 - **सबै समाचार** (All News) 
 - **ताजा समाचार** (Latest)
 - **ब्रेकिङ न्यूज** (Breaking)
@@ -83,4 +83,4 @@ All categories display in beautiful, authentic Nepali Devanagari script while ma
 
 ## 🎉 **Implementation Complete!**
 
-Your NewzNepal.com now proudly displays categories in authentic Nepali language with perfect Devanagari typography, providing an authentic experience for your Nepali-speaking audience!
+Your SajhaNewsOnline.com now proudly displays categories in authentic Nepali language with perfect Devanagari typography, providing an authentic experience for your Nepali-speaking audience!

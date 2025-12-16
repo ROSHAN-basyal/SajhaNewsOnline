@@ -1,9 +1,3 @@
--- Fix admin password hash
--- Run this in your Supabase SQL Editor if you're having login issues
-
-UPDATE admin_users 
-SET password_hash = '$2a$12$wJgYKJzTKG88a.MG.qLJ.eQKitDNGTJIfos.42J67mEdLXdCqRQ5S' 
-WHERE username = 'admin';
-
--- Verify the admin user exists
-SELECT username, created_at FROM admin_users WHERE username = 'admin';
+-- DEPRECATED
+-- Default admin user/password is now handled in `supabase-schema.sql`.
+-- Please run `supabase-schema.sql` in your Supabase SQL Editor.

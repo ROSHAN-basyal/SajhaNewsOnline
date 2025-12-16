@@ -1,22 +1,28 @@
 export default function LoadingSkeleton() {
   return (
-    <div className="news-feed">
-      <div className="container">
+    <div className="feed" aria-label="Loading news">
+      <div className="feed__header">
+        <div className="skeleton-line skeleton-line--title" />
+      </div>
+
+      <div className="feed__list">
         {[1, 2, 3].map((index) => (
-          <article key={index} className="news-post skeleton">
-            <div className="skeleton-image"></div>
-            <div className="post-content">
-              <div className="skeleton-title"></div>
-              <div className="skeleton-text"></div>
-              <div className="skeleton-text short"></div>
-              <div className="post-actions">
-                <div className="skeleton-button"></div>
-                <div className="skeleton-meta"></div>
+          <article key={index} className="story skeleton">
+            <div className="skeleton-box skeleton-box--media" />
+            <div className="story__body">
+              <div className="skeleton-line skeleton-line--meta" />
+              <div className="skeleton-line skeleton-line--h" />
+              <div className="skeleton-line" />
+              <div className="skeleton-line skeleton-line--short" />
+              <div className="story__actions">
+                <div className="skeleton-pill" />
+                <div className="skeleton-pill" />
               </div>
             </div>
           </article>
         ))}
       </div>
     </div>
-  )
+  );
 }
+

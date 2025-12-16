@@ -1,14 +1,14 @@
-# 🚀 QUICK SETUP - NewzNepal
+# 🚀 QUICK SETUP - Sajha News Online
 
 Follow these steps **exactly** to get your news portal working:
 
 ## 1. 🗄️ Set Up Database
 
 1. Go to [Supabase Dashboard](https://supabase.com/dashboard/projects)
-2. Click on your project: **zmiqsuhmxfiqlidudywz**
+2. Click on your project: **your-project-ref**
 3. Click **"SQL Editor"** in the left sidebar
 4. Click **"New Query"**
-5. Copy the **ENTIRE** content from `simple-setup.sql` file
+5. Copy the **ENTIRE** content from `supabase-schema.sql` file
 6. Paste it in the SQL editor
 7. Click **"Run"** (wait for it to complete)
 8. You should see: "Database setup completed successfully!"
@@ -31,8 +31,8 @@ npm run dev
 
 ## 3. 🔐 Access Your Site
 
-- **Public Site**: http://localhost:3000
-- **Admin Portal**: http://localhost:3000/secret-admin-portal
+- **Public Site**: http://localhost:443
+- **Admin Portal**: http://localhost:443/secret-admin-portal
 
 ### Admin Login:
 - **Username**: `admin`

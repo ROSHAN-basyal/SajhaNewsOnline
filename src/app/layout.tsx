@@ -12,44 +12,45 @@ const noto = Noto_Sans_Devanagari({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://sajhanewsonline.com"),
   title: {
-    default: "NEWZNEPAL - Stay Informed Stay ahead",
-    template: "%s | NEWZNEPAL",
+    default: "Sajha News Online - Nepal News & Headlines",
+    template: "%s | Sajha News Online",
   },
   description:
-    "NEWZNEPAL - Stay informed, stay ahead with breaking news, politics, sports, entertainment, and the latest updates from Nepal and around the world.",
+    "Sajha News Online brings breaking news, politics, business, sports, entertainment, and the latest updates from Nepal and worldwide.",
   keywords: [
+    "Sajha News Online",
     "Nepali News",
-    "Best Nepali News",
+    "Nepal News",
     "Breaking News Nepal",
     "Nepal Politics",
     "Nepal Sports",
+    "Nepal Business",
     "Nepal Entertainment",
-    "Latest News Nepal",
   ],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "/",
-    siteName: "NEWZNEPAL",
-    title: "NEWZNEPAL - Stay Informed Stay ahead",
+    siteName: "Sajha News Online",
+    title: "Sajha News Online - Nepal News & Headlines",
     description:
-      "Stay informed, stay ahead with breaking news and the latest updates from Nepal and worldwide.",
+      "Breaking news and the latest updates from Nepal and worldwide.",
     images: [
       {
         url: "/images/logo.png",
         width: 512,
         height: 512,
-        alt: "NEWZNEPAL",
+        alt: "Sajha News Online",
       },
     ],
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    site: "@newznepal",
-    creator: "@newznepal",
+    site: "@sajhanewsonline",
+    creator: "@sajhanewsonline",
   },
   manifest: "/manifest.json",
 };
@@ -68,8 +69,8 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "NEWZNEPAL",
-              url: process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com",
+              name: "Sajha News Online",
+              url: process.env.NEXT_PUBLIC_SITE_URL || "https://sajhanewsonline.com",
               logo: "/images/logo.png",
             }),
           }}
@@ -80,13 +81,13 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              name: "NEWZNEPAL",
-              url: process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com",
+              name: "Sajha News Online",
+              url: process.env.NEXT_PUBLIC_SITE_URL || "https://sajhanewsonline.com",
               potentialAction: {
                 "@type": "SearchAction",
                 target: `${
-                  process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com"
-                }/search?q={search_term_string}`,
+                  process.env.NEXT_PUBLIC_SITE_URL || "https://sajhanewsonline.com"
+                }/?q={search_term_string}`,
                 "query-input": "required name=search_term_string",
               },
             }),
@@ -95,9 +96,7 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Set light theme only
               document.documentElement.setAttribute('data-theme', 'light');
-              document.documentElement.style.setProperty('--post-content-color', '#1a202c');
             `,
           }}
         />

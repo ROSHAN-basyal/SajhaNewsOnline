@@ -1,7 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
-
 // Import CSS files directly instead of dynamic loading for reliability
 import '../styles/globals.css'
 import '../styles/header.css'

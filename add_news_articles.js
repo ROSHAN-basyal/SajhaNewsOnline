@@ -1,17 +1,55 @@
 // Script to directly insert all 30 news articles to the database
 // Run this with: node add_news_articles.js
 
-const { createClient } = require('@supabase/supabase-js')
-const fs = require('fs')
+const { createClient } = require("@supabase/supabase-js");
+const fs = require("fs");
+const path = require("path");
 
-// Read the SQL file and extract the INSERT statements
-const sqlContent = fs.readFileSync('./insert_all_30_news_articles.sql', 'utf8')
+function loadEnvFromFile(filePath) {
+  if (!fs.existsSync(filePath)) return;
 
-// You'll need to add your Supabase URL and anon key here
-const supabaseUrl = 'https://zmiqsuhmxfiqlidudywz.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptaXFzdWhteGZpcWxpZHVkeXd6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU2MDYzMzUsImV4cCI6MjA1MTE4MjMzNX0.ChWwuvQqOHNmLe2qDGU7d1VIEJBuCvYkrGVhEGwRhgI' // Replace with your actual anon key
+  const contents = fs.readFileSync(filePath, "utf8");
+  for (const rawLine of contents.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
 
-const supabase = createClient(supabaseUrl, supabaseKey)
+    const equalsIndex = line.indexOf("=");
+    if (equalsIndex === -1) continue;
+
+    const key = line.slice(0, equalsIndex).trim();
+    if (!key || process.env[key] !== undefined) continue;
+
+    let value = line.slice(equalsIndex + 1).trim();
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1);
+    }
+
+    process.env[key] = value;
+  }
+}
+
+loadEnvFromFile(path.join(__dirname, ".env.local"));
+loadEnvFromFile(path.join(__dirname, ".env"));
+
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+const supabaseKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error("Missing Supabase credentials.");
+  console.error(
+    "Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY (or SUPABASE_URL/SUPABASE_ANON_KEY) before running this script."
+  );
+  process.exit(1);
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const newsArticles = [
   // LATEST NEWS (5 articles)

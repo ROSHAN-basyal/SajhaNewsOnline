@@ -1,20 +1,15 @@
 'use client'
 
-import { useState } from 'react'
 import '../styles/ad-placement-selector.css'
 
+type PlacementId = 'header' | 'sidebar_top' | 'in_content' | 'sidebar_mid' | 'footer'
+
 interface AdPlacement {
-  id: 'header' | 'sidebar_top' | 'in_content' | 'sidebar_mid' | 'footer'
+  id: PlacementId
   name: string
   description: string
   size: string
   impact: 'high' | 'medium' | 'low'
-  position: {
-    top: string
-    left: string
-    width: string
-    height: string
-  }
 }
 
 const AD_PLACEMENTS: AdPlacement[] = [
@@ -23,284 +18,137 @@ const AD_PLACEMENTS: AdPlacement[] = [
     name: 'Header Banner',
     description: 'Top of page, highest visibility',
     size: '728×90 / 320×50 (mobile)',
-    impact: 'high',
-    position: { top: '12%', left: '20%', width: '60%', height: '6%' }
+    impact: 'high'
   },
   {
     id: 'sidebar_top',
     name: 'Sidebar Top',
-    description: 'Always visible, above fold',
+    description: 'Always visible, above the fold',
     size: '300×250',
-    impact: 'high',
-    position: { top: '25%', left: '82%', width: '16%', height: '15%' }
+    impact: 'high'
   },
   {
     id: 'in_content',
     name: 'In-Content',
-    description: 'Between news posts',
+    description: 'Between news stories',
     size: '728×90 / 300×250',
-    impact: 'medium',
-    position: { top: '45%', left: '20%', width: '60%', height: '6%' }
+    impact: 'medium'
   },
   {
     id: 'sidebar_mid',
     name: 'Sidebar Mid',
     description: 'Middle of sidebar content',
     size: '300×600 / 300×250',
-    impact: 'medium',
-    position: { top: '55%', left: '82%', width: '16%', height: '20%' }
+    impact: 'medium'
   },
   {
     id: 'footer',
     name: 'Footer Banner',
-    description: 'End of content area',
+    description: 'End of page content',
     size: '728×90',
-    impact: 'low',
-    position: { top: '85%', left: '20%', width: '60%', height: '6%' }
+    impact: 'low'
   }
 ]
 
 interface AdPlacementSelectorProps {
   selectedPlacement: string
   onPlacementChange: (placement: string) => void
-  existingAds?: { [key: string]: number } // Count of existing ads per placement
+  existingAds?: { [key: string]: number }
 }
 
-export default function AdPlacementSelector({ 
-  selectedPlacement, 
-  onPlacementChange, 
-  existingAds = {} 
+const IMPACT_COLORS: Record<AdPlacement['impact'], string> = {
+  high: '#2563eb',
+  medium: '#f97316',
+  low: '#16a34a'
+}
+
+function getPlacementStatus(existingAds: { [key: string]: number }, placementId: string) {
+  const count = existingAds[placementId] || 0
+  if (count === 0) return { status: 'Available', color: '#16a34a' }
+  if (count < 3) return { status: `${count} existing`, color: '#f97316' }
+  return { status: 'Full (3+)', color: '#ef4444' }
+}
+
+export default function AdPlacementSelector({
+  selectedPlacement,
+  onPlacementChange,
+  existingAds = {}
 }: AdPlacementSelectorProps) {
-  const [hoveredPlacement, setHoveredPlacement] = useState<string | null>(null)
-
-  const getImpactColor = (impact: string) => {
-    switch (impact) {
-      case 'high': return '#dc143c'
-      case 'medium': return '#ff8c00'
-      case 'low': return '#4caf50'
-      default: return '#666'
-    }
-  }
-
-  const getPlacementStatus = (placementId: string) => {
-    const count = existingAds[placementId] || 0
-    if (count === 0) return 'available'
-    if (count < 3) return 'limited'
-    return 'full'
-  }
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'available': return '#4caf50'
-      case 'limited': return '#ff8c00'
-      case 'full': return '#dc143c'
-      default: return '#666'
-    }
-  }
+  const selected = AD_PLACEMENTS.find((p) => p.id === selectedPlacement) || AD_PLACEMENTS[0]
 
   return (
-    <div className="ad-placement-selector">
-      <div className="selector-header">
-        <h3>Choose Ad Placement</h3>
-        <p>Select where your advertisement will appear on the website</p>
+    <div className="placement-picker">
+      <div className="placement-picker__header">
+        <h3>Choose Placement</h3>
+        <p>Pick where the ad should appear on Sajha News Online.</p>
       </div>
 
-      <div className="placement-preview">
-        <div className="preview-container">
-          {/* Website Layout Preview */}
-          <div className="website-preview">
-            {/* Header */}
-            <div className="preview-header">
-              <div className="preview-logo">NewzNepal.com</div>
-              <div className="preview-nav">
-                <span>सबै समाचार</span>
-                <span>राजनीति</span>
-                <span>खेलकुद</span>
-                <span>व्यापार</span>
-              </div>
-            </div>
-
-            {/* Main Content Area */}
-            <div className="preview-main">
-              <div className="preview-content">
-                <div className="preview-post">
-                  <div className="preview-post-image"></div>
-                  <div className="preview-post-title">News Article Title</div>
-                  <div className="preview-post-text"></div>
-                </div>
-                <div className="preview-post">
-                  <div className="preview-post-image"></div>
-                  <div className="preview-post-title">Another News Article</div>
-                  <div className="preview-post-text"></div>
-                </div>
-              </div>
-
-              <div className="preview-sidebar">
-                <div className="preview-widget">Newsletter</div>
-                <div className="preview-widget">Weather</div>
-                <div className="preview-widget">Popular</div>
-              </div>
-            </div>
-
-            {/* Footer */}
-            <div className="preview-footer">
-              <span>© 2024 NewzNepal.com</span>
-            </div>
-
-            {/* Ad Placement Overlays */}
-            {AD_PLACEMENTS.map((placement) => {
-              const isSelected = selectedPlacement === placement.id
-              const isHovered = hoveredPlacement === placement.id
-              const status = getPlacementStatus(placement.id)
-              const adCount = existingAds[placement.id] || 0
-
-              return (
-                <div
-                  key={placement.id}
-                  className={`ad-overlay ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''} ${status}`}
-                  style={{
-                    top: placement.position.top,
-                    left: placement.position.left,
-                    width: placement.position.width,
-                    height: placement.position.height,
-                  }}
-                  onClick={() => onPlacementChange(placement.id)}
-                  onMouseEnter={() => setHoveredPlacement(placement.id)}
-                  onMouseLeave={() => setHoveredPlacement(null)}
-                >
-                  <div className="ad-overlay-content">
-                    <span className="ad-placement-id">{placement.id.toUpperCase()}</span>
-                    {adCount > 0 && (
-                      <span className="ad-count">{adCount} ads</span>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
+      <div className="placement-picker__layout">
+        <div className="site-map" aria-label="Site layout preview">
+          <div className={`site-map__row site-map__header ${selected.id === 'header' ? 'is-selected' : ''}`}>
+            Header
           </div>
 
-          {/* Placement Details */}
-          <div className="placement-details">
-            {AD_PLACEMENTS.map((placement) => {
-              const isSelected = selectedPlacement === placement.id
-              const isHovered = hoveredPlacement === placement.id
-              const status = getPlacementStatus(placement.id)
-              const adCount = existingAds[placement.id] || 0
+          <div className="site-map__middle">
+            <div className="site-map__content">
+              <div className="site-map__story">Story</div>
+              <div className={`site-map__ad ${selected.id === 'in_content' ? 'is-selected' : ''}`}>In-content ad</div>
+              <div className="site-map__story">Story</div>
+            </div>
 
-              return (
-                <div
-                  key={placement.id}
-                  className={`placement-card ${isSelected ? 'selected' : ''} ${isHovered ? 'hovered' : ''}`}
-                  onClick={() => onPlacementChange(placement.id)}
-                  onMouseEnter={() => setHoveredPlacement(placement.id)}
-                  onMouseLeave={() => setHoveredPlacement(null)}
-                >
-                  <div className="placement-card-header">
-                    <h4>{placement.name}</h4>
-                    <div 
-                      className="impact-badge"
-                      style={{ backgroundColor: getImpactColor(placement.impact) }}
-                    >
-                      {placement.impact.toUpperCase()}
-                    </div>
-                  </div>
-                  
-                  <p className="placement-description">{placement.description}</p>
-                  
-                  <div className="placement-specs">
-                    <div className="spec-item">
-                      <strong>Size:</strong> {placement.size}
-                    </div>
-                    <div className="spec-item">
-                      <strong>Status:</strong>
-                      <span 
-                        className="status-badge"
-                        style={{ color: getStatusColor(status) }}
-                      >
-                        {status === 'available' && 'Available'}
-                        {status === 'limited' && `${adCount} existing`}
-                        {status === 'full' && 'Full (3+ ads)'}
-                      </span>
-                    </div>
-                  </div>
+            <div className="site-map__sidebar">
+              <div className={`site-map__widget ${selected.id === 'sidebar_top' ? 'is-selected' : ''}`}>Sidebar top</div>
+              <div className="site-map__widget">Trending</div>
+              <div className={`site-map__widget ${selected.id === 'sidebar_mid' ? 'is-selected' : ''}`}>Sidebar mid</div>
+            </div>
+          </div>
 
-                  <div className="placement-pros-cons">
-                    <div className="pros">
-                      <strong>✓ Advantages:</strong>
-                      <ul>
-                        {placement.id === 'header' && (
-                          <>
-                            <li>First thing users see</li>
-                            <li>Works on all pages</li>
-                            <li>High click-through rate</li>
-                          </>
-                        )}
-                        {placement.id === 'sidebar_top' && (
-                          <>
-                            <li>Always visible while scrolling</li>
-                            <li>Doesn't interrupt content</li>
-                            <li>Good for brand awareness</li>
-                          </>
-                        )}
-                        {placement.id === 'in_content' && (
-                          <>
-                            <li>Native integration</li>
-                            <li>High user engagement</li>
-                            <li>Contextual relevance</li>
-                          </>
-                        )}
-                        {placement.id === 'sidebar_mid' && (
-                          <>
-                            <li>Larger ad sizes supported</li>
-                            <li>Engaged audience</li>
-                            <li>Good visibility</li>
-                          </>
-                        )}
-                        {placement.id === 'footer' && (
-                          <>
-                            <li>Non-intrusive placement</li>
-                            <li>Catches dedicated readers</li>
-                            <li>Cost-effective</li>
-                          </>
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {isSelected && (
-                    <div className="selected-indicator">
-                      ✓ Selected
-                    </div>
-                  )}
-                </div>
-              )
-            })}
+          <div className={`site-map__row site-map__footer ${selected.id === 'footer' ? 'is-selected' : ''}`}>
+            Footer
           </div>
         </div>
-      </div>
 
-      <div className="selector-footer">
-        <div className="placement-legend">
-          <div className="legend-item">
-            <div className="legend-color" style={{ backgroundColor: '#dc143c' }}></div>
-            <span>High Impact</span>
-          </div>
-          <div className="legend-item">
-            <div className="legend-color" style={{ backgroundColor: '#ff8c00' }}></div>
-            <span>Medium Impact</span>
-          </div>
-          <div className="legend-item">
-            <div className="legend-color" style={{ backgroundColor: '#4caf50' }}></div>
-            <span>Low Impact</span>
-          </div>
-        </div>
-        
-        <div className="placement-summary">
-          <strong>Selected:</strong> {
-            AD_PLACEMENTS.find(p => p.id === selectedPlacement)?.name || 'None'
-          }
+        <div className="placement-grid" role="list">
+          {AD_PLACEMENTS.map((placement) => {
+            const isActive = placement.id === selectedPlacement
+            const availability = getPlacementStatus(existingAds, placement.id)
+
+            return (
+              <button
+                key={placement.id}
+                type="button"
+                role="listitem"
+                className={`placement-card ${isActive ? 'is-active' : ''}`}
+                onClick={() => onPlacementChange(placement.id)}
+              >
+                <div className="placement-card__top">
+                  <div className="placement-card__title">{placement.name}</div>
+                  <span
+                    className="placement-card__impact"
+                    style={{ backgroundColor: IMPACT_COLORS[placement.impact] }}
+                  >
+                    {placement.impact.toUpperCase()}
+                  </span>
+                </div>
+
+                <div className="placement-card__desc">{placement.description}</div>
+
+                <div className="placement-card__meta">
+                  <div className="placement-card__metaRow">
+                    <span>Size</span>
+                    <strong>{placement.size}</strong>
+                  </div>
+                  <div className="placement-card__metaRow">
+                    <span>Status</span>
+                    <strong style={{ color: availability.color }}>{availability.status}</strong>
+                  </div>
+                </div>
+              </button>
+            )
+          })}
         </div>
       </div>
     </div>
   )
 }
+

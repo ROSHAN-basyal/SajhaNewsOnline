@@ -1,14 +1,13 @@
 {
-  "name": "NEWZNEPAL",
-  "short_name": "NEWZNEPAL",
+  "name": "Sajha News Online",
+  "short_name": "SajhaNews",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#dc143c",
-  "description": "NEWZNEPAL - Stay Informed Stay ahead.",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "description": "Sajha News Online - Latest news from Nepal and beyond.",
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "/images/logo.png", "sizes": "any", "type": "image/png" }
   ]
 }
 

@@ -12,7 +12,7 @@ The error you're getting is because the Supabase storage bucket isn't created ye
 
 ### **Step 1: Create Storage Bucket**
 1. Go to https://supabase.com/dashboard/projects
-2. Click your project: **zmiqsuhmxfiqlidudywz**
+2. Click your project: **your-project-ref**
 3. Click **"Storage"** in the left sidebar
 4. Click **"Create a new bucket"**
 5. Enter these settings:
@@ -23,7 +23,7 @@ The error you're getting is because the Supabase storage bucket isn't created ye
 ### **Step 2: Set Permissions**
 1. Click **"SQL Editor"** in the left sidebar
 2. Click **"New Query"**
-3. Copy and paste this:
+3. If you already ran `supabase-schema.sql`, you can skip this. Otherwise copy and paste this:
 ```sql
 -- Allow public access to view images
 CREATE POLICY "Public can view news images" ON storage.objects

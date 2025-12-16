@@ -1,7 +1,23 @@
 /** @type {import('next').NextConfig} */
+const supabaseHostname = (() => {
+  const supabaseUrl =
+    process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+
+  if (!supabaseUrl) return null;
+
+  try {
+    return new URL(supabaseUrl).hostname;
+  } catch {
+    return null;
+  }
+})();
+
 const nextConfig = {
   images: {
-    domains: ["zmiqsuhmxfiqlidudywz.supabase.co", "images.unsplash.com"],
+    domains: [
+      ...(supabaseHostname ? [supabaseHostname] : []),
+      "images.unsplash.com",
+    ],
     formats: ["image/webp", "image/avif"],
     minimumCacheTTL: 86400,
     dangerouslyAllowSVG: false,

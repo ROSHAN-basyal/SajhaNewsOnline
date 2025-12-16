@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../lib/supabase";
 
-const site = process.env.NEXT_PUBLIC_SITE_URL || "https://newznepal.com";
+const site = process.env.NEXT_PUBLIC_SITE_URL || "https://sajhanewsonline.com";
 
 export async function GET() {
   const { data } = await supabase
@@ -23,9 +23,9 @@ export async function GET() {
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
   <rss version="2.0">
     <channel>
-      <title>NewzNepal.com - Latest News</title>
+      <title>Sajha News Online - Latest News</title>
       <link>${site}</link>
-      <description>Latest news updates from Nepal</description>
+      <description>Latest news updates from Nepal and worldwide</description>
       <language>en</language>
       ${items}
     </channel>

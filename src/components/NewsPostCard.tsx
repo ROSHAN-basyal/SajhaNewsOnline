@@ -1,47 +1,48 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
+import { useMemo, useState } from "react";
 import LazyImage from "./LazyImage";
-import { NewsPost } from "../lib/supabase";
-import "../styles/lazy-image.css";
+import { getCategoryLabel, NewsPost } from "../lib/supabase";
+import "../styles/news-feed.css";
 
 interface NewsPostCardProps {
   post: NewsPost;
   priority?: boolean;
 }
 
-export default function NewsPostCard({
-  post,
-  priority = false,
-}: NewsPostCardProps) {
+function estimateReadingMinutes(text: string) {
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
+
+export default function NewsPostCard({ post, priority = false }: NewsPostCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+  const shareUrl = useMemo(() => {
+    const base = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
+    return base ? `${base}/posts/${post.id}` : `/posts/${post.id}`;
+  }, [post.id]);
+
+  const readingMinutes = useMemo(() => estimateReadingMinutes(post.content || ""), [post.content]);
+
+  const categoryLabel = useMemo(
+    () => getCategoryLabel((post.category as any) || "latest"),
+    [post.category]
+  );
+
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
     });
-  };
-
-  const toggleExpanded = () => {
-    setExpanded(!expanded);
-  };
-
-  const shareUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/posts/${post.id}`
-      : "";
 
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      setTimeout(() => setCopied(false), 1400);
     } catch {}
   };
 
@@ -60,116 +61,95 @@ export default function NewsPostCard({
   };
 
   return (
-    <article
-      className="news-post"
-      role="article"
-      aria-labelledby={`post-title-${post.id}`}
-    >
-      {post.image_url && (
-        <div className="post-image-container">
-          <a
-            href={`/posts/${post.id}`}
-            aria-label={`Open full article: ${post.title}`}
-          >
-            <LazyImage
-              src={post.image_url}
-              alt={`Featured image for: ${post.title}`}
-              width={800}
-              height={250}
-              priority={priority}
-            />
-          </a>
-        </div>
-      )}
+    <article className="story" aria-labelledby={`story-title-${post.id}`}>
+      {post.image_url ? (
+        <a className="story__media" href={`/posts/${post.id}`} aria-label={`Open article: ${post.title}`}>
+          <LazyImage
+            src={post.image_url}
+            alt={`Featured image for: ${post.title}`}
+            width={720}
+            height={420}
+            priority={priority}
+            sizes="(max-width: 768px) 100vw, 420px"
+          />
+        </a>
+      ) : null}
 
-      <div className="post-content">
-        <h2 id={`post-title-${post.id}`} className="post-title">
+      <div className="story__body">
+        <div className="story__metaRow">
+          <span className="story__badge">{categoryLabel}</span>
+          <span className="story__meta">
+            {formatDate(post.created_at)} | {readingMinutes} min read
+          </span>
+        </div>
+
+        <h2 id={`story-title-${post.id}`} className="story__title">
           <a href={`/posts/${post.id}`}>{post.title}</a>
         </h2>
 
-        <div id={`post-content-${post.id}`} role="region" aria-live="polite">
-          {!expanded ? (
-            <p className="post-summary">{post.summary}</p>
-          ) : (
-            <div className="post-full-content">{post.content}</div>
-          )}
-        </div>
+        {!expanded ? (
+          <p className="story__deck">{post.summary}</p>
+        ) : (
+          <div className="story__full">{post.content}</div>
+        )}
 
-        <div className="post-actions">
-          <button
-            className={expanded ? "read-less-btn" : "read-more-btn"}
-            onClick={toggleExpanded}
-            aria-expanded={expanded}
-            aria-controls={`post-content-${post.id}`}
-            aria-label={
-              expanded
-                ? `Collapse article: ${post.title}`
-                : `Expand article: ${post.title}`
-            }
-          >
-            {expanded ? "Read Less" : "Read More"}
+        <div className="story__actions">
+          <button type="button" className="btn btn-ghost" onClick={() => setExpanded((v) => !v)}>
+            {expanded ? "Hide" : "Quick Read"}
           </button>
 
-          <span className="post-meta">{formatDate(post.created_at)}</span>
-
-          <div className="share-actions" style={{ marginLeft: 12 }}>
+          <div className="story__share" aria-label="Share actions">
             <button
+              type="button"
               className="icon-btn share"
               onClick={systemShare}
               aria-label="Share this article"
               title="Share"
             >
-              <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 12v8a2 2 0 0 0 2 2h12" />
                 <polyline points="16 6 12 2 8 6" />
                 <line x1="12" y1="2" x2="12" y2="15" />
               </svg>
             </button>
-            <button
-              className="icon-btn copy"
-              onClick={copyLink}
-              aria-label="Copy link"
-              title="Copy link"
-            >
-              <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+
+            <button type="button" className="icon-btn copy" onClick={copyLink} aria-label="Copy link" title="Copy link">
+              <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1-7 7l-1-1" />
                 <path d="M14 11a5 5 0 0 1-7 0l-1-1a5 5 0 0 1 7-7l1 1" />
               </svg>
             </button>
+
             <a
               className="icon-btn fb"
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                shareUrl
-              )}`}
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Share on Facebook"
               title="Facebook"
             >
               <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M22 12a10 10 0 1 1-11.6-9.9A10 10 0 0 1 22 12Z" fill="currentColor" opacity=".08"/>
-                <path d="M15 8h2.5l-1 4H15v8h-4v-8H8V8h3V6.5A3.5 3.5 0 0 1 14.5 3H18v3h-2a1 1 0 0 0-1 1V8Z" fill="currentColor"/>
+                <path d="M22 12a10 10 0 1 1-11.6-9.9A10 10 0 0 1 22 12Z" fill="currentColor" opacity=".08" />
+                <path d="M15 8h2.5l-1 4H15v8h-4v-8H8V8h3V6.5A3.5 3.5 0 0 1 14.5 3H18v3h-2a1 1 0 0 0-1 1V8Z" fill="currentColor" />
               </svg>
             </a>
+
             <a
               className="icon-btn x"
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                shareUrl
-              )}&text=${encodeURIComponent(post.title)}`}
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Share on X"
               title="X"
             >
               <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M18.244 2H21l-6.529 7.46L22 22h-6.828l-4.804-6.253L4.9 22H2.142l6.99-7.987L2 2h6.914l4.41 5.79L18.244 2Zm-1.195 18h1.872L7.03 4H5.06L17.05 20Z"/>
+                <path d="M18.244 2H21l-6.529 7.46L22 22h-6.828l-4.804-6.253L4.9 22H2.142l6.99-7.987L2 2h6.914l4.41 5.79L18.244 2Zm-1.195 18h1.872L7.03 4H5.06L17.05 20Z" />
               </svg>
             </a>
+
             <a
               className="icon-btn wa"
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(
-                post.title + " " + shareUrl
-              )}`}
+              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " " + shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Share on WhatsApp"
@@ -181,6 +161,8 @@ export default function NewsPostCard({
             </a>
           </div>
         </div>
+
+        {copied ? <div className="story__toast">Link copied</div> : null}
       </div>
     </article>
   );

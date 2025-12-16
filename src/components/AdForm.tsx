@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Advertisement } from "../app/api/ads/route";
 import "../styles/ad-form.css";
 
@@ -29,6 +29,7 @@ export default function AdForm({
   loading,
   selectedPlacement,
 }: AdFormProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState<{
     title: string;
     description: string;
@@ -63,6 +64,12 @@ export default function AdForm({
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [useUrlInput, setUseUrlInput] = useState<boolean>(!!ad?.image_url);
+  const [uploadError, setUploadError] = useState<string>("");
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [dragOver, setDragOver] = useState<boolean>(false);
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
   useEffect(() => {
     if (ad) {
@@ -84,13 +91,20 @@ export default function AdForm({
         target_clicks: ad.target_clicks || 0,
       });
       setPreviewImage(ad.image_url || null);
+      setUseUrlInput(!!ad.image_url);
     } else if (selectedPlacement) {
       setFormData((prev) => ({ ...prev, placement: selectedPlacement as any }));
+      setUseUrlInput(false);
     }
   }, [ad, selectedPlacement]);
 
   useEffect(() => {
-    if (formData.image_url && formData.image_url !== previewImage) {
+    if (!formData.image_url) {
+      if (previewImage) setPreviewImage(null);
+      return;
+    }
+
+    if (formData.image_url !== previewImage) {
       // Validate image URL
       const img = new Image();
       img.onload = () => setPreviewImage(formData.image_url);
@@ -109,9 +123,9 @@ export default function AdForm({
     }
 
     if (!formData.image_url.trim()) {
-      newErrors.image_url = "Image URL is required";
+      newErrors.image_url = "Image is required";
     } else if (!isValidUrl(formData.image_url)) {
-      newErrors.image_url = "Please enter a valid URL";
+      newErrors.image_url = "Please provide a valid image URL";
     }
 
     if (!formData.click_url.trim()) {
@@ -190,6 +204,121 @@ export default function AdForm({
 
   const selectedPlacementInfo = getPlacementInfo(formData.placement);
 
+  const getStorageFileNameFromUrl = (url: string): string | null => {
+    try {
+      const parsedUrl = new URL(url);
+      const marker = "/storage/v1/object/public/news-images/";
+      const path = parsedUrl.pathname;
+      const markerIndex = path.indexOf(marker);
+      if (markerIndex === -1) return null;
+      const fileName = path.slice(markerIndex + marker.length);
+      return fileName || null;
+    } catch {
+      return null;
+    }
+  };
+
+  const handleFileSelect = async (file: File) => {
+    if (!file) return;
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+    ];
+    if (!allowedTypes.includes(file.type)) {
+      setUploadError(
+        "Invalid file type. Only JPEG, PNG, WebP, and GIF images are allowed."
+      );
+      return;
+    }
+
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      setUploadError("File size too large. Maximum size is 5MB.");
+      return;
+    }
+
+    setUploading(true);
+    setUploadError("");
+    setUploadProgress(0);
+
+    try {
+      const payload = new FormData();
+      payload.append("file", file);
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: payload,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setUploadError(data.error || "Upload failed");
+        return;
+      }
+
+      handleInputChange("image_url", data.url);
+      setUploadedFileName(data.fileName || null);
+      setUploadProgress(100);
+      setTimeout(() => setUploadProgress(0), 1000);
+    } catch (err) {
+      setUploadError("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFileSelect(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragOver(false);
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) handleFileSelect(files[0]);
+  };
+
+  const handleUploadClick = () => {
+    if (loading || uploading) return;
+    fileInputRef.current?.click();
+  };
+
+  const handleRemoveImage = async () => {
+    const currentUrl = formData.image_url;
+    const fileName = getStorageFileNameFromUrl(currentUrl);
+
+    if (fileName) {
+      try {
+        await fetch(`/api/upload?fileName=${encodeURIComponent(fileName)}`, {
+          method: "DELETE",
+        });
+      } catch {
+        // Ignore deletion failures (e.g. external URL or permission issues)
+      }
+    }
+
+    setUploadedFileName(null);
+    handleInputChange("image_url", "");
+    setPreviewImage(null);
+  };
+
   return (
     <div className="ad-form-container">
       <form onSubmit={handleSubmit} className="ad-form">
@@ -229,26 +358,134 @@ export default function AdForm({
             </div>
 
             <div className="form-group">
-              <label className="form-label">Image URL *</label>
-              <input
-                type="url"
-                className={`form-input ${errors.image_url ? "error" : ""}`}
-                value={formData.image_url}
-                onChange={(e) => handleInputChange("image_url", e.target.value)}
-                placeholder="https://example.com/banner-image.jpg"
-              />
-              {errors.image_url && (
-                <span className="field-error">{errors.image_url}</span>
-              )}
+              <label className="form-label">Ad Image *</label>
 
               {previewImage && (
-                <div className="image-preview">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={previewImage} alt="Ad preview" />
+                <div className="image-preview-container">
+                  <div className="image-preview">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={previewImage} alt="Ad preview" />
+                    <button
+                      type="button"
+                      className="remove-image"
+                      onClick={handleRemoveImage}
+                      disabled={loading || uploading}
+                      aria-label="Remove image"
+                      title="Remove image"
+                    >
+                      ×
+                    </button>
+                  </div>
                   <div className="preview-info">
                     Recommended size: {selectedPlacementInfo?.size}
                   </div>
                 </div>
+              )}
+
+              {!useUrlInput ? (
+                <>
+                  <div
+                    className={`upload-area ${dragOver ? "dragover" : ""}`}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    onClick={handleUploadClick}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleUploadClick();
+                      }
+                    }}
+                  >
+                    <span className="upload-icon">Upload</span>
+                    <div className="upload-text">
+                      {uploading
+                        ? "Uploading..."
+                        : "Click to upload or drag and drop"}
+                    </div>
+                    <div className="upload-subtext">
+                      JPEG, PNG, WebP, GIF up to 5MB
+                    </div>
+                    <button
+                      type="button"
+                      className="upload-btn"
+                      disabled={loading || uploading}
+                    >
+                      Choose File
+                    </button>
+                  </div>
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    className="file-input"
+                    accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                    onChange={handleFileInputChange}
+                    disabled={loading || uploading}
+                  />
+
+                  {uploading && (
+                    <div className="upload-progress">
+                      <progress
+                        className="progress-native"
+                        max={100}
+                        value={uploadProgress}
+                      />
+                      <div className="progress-text">Uploading...</div>
+                    </div>
+                  )}
+
+                  {uploadError && <div className="upload-error">{uploadError}</div>}
+
+                  {errors.image_url && (
+                    <span className="field-error">{errors.image_url}</span>
+                  )}
+
+                  <div className="url-input-toggle">
+                    <button
+                      type="button"
+                      className="toggle-btn"
+                      onClick={() => setUseUrlInput(true)}
+                      disabled={loading || uploading}
+                    >
+                      Or enter image URL instead
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <input
+                    type="url"
+                    className={`form-input ${errors.image_url ? "error" : ""}`}
+                    value={formData.image_url}
+                    onChange={(e) =>
+                      handleInputChange("image_url", e.target.value)
+                    }
+                    placeholder="https://example.com/banner-image.jpg"
+                    disabled={loading}
+                  />
+
+                  {errors.image_url && (
+                    <span className="field-error">{errors.image_url}</span>
+                  )}
+
+                  <div className="form-hint">
+                    Recommended size: {selectedPlacementInfo?.size}
+                  </div>
+
+                  <div className="url-input-toggle">
+                    <button
+                      type="button"
+                      className="toggle-btn"
+                      onClick={() => setUseUrlInput(false)}
+                      disabled={loading}
+                    >
+                      Or upload from computer instead
+                    </button>
+                  </div>
+                </>
               )}
             </div>
 

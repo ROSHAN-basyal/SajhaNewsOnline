@@ -16,9 +16,9 @@ I've completely replaced the URL input system with a professional file upload sy
 
 ### 1. Set Up Supabase Storage
 1. Go to your **Supabase Dashboard**
-2. Click your project: **zmiqsuhmxfiqlidudywz**
+2. Click your project: **your-project-ref**
 3. Go to **SQL Editor** → **New Query**
-4. Copy **ALL** content from `setup-storage.sql`
+4. Copy **ALL** content from `supabase-schema.sql` (includes storage bucket + policies)
 5. Paste and click **"Run"**
 6. Wait for: "Storage bucket created successfully!"
 
@@ -33,7 +33,7 @@ I've completely replaced the URL input system with a professional file upload sy
 
 ### 3. Test the Upload System
 1. Start your app: `npm run dev`
-2. Go to admin portal: http://localhost:3000/secret-admin-portal
+2. Go to admin portal: http://localhost:443/secret-admin-portal
 3. Login: `admin` / `admin123`
 4. Click **"Create New Post"**
 5. You'll see the new **drag & drop upload area**!

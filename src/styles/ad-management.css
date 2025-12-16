@@ -1,0 +1,230 @@
+/* Ads: management shell */
+.ad-management {
+  display: grid;
+  gap: 16px;
+}
+
+.ad-management-header {
+  border-radius: 22px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+  padding: 16px;
+}
+
+.ad-management-header .header-content {
+  display: grid;
+  gap: 14px;
+}
+
+.ad-management-header .header-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  color: var(--text-primary, #0f172a);
+}
+
+.ad-management-header .header-title p {
+  margin: 6px 0 0;
+  color: var(--text-muted, #64748b);
+  font-weight: 650;
+  font-size: 13px;
+}
+
+.header-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (min-width: 860px) {
+  .header-stats {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.stat-card {
+  border-radius: 18px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(15, 23, 42, 0.02);
+  padding: 12px;
+}
+
+.stat-number {
+  font-weight: 950;
+  color: var(--text-primary, #0f172a);
+  font-size: 18px;
+  letter-spacing: -0.02em;
+}
+
+.stat-label {
+  margin-top: 2px;
+  color: var(--text-muted, #64748b);
+  font-weight: 750;
+  font-size: 12px;
+}
+
+/* Ads nav */
+.ad-nav {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.ad-nav-buttons {
+  display: inline-flex;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+  flex-wrap: wrap;
+}
+
+.ad-nav .nav-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, #334155);
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.ad-nav .nav-btn.active {
+  background: rgba(37, 99, 235, 0.12);
+  color: rgba(37, 99, 235, 1);
+}
+
+.ad-content {
+  display: grid;
+  gap: 16px;
+}
+
+.ad-create-section,
+.ad-edit-section,
+.placement-guide-section,
+.analytics-section {
+  display: grid;
+  gap: 12px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 950;
+  color: var(--text-primary, #0f172a);
+}
+
+.section-header p {
+  margin: 6px 0 0;
+  color: var(--text-muted, #64748b);
+  font-weight: 650;
+  font-size: 13px;
+}
+
+/* Workflow */
+.create-workflow {
+  display: grid;
+  gap: 12px;
+}
+
+.workflow-step {
+  display: grid;
+  gap: 12px;
+  border-radius: 22px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+  padding: 16px;
+}
+
+.workflow-step .step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(37, 99, 235, 0.12);
+  color: rgba(37, 99, 235, 1);
+  font-weight: 950;
+}
+
+.workflow-step .step-content h4 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 950;
+  color: var(--text-primary, #0f172a);
+}
+
+.workflow-step .step-content p {
+  margin: 0;
+  color: var(--text-muted, #64748b);
+  font-weight: 650;
+  font-size: 13px;
+}
+
+@media (min-width: 860px) {
+  .workflow-step {
+    grid-template-columns: 60px minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* Placement guide recommendations */
+.placement-recommendations {
+  border-radius: 22px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+  padding: 16px;
+}
+
+.placement-recommendations h4 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 950;
+  color: var(--text-primary, #0f172a);
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 980px) {
+  .recommendations-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.recommendation-card {
+  border-radius: 18px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(15, 23, 42, 0.02);
+  padding: 12px;
+}
+
+.recommendation-card h5 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 950;
+  color: var(--text-primary, #0f172a);
+}
+
+.recommendation-card p {
+  margin: 0;
+  color: var(--text-secondary, #334155);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.recommendation-card p + p {
+  margin-top: 6px;
+}

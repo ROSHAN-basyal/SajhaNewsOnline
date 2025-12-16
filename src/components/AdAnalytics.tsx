@@ -36,9 +36,8 @@ export default function AdAnalytics({ ads }: AdAnalyticsProps) {
 
       if (data.summary) {
         const analytics = data.summary.map((item: any) => ({
-          ad_id: item.ad_id,
-          ad_title:
-            ads.find((ad) => ad.id === item.ad_id)?.title || "Unknown Ad",
+          ad_id: item.id,
+          ad_title: item.title || "Unknown Ad",
           impressions: item.impressions || 0,
           clicks: item.clicks || 0,
           ctr:

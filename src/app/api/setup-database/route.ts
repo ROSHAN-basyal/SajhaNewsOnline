@@ -49,8 +49,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Step 2: Create newsletter_subscribers table if it doesn't exist
-    // This is handled by the actual database schema
+    // Additional setup steps can be added here as needed.
     
     return NextResponse.json({
       success: true,

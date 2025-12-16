@@ -1,4 +1,4 @@
-# NewzNepal.com - Bug Fixes and Improvements Summary
+# SajhaNewsOnline.com - Bug Fixes and Improvements Summary
 
 ## Issues Fixed
 
@@ -102,7 +102,7 @@ Created migration API endpoint to add required columns to admin_sessions table:
 - **Basic authentication persistence**: ✅ WORKING - Sessions persist across page refresh
 - **Modern header design**: ✅ COMPLETED - 100x improvement implemented
 - **News upload fix**: ✅ WORKING - Admin can now upload news properly
-- **Advanced features**: Available via database migration (see database-migration.sql)
+- **Advanced features**: Included in `supabase-schema.sql` (session columns are created there)
 
 ## Migration Instructions
 

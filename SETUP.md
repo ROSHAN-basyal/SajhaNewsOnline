@@ -1,4 +1,4 @@
-# NewzNepal Setup Instructions
+# Sajha News Online Setup Instructions
 
 ## Quick Start
 
@@ -18,7 +18,7 @@ npm install
 ### 2. Set up Database
 1. Go to your Supabase dashboard: https://supabase.com/dashboard
 2. Open the SQL Editor
-3. Copy and paste the entire content from `supabase-schema.sql`
+3. Copy and paste the entire content from `supabase-schema.sql` (includes ads + storage setup)
 4. Click "Run" to execute the SQL
 
 ### 3. Install and Run
@@ -28,8 +28,8 @@ npm run dev
 ```
 
 ### 4. Access the Application
-- **Public Site**: http://localhost:3000
-- **Admin Portal**: http://localhost:3000/secret-admin-portal
+- **Public Site**: http://localhost:443
+- **Admin Portal**: http://localhost:443/secret-admin-portal
 - **Admin Login**: 
   - Username: `admin`
   - Password: `admin123`
@@ -52,6 +52,10 @@ WHERE username = 'admin';
 ### If authentication doesn't work:
 1. Make sure you've run the `supabase-schema.sql` in your Supabase dashboard
 2. Check that your `.env.local` file has the correct Supabase credentials
+
+### If you see "must be owner of table objects" in Supabase SQL Editor:
+1. Make sure the SQL Editor **Role** is set to `postgres` and re-run `supabase-schema.sql`
+2. If it still happens, set up the `news-images` bucket + policies via `EASY_STORAGE_SETUP.md`
 
 ### If images don't load:
 The sample images use Unsplash URLs which should work automatically. If not, you can:

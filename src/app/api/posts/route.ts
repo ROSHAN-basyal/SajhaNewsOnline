@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '../../../lib/supabase'
 import { cleanupExpiredPosts } from '../../../lib/cleanup'
-import emailService from '../../../lib/emailService'
 
 // Helper function to verify admin session
 async function verifyAdminSession(sessionToken: string) {
@@ -19,8 +18,7 @@ export async function GET(request: NextRequest) {
   try {
     // Run automatic cleanup occasionally (every ~100 requests)
     if (Math.random() < 0.01) {
-      console.log('🔄 Running automatic cleanup...')
-      cleanupExpiredPosts().catch(error => {
+      cleanupExpiredPosts().catch((error) => {
         console.error('Background cleanup failed:', error)
       })
     }
@@ -37,20 +35,13 @@ export async function GET(request: NextRequest) {
       .range(offset, offset + limit - 1)
 
     if (error) {
-      return NextResponse.json(
-        { error: 'Failed to fetch posts' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to fetch posts' }, { status: 500 })
     }
 
     return NextResponse.json({ posts: data })
-
   } catch (error) {
     console.error('Get posts error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -59,10 +50,7 @@ export async function POST(request: NextRequest) {
     const sessionToken = request.cookies.get('admin_session')?.value
 
     if (!sessionToken || !(await verifyAdminSession(sessionToken))) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     const { title, content, summary, category, image_url } = await request.json()
@@ -81,58 +69,21 @@ export async function POST(request: NextRequest) {
         content,
         summary,
         category,
-        image_url
+        image_url,
       })
       .select()
       .single()
 
     if (error) {
-      return NextResponse.json(
-        { error: 'Failed to create post' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to create post' }, { status: 500 })
     }
 
-    // Auto-send newsletter to subscribers for new posts
-    try {
-      const { data: subscribers } = await supabase
-        .from('newsletter_subscribers')
-        .select('email')
-        .eq('active', true)
-
-      if (subscribers && subscribers.length > 0) {
-        const subscriberEmails = subscribers.map(s => s.email)
-        console.log(`📧 Auto-sending newsletter for new post "${post.title}" to ${subscriberEmails.length} subscribers`)
-        
-        // Send newsletter in background (don't wait for it)
-        emailService.sendNewsletterToSubscribers(post, subscriberEmails)
-          .then(result => {
-            console.log(`✅ Newsletter auto-sent: ${result.sent} emails sent`)
-            if (result.errors) {
-              console.error('Newsletter errors:', result.errors)
-            }
-          })
-          .catch(error => {
-            console.error('❌ Newsletter auto-send failed:', error)
-          })
-      } else {
-        console.log('📧 No active newsletter subscribers found')
-      }
-    } catch (newsletterError) {
-      // Don't fail post creation if newsletter fails
-      console.error('Newsletter auto-send error (non-fatal):', newsletterError)
-    }
-
-    return NextResponse.json({ 
-      post: post,
-      message: 'Post created successfully! Newsletter will be sent to subscribers.'
+    return NextResponse.json({
+      post,
+      message: 'Post created successfully!',
     })
-
   } catch (error) {
     console.error('Create post error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

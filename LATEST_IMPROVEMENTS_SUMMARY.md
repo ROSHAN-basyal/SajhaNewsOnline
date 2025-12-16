@@ -9,8 +9,8 @@
 - Updated shadow colors to match the new palette
 
 ### **2. Logo Typography Updated** 
-- **From**: `NEWZNEPAL.COM` (all uppercase, aggressive)
-- **To**: `Newznepal.com` (proper case, friendly)
+- **From**: `OLD_SITE_NAME` (all uppercase, aggressive)
+- **To**: `SajhaNewsOnline.com` (proper case, friendly)
 - Removed `text-transform: uppercase` for natural appearance
 - Maintained professional gradient text effect
 - Better letter spacing and refined hover animations
@@ -89,7 +89,7 @@
 
 ### **Header Features:**
 1. ✅ **Modern light red color scheme**
-2. ✅ **Professional logo styling** (Newznepal.com)
+2. ✅ **Professional logo styling** (SajhaNewsOnline.com)
 3. ✅ **Beautiful Nepali navigation** with perfect fonts
 4. ✅ **Responsive design** across all breakpoints
 
@@ -121,7 +121,7 @@
 
 **Ready for production use!** 🎯
 
-Your NewzNepal.com now has:
+Your SajhaNewsOnline.com now has:
 - Professional light red design theme
 - Advanced admin post management
 - Perfect Nepali language support

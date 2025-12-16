@@ -268,12 +268,7 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
 
               {uploading && (
                 <div className="upload-progress">
-                  <div className="progress-bar">
-                    <div 
-                      className="progress-fill" 
-                      style={{ width: `${uploadProgress}%` }}
-                    ></div>
-                  </div>
+                  <progress className="progress-native" max={100} value={uploadProgress} />
                   <div className="progress-text">Uploading... {uploadProgress}%</div>
                 </div>
               )}

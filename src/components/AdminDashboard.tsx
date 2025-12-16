@@ -1,134 +1,171 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useAuth } from '../lib/authContext'
-import PostForm from './PostForm'
-import PostsList from './PostsList'
-import { NewsPost } from '../lib/supabase'
+import { useMemo, useState } from "react";
+import { useAuth } from "../lib/authContext";
+import PostForm from "./PostForm";
+import PostsList from "./PostsList";
+import AdManagement from "./AdManagement";
+import { NewsPost } from "../lib/supabase";
 
-type View = 'list' | 'create' | 'edit'
+type Section = "posts" | "ads";
+type PostView = "list" | "create" | "edit";
 
 export default function AdminDashboard() {
-  const { user, logout } = useAuth()
-  const [currentView, setCurrentView] = useState<View>('list')
-  const [editingPost, setEditingPost] = useState<NewsPost | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [refreshTrigger, setRefreshTrigger] = useState(0)
+  const { user, logout } = useAuth();
+  const [section, setSection] = useState<Section>("posts");
+  const [postView, setPostView] = useState<PostView>("list");
+  const [editingPost, setEditingPost] = useState<NewsPost | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  const handleCreatePost = async (postData: Omit<NewsPost, 'id' | 'created_at' | 'updated_at'>) => {
-    setLoading(true)
+  const pageTitle = useMemo(() => {
+    if (section === "ads") return "Advertisements";
+    if (postView === "create") return "Create Post";
+    if (postView === "edit") return "Edit Post";
+    return "Posts";
+  }, [section, postView]);
+
+  const handleCreatePost = async (
+    postData: Omit<NewsPost, "id" | "created_at" | "updated_at">
+  ) => {
+    setLoading(true);
     try {
-      const response = await fetch('/api/posts', {
-        method: 'POST',
+      const response = await fetch("/api/posts", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(postData),
-      })
+      });
 
       if (response.ok) {
-        setCurrentView('list')
-        setRefreshTrigger(prev => prev + 1)
-        return true
+        setPostView("list");
+        setRefreshTrigger((prev) => prev + 1);
+        return true;
       }
-      return false
+      return false;
     } catch (error) {
-      console.error('Create post error:', error)
-      return false
+      console.error("Create post error:", error);
+      return false;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const handleUpdatePost = async (postData: Omit<NewsPost, 'id' | 'created_at' | 'updated_at'>) => {
-    if (!editingPost) return false
+  const handleUpdatePost = async (
+    postData: Omit<NewsPost, "id" | "created_at" | "updated_at">
+  ) => {
+    if (!editingPost) return false;
 
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await fetch(`/api/posts/${editingPost.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(postData),
-      })
+      });
 
       if (response.ok) {
-        setCurrentView('list')
-        setEditingPost(null)
-        setRefreshTrigger(prev => prev + 1)
-        return true
+        setPostView("list");
+        setEditingPost(null);
+        setRefreshTrigger((prev) => prev + 1);
+        return true;
       }
-      return false
+      return false;
     } catch (error) {
-      console.error('Update post error:', error)
-      return false
+      console.error("Update post error:", error);
+      return false;
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleEditPost = (post: NewsPost) => {
-    setEditingPost(post)
-    setCurrentView('edit')
-  }
+    setEditingPost(post);
+    setPostView("edit");
+    setSection("posts");
+  };
 
   const handleCancel = () => {
-    setCurrentView('list')
-    setEditingPost(null)
-  }
+    setPostView("list");
+    setEditingPost(null);
+  };
 
   return (
-    <div className="admin-layout">
-      <header className="admin-header">
-        <div className="container">
-          <div className="admin-header-content">
-            <h1 className="admin-title">NewzNepal Admin</h1>
-            <div className="admin-user">
-              <span>Welcome, {user?.username}</span>
-              <button className="logout-btn" onClick={logout}>
-                Logout
-              </button>
-            </div>
-          </div>
+    <div className="admin-shell">
+      <aside className="admin-side" aria-label="Admin navigation">
+        <div className="admin-side__brand">
+          <div className="admin-side__brandTitle">Sajha Admin</div>
+          <div className="admin-side__brandSub">Content & Ads</div>
         </div>
-      </header>
 
-      <div className="admin-content">
-        <div className="container">
-          <nav className="admin-nav">
-            <div className="admin-nav-buttons">
+        <nav className="admin-menu">
+          <button
+            type="button"
+            className={`admin-menu__item ${section === "posts" ? "is-active" : ""}`}
+            onClick={() => setSection("posts")}
+          >
+            Posts
+          </button>
+          <button
+            type="button"
+            className={`admin-menu__item ${section === "ads" ? "is-active" : ""}`}
+            onClick={() => setSection("ads")}
+          >
+            Ads
+          </button>
+        </nav>
+
+        <div className="admin-side__user">
+          <div className="admin-side__userName">{user?.username}</div>
+          <button type="button" className="btn btn-ghost" onClick={logout}>
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <div className="admin-main">
+        <header className="admin-topbar">
+          <div className="admin-topbar__title">{pageTitle}</div>
+
+          {section === "posts" ? (
+            <div className="admin-topbar__tabs" aria-label="Post actions">
               <button
-                className={`nav-btn ${currentView === 'list' ? 'active' : ''}`}
-                onClick={() => setCurrentView('list')}
+                type="button"
+                className={`admin-tab ${postView === "list" ? "is-active" : ""}`}
+                onClick={() => {
+                  setPostView("list");
+                  setEditingPost(null);
+                }}
               >
                 All Posts
               </button>
               <button
-                className={`nav-btn ${currentView === 'create' ? 'active' : ''}`}
-                onClick={() => setCurrentView('create')}
+                type="button"
+                className={`admin-tab ${postView === "create" ? "is-active" : ""}`}
+                onClick={() => {
+                  setPostView("create");
+                  setEditingPost(null);
+                }}
               >
-                Create New Post
+                New Post
               </button>
             </div>
-          </nav>
+          ) : null}
+        </header>
 
-          {currentView === 'list' && (
-            <PostsList 
-              onEditPost={handleEditPost}
-              refreshTrigger={refreshTrigger}
-            />
+        <div className="admin-content">
+          {section === "posts" && postView === "list" && (
+            <PostsList onEditPost={handleEditPost} refreshTrigger={refreshTrigger} />
           )}
 
-          {currentView === 'create' && (
-            <PostForm
-              onSubmit={handleCreatePost}
-              onCancel={handleCancel}
-              loading={loading}
-            />
+          {section === "posts" && postView === "create" && (
+            <PostForm onSubmit={handleCreatePost} onCancel={handleCancel} loading={loading} />
           )}
 
-          {currentView === 'edit' && editingPost && (
+          {section === "posts" && postView === "edit" && editingPost && (
             <PostForm
               post={editingPost}
               onSubmit={handleUpdatePost}
@@ -136,8 +173,11 @@ export default function AdminDashboard() {
               loading={loading}
             />
           )}
+
+          {section === "ads" && <AdManagement />}
         </div>
       </div>
     </div>
-  )
+  );
 }
+

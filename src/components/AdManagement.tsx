@@ -29,8 +29,12 @@ export default function AdManagement() {
 
   useEffect(() => {
     fetchAds();
-    fetchStatistics();
   }, [refreshTrigger]);
+
+  useEffect(() => {
+    fetchStatistics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ads]);
 
   const fetchAds = async () => {
     try {
@@ -297,7 +301,9 @@ export default function AdManagement() {
           <div className="ad-edit-section">
             <div className="section-header">
               <h3>Edit Advertisement</h3>
-              <p>Update the details of "{editingAd.title}"</p>
+              <p>
+                Update the details of &quot;{editingAd.title}&quot;
+              </p>
             </div>
 
             <AdForm
@@ -372,7 +378,7 @@ export default function AdManagement() {
                     <strong>Best for:</strong> Cost-effective placement
                   </p>
                   <p>
-                    <strong>Ideal ads:</strong> Newsletter signups, secondary
+                    <strong>Ideal ads:</strong> Brand recall, secondary
                     CTAs
                   </p>
                 </div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { NewsPost, NEWS_CATEGORIES, NewsCategory, getCategoryLabel } from '../lib/supabase'
 import { getPostAge, getDaysUntilExpiration, isPostExpired } from '../lib/cleanup'
+import '../styles/admin-panel.css'
 
 interface PostsListProps {
   onEditPost: (post: NewsPost) => void
@@ -158,7 +159,7 @@ export default function PostsList({ onEditPost, refreshTrigger }: PostsListProps
           onClick={handleManualCleanup}
           disabled={isCleaningUp}
         >
-          {isCleaningUp ? '🧹 Cleaning...' : '🧹 Clean Expired Posts'}
+          {isCleaningUp ? 'Cleaning...' : 'Clean expired posts'}
         </button>
       </div>
 

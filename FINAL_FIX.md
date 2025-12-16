@@ -24,8 +24,8 @@ npm run dev
 ```
 
 ### 4. Test Everything
-- **Public Site**: http://localhost:3000 ✅
-- **Admin Portal**: http://localhost:3000/secret-admin-portal ✅  
+- **Public Site**: http://localhost:443 ✅
+- **Admin Portal**: http://localhost:443/secret-admin-portal ✅  
 - **Login**: `admin` / `admin123` ✅
 
 ## 🔧 What Changed:
@@ -40,7 +40,7 @@ npm run dev
 - Sample news with images on public site  
 
 ## 🆘 If Still Not Working:
-1. **Check the database**: Make sure you ran `simple-setup.sql` in Supabase
+1. **Check the database**: Make sure you ran `supabase-schema.sql` in Supabase
 2. **Check the file**: Manually delete `src/lib/auth.tsx` if it exists
 3. **Check browser**: Try incognito mode to avoid cached errors
 

@@ -146,6 +146,10 @@ export async function GET(request: NextRequest) {
         const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
         dateFilter = monthAgo.toISOString();
         break;
+      case "90d":
+        const threeMonthsAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+        dateFilter = threeMonthsAgo.toISOString();
+        break;
       default:
         dateFilter = ""; // No filter for 'all'
     }
