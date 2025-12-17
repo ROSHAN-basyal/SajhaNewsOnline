@@ -122,12 +122,6 @@ export default function PostsList({ onEditPost, refreshTrigger }: PostsListProps
     }
   };
 
-  const clearFilters = () => {
-    setQuery("");
-    setCategoryFilter("all");
-    setSortOrder("newest");
-  };
-
   if (loading) return <div className="loading">Loading posts...</div>;
   if (error) return <div className="error">Error: {error}</div>;
 
@@ -167,25 +161,15 @@ export default function PostsList({ onEditPost, refreshTrigger }: PostsListProps
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
           </select>
-
-          <button
-            type="button"
-            className="posts-toolbar__iconBtn icon-btn"
-            onClick={clearFilters}
-            disabled={!query && categoryFilter === "all" && sortOrder === "newest"}
-            aria-label="Clear filters"
-            title="Clear"
-          >
-            <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M18 6 6 18" strokeLinecap="round" />
-              <path d="M6 6l12 12" strokeLinecap="round" />
-            </svg>
-          </button>
         </div>
 
         <div className="posts-toolbar__meta">
-          <span className="posts-toolbar__count" title={posts.length !== filteredPosts.length ? `Filtered from ${posts.length}` : undefined}>
-            {filteredPosts.length}
+          <span
+            className="posts-toolbar__count"
+            title={posts.length !== filteredPosts.length ? `Filtered from ${posts.length}` : undefined}
+          >
+            <span className="posts-toolbar__countLabel">Posts</span>
+            <span className="posts-toolbar__countValue">{filteredPosts.length}</span>
           </span>
           <button className="cleanup-btn posts-toolbar__cleanup" onClick={handleManualCleanup} disabled={isCleaningUp}>
             {isCleaningUp ? "Cleaning..." : "Clean expired"}

@@ -239,25 +239,33 @@
   min-width: 180px;
 }
 
-.posts-toolbar__iconBtn {
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
-}
-
 .posts-toolbar__count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   height: 38px;
-  min-width: 38px;
-  padding: 0 10px;
+  padding: 0 12px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.92);
   font-size: 13px;
   font-weight: 950;
   color: var(--text-secondary, #334155);
   box-shadow: 0 3px 10px rgba(15, 23, 42, 0.10);
+  gap: 8px;
+}
+
+.posts-toolbar__countLabel {
+  font-weight: 850;
+  color: var(--text-muted, #64748b);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.posts-toolbar__countValue {
+  font-weight: 950;
+  color: var(--text-secondary, #334155);
+  font-size: 13px;
 }
 
 .posts-toolbar__cleanup {

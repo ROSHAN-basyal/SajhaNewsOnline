@@ -327,15 +327,15 @@
 
 @media (max-width: 980px) {
   .admin-header__inner {
-    grid-template-columns: 1fr auto;
-    grid-template-areas:
-      "left right"
-      "center center";
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 10px;
     padding: 10px 0;
   }
 
   .admin-header__center {
+    flex: 1;
     justify-items: center;
     text-align: center;
   }
@@ -343,6 +343,19 @@
   .admin-header__titleRow {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .admin-header__left {
+    flex: 0 0 auto;
+  }
+
+  .admin-header__right {
+    flex: 0 0 auto;
+  }
+
+  .admin-header__left .np-clock__date,
+  .admin-header__left .np-clock__time {
+    font-size: 10px;
   }
 
   .admin-tabs {
