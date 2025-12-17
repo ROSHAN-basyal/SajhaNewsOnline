@@ -4,6 +4,7 @@ import { Inter, Noto_Sans_Devanagari } from "next/font/google";
 import CSSLoader from "../components/CSSLoader";
 import BackToTop from "../components/BackToTop";
 import "../styles/critical.css";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const noto = Noto_Sans_Devanagari({
@@ -102,6 +103,7 @@ export default function RootLayout({
           }}
         />
       </head>
+      <SpeedInsights />
       <body suppressHydrationWarning={true}>
         <CSSLoader />
         <Suspense fallback={<div className="loading">Loading...</div>}>{children}</Suspense>

@@ -141,3 +141,19 @@ EC2 prerequisites:
 
 Network:
 - Open port `80` on the EC2 security group (or put a reverse proxy / ALB in front for HTTPS on `443`)
+
+## Deploy (Vercel + GitHub)
+
+1) In Vercel: **Add New → Project → Import Git Repository** and select this repo.
+
+2) Build settings (auto-detected for Next.js):
+- Build command: `npm run build`
+- Install command: `npm ci`
+
+3) Add Environment Variables in Vercel (Project → Settings → Environment Variables) for **Production** (and optionally Preview):
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_SITE_URL` (set to your Vercel production domain, e.g. `https://your-app.vercel.app`)
+- `CLEANUP_SECRET` (protects `POST /api/cleanup`)
+
+4) Deploy: pushes to your GitHub repo will create Vercel Preview Deployments; merging to the production branch triggers a Production Deployment.
