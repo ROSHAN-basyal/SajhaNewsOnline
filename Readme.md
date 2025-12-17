@@ -1,6 +1,6 @@
 # Sajha News Online
 
-A modern Nepali news portal built with Next.js (App Router) + Supabase, including a hidden admin portal for managing posts and advertisements.
+A modern Nepali news portal built with Next.js (App Router) + Supabase (Postgres), including a hidden admin portal for managing posts and advertisements.
 
 ## Features
 
@@ -18,7 +18,7 @@ A modern Nepali news portal built with Next.js (App Router) + Supabase, includin
 ## Requirements
 
 - Node.js + npm
-- A Supabase project
+- A Supabase project (or compatible backend already provisioned)
 
 ## Setup
 
@@ -28,15 +28,10 @@ A modern Nepali news portal built with Next.js (App Router) + Supabase, includin
 npm install
 ```
 
-### 2) Set up Supabase (database + storage)
+### 2) Set up the database
 
-1. Open Supabase Dashboard → your project
-2. SQL Editor → New query
-3. Run `supabase-schema.sql` (creates tables, policies, ads system, and the `news-images` storage bucket + policies when permitted)
-
-This schema also seeds:
-- Default admin user: `admin` / `admin123`
-- Sample posts (only if `news_posts` is empty)
+This repo assumes the database schema already exists (tables, policies, and storage bucket if you use uploads).
+The SQL setup scripts are intentionally not included in the repo anymore.
 
 ### 3) Configure environment variables
 
@@ -66,10 +61,7 @@ npm run dev-alt
 ## Images (uploads)
 
 News images are stored in Supabase Storage bucket `news-images`.
-
-If `supabase-schema.sql` couldn’t create storage/policies (permission/role limitations), create it manually:
-- Supabase Dashboard → Storage → create bucket `news-images` and set it public
-- Then add policies in Storage → Policies (or re-run the schema as a role that can manage `storage.objects`)
+Create the bucket and policies in Supabase Dashboard if they’re not already present.
 
 ## Maintenance
 
@@ -89,7 +81,7 @@ npm run dev
 
 ### Can’t log in as admin
 
-Re-run `supabase-schema.sql`, or reset the seeded admin password hash:
+Reset the admin password hash:
 
 ```sql
 UPDATE admin_users

@@ -1,3 +1,0 @@
--- DEPRECATED
--- Default admin user/password is now handled in `supabase-schema.sql`.
--- Please run `supabase-schema.sql` in your Supabase SQL Editor.

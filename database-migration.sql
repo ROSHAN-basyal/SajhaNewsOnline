@@ -1,3 +1,0 @@
--- DEPRECATED
--- Admin session migration is now included in `supabase-schema.sql`.
--- Please run `supabase-schema.sql` in your Supabase SQL Editor.

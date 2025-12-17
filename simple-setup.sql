@@ -1,3 +1,0 @@
--- DEPRECATED
--- The full setup script is now `supabase-schema.sql`.
--- Please run `supabase-schema.sql` in your Supabase SQL Editor.
