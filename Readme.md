@@ -89,3 +89,55 @@ SET password_hash = '$2a$12$wJgYKJzTKG88a.MG.qLJ.eQKitDNGTJIfos.42J67mEdLXdCqRQ5
 WHERE username = 'admin';
 ```
 
+## Docker
+
+This repo includes a production `Dockerfile`. The container listens on port `3000`.
+
+Build (needs Supabase/site envs at build-time):
+
+```bash
+docker build -t sajhanewsonline:local \
+  --build-arg NEXT_PUBLIC_SUPABASE_URL=... \
+  --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=... \
+  --build-arg NEXT_PUBLIC_SITE_URL=http://localhost:3000 \
+  .
+```
+
+Run:
+
+```bash
+docker run --rm -p 3000:3000 --env-file .env.local sajhanewsonline:local
+```
+
+## CI/CD (GitHub Actions → ECR → EC2)
+
+Workflows:
+- `/.github/workflows/ci.yml`: install/lint/build
+- `/.github/workflows/deploy-ec2.yml`: build Docker image, push to ECR, SSH to EC2 and restart the container
+
+Repository variables (Settings → Secrets and variables → Actions → Variables):
+- `AWS_REGION` (example: `ap-south-1`)
+- `ECR_REPOSITORY` (example: `sajhanewsonline`)
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SITE_URL`
+
+Repository secrets:
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `AWS_ROLE_TO_ASSUME` (GitHub OIDC role ARN)
+- `EC2_HOST` (example: `1.2.3.4`)
+- `EC2_USER` (example: `ubuntu`)
+- `EC2_SSH_PRIVATE_KEY` (private key that can SSH into the instance)
+- `EC2_ENV_FILE` (optional, default: `/opt/sajhanewsonline/app.env`)
+
+EC2 prerequisites:
+- Docker installed and running
+- AWS CLI installed
+- An EC2 instance role with permission to pull from ECR
+- An env file on the instance (example `/opt/sajhanewsonline/app.env`) containing at least:
+  - `NEXT_PUBLIC_SUPABASE_URL=...`
+  - `NEXT_PUBLIC_SUPABASE_ANON_KEY=...`
+  - `NEXT_PUBLIC_SITE_URL=https://your-domain`
+  - `CLEANUP_SECRET=...` (required to protect `POST /api/cleanup`)
+
+Network:
+- Open port `80` on the EC2 security group (or put a reverse proxy / ALB in front for HTTPS on `443`)
