@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Inter, Noto_Sans_Devanagari } from "next/font/google";
 import CSSLoader from "../components/CSSLoader";
+import BackToTop from "../components/BackToTop";
 import "../styles/critical.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -104,6 +105,7 @@ export default function RootLayout({
       <body suppressHydrationWarning={true}>
         <CSSLoader />
         <Suspense fallback={<div className="loading">Loading...</div>}>{children}</Suspense>
+        <BackToTop />
       </body>
     </html>
   );
