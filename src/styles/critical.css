@@ -19,8 +19,9 @@
   /* Symmetric page grid */
   --layout-max: 1360px;
   --gutter: clamp(16px, 2vw, 24px);
-  --header-h: 112px;
+  --header-h: 124px;
   --sticky-top: calc(var(--header-h) + var(--space-4));
+  --header-bar-h: 84px;
 }
 
 * {
@@ -48,9 +49,16 @@ body {
 }
 
 .site-header {
-  position: sticky;
-  top: 0;
   z-index: 50;
+  position: relative;
+}
+
+.site-header__bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
   background: rgba(248, 250, 252, 0.9);
   border-bottom: 1px solid var(--border-color);
 }

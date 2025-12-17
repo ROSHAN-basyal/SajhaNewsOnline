@@ -23,10 +23,10 @@ export async function GET() {
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
   <rss version="2.0">
     <channel>
-      <title>Sajha News Online - Latest News</title>
+      <title>साझा न्यूज अनलाइन - ताजा समाचार</title>
       <link>${site}</link>
-      <description>Latest news updates from Nepal and worldwide</description>
-      <language>en</language>
+      <description>नेपाल तथा विश्वका ताजा समाचार अपडेट</description>
+      <language>ne</language>
       ${items}
     </channel>
   </rss>`;

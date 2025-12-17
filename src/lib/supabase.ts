@@ -16,29 +16,32 @@ export interface NewsPost {
   updated_at: string
 }
 
-export const NEWS_CATEGORIES = [
-  'latest',
-  'breaking',
-  'politics',
-  'sports', 
-  'business',
-  'entertainment'
-] as const
+export const NEWS_CATEGORIES = ['latest', 'breaking', 'politics', 'sports', 'business', 'entertainment'] as const
 
 export type NewsCategory = typeof NEWS_CATEGORIES[number]
 
-// Nepali translations for categories
-export const CATEGORY_LABELS: Record<NewsCategory, string> = {
-  'latest': 'ताजा समाचार',
-  'breaking': 'ब्रेकिङ न्यूज',
-  'politics': 'राजनीति',
-  'sports': 'खेलकुद',
-  'business': 'व्यापार',
-  'entertainment': 'मनोरञ्जन'
+export type ConsumerLocale = 'en' | 'ne'
+
+export const CATEGORY_LABELS_EN: Record<NewsCategory, string> = {
+  latest: 'Latest',
+  breaking: 'Breaking',
+  politics: 'Politics',
+  sports: 'Sports',
+  business: 'Business',
+  entertainment: 'Entertainment',
 }
 
-// Helper function to get Nepali label for category
-export const getCategoryLabel = (category: NewsCategory | 'all'): string => {
-  if (category === 'all') return 'सबै समाचार'
-  return CATEGORY_LABELS[category] || category
+export const CATEGORY_LABELS_NE: Record<NewsCategory, string> = {
+  latest: 'ताजा',
+  breaking: 'तत्काल',
+  politics: 'राजनीति',
+  sports: 'खेलकुद',
+  business: 'अर्थ/व्यापार',
+  entertainment: 'मनोरञ्जन',
+}
+
+export const getCategoryLabel = (category: NewsCategory | 'all', locale: ConsumerLocale = 'en'): string => {
+  if (category === 'all') return locale === 'ne' ? 'सबै' : 'All'
+  const labels = locale === 'ne' ? CATEGORY_LABELS_NE : CATEGORY_LABELS_EN
+  return labels[category] || category
 }

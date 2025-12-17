@@ -2,17 +2,12 @@
 .sidebar {
   min-width: 0;
   display: grid;
-  gap: 14px;
   padding: 18px 0;
+  gap: 14px;
 }
 
 @media (min-width: 1024px) {
   .sidebar {
-    position: sticky;
-    top: var(--sticky-top, 88px);
-    align-self: start;
-    max-height: calc(100dvh - var(--sticky-top, 88px));
-    overflow: auto;
     padding: 18px 0 30px;
   }
 }
@@ -42,6 +37,54 @@
 
 .sidebar-block__body {
   padding: 12px;
+}
+
+/* Election countdown */
+.countdown {
+  display: grid;
+  gap: 8px;
+}
+
+.countdown__label {
+  font-weight: 950;
+  color: var(--text-primary, #0f172a);
+  font-size: 13px;
+}
+
+.countdown__value {
+  font-variant-numeric: tabular-nums;
+  font-weight: 950;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  color: rgba(37, 99, 235, 1);
+}
+
+.countdown__num {
+  font-weight: 950;
+}
+
+.countdown__unit {
+  font-size: 12px;
+  font-weight: 900;
+  color: rgba(51, 65, 85, 1);
+  margin: 0 6px 0 4px;
+}
+
+.countdown__sep {
+  color: rgba(15, 23, 42, 0.22);
+  margin: 0 4px;
+}
+
+.countdown__note {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--text-muted, #64748b);
+}
+
+.countdown__loading {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-secondary, #334155);
 }
 
 /* Trending list */

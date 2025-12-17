@@ -31,7 +31,7 @@ export default function PostPage({ params }: PageProps) {
         setPost(data as NewsPost);
         setError(null);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load post");
+        setError(err instanceof Error ? err.message : "समाचार लोड हुन सकेन");
       } finally {
         setLoading(false);
       }
@@ -40,7 +40,7 @@ export default function PostPage({ params }: PageProps) {
   }, [params.id]);
 
   const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString("en-US", {
+    new Date(dateString).toLocaleDateString("ne-NP", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -73,7 +73,7 @@ export default function PostPage({ params }: PageProps) {
   if (loading) {
     return (
       <div className="container">
-        <div className="loading">Loading article...</div>
+        <div className="loading">समाचार लोड हुँदैछ...</div>
       </div>
     );
   }
@@ -81,16 +81,16 @@ export default function PostPage({ params }: PageProps) {
   if (error || !post) {
     return (
       <div className="container">
-        <div className="error">{error || "Post not found"}</div>
+        <div className="error">{error || "समाचार फेला परेन"}</div>
       </div>
     );
   }
 
   return (
-    <main className="article" aria-label="Article">
+    <main className="article" aria-label="समाचार">
       <div className="container article__container">
         <a className="article__back" href="/">
-          {"<- Back to latest"}
+          {"<- ताजा समाचारतर्फ फर्कनुहोस्"}
         </a>
 
         {post && (
@@ -124,15 +124,15 @@ export default function PostPage({ params }: PageProps) {
           <h1 className="article__title">{post.title}</h1>
           <div className="article__metaRow">
             <span className="article__meta">{formatDate(post.created_at)}</span>
-            <div className="article__share" aria-label="Share actions">
-              <button type="button" className="icon-btn share" onClick={systemShare} aria-label="Share" title="Share">
+            <div className="article__share" aria-label="सेयर विकल्पहरू">
+              <button type="button" className="icon-btn share" onClick={systemShare} aria-label="सेयर" title="सेयर">
                 <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M4 12v8a2 2 0 0 0 2 2h12" />
                   <polyline points="16 6 12 2 8 6" />
                   <line x1="12" y1="2" x2="12" y2="15" />
                 </svg>
               </button>
-              <button type="button" className="icon-btn copy" onClick={copyLink} aria-label="Copy link" title="Copy link">
+              <button type="button" className="icon-btn copy" onClick={copyLink} aria-label="लिङ्क कपी गर्नुहोस्" title="लिङ्क कपी गर्नुहोस्">
                 <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1-7 7l-1-1" />
                   <path d="M14 11a5 5 0 0 1-7 0l-1-1a5 5 0 0 1 7-7l1 1" />
@@ -143,7 +143,7 @@ export default function PostPage({ params }: PageProps) {
                 href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Share on Facebook"
+                aria-label="फेसबुकमा सेयर गर्नुहोस्"
                 title="Facebook"
               >
                 <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -156,7 +156,7 @@ export default function PostPage({ params }: PageProps) {
                 href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Share on X"
+                aria-label="X मा सेयर गर्नुहोस्"
                 title="X"
               >
                 <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -168,7 +168,7 @@ export default function PostPage({ params }: PageProps) {
                 href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " " + shareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Share on WhatsApp"
+                aria-label="WhatsApp मा सेयर गर्नुहोस्"
                 title="WhatsApp"
               >
                 <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -179,17 +179,18 @@ export default function PostPage({ params }: PageProps) {
           </div>
         </header>
 
-        {copied ? <div className="article__toast">Link copied</div> : null}
+        {copied ? <div className="article__toast">लिङ्क कपी गरियो</div> : null}
 
         {post.image_url ? (
           <div className="article__hero">
             <LazyImage
               src={post.image_url}
-              alt={`Featured image for: ${post.title}`}
+              alt={`समाचारको तस्बिर: ${post.title}`}
               width={1200}
               height={675}
               priority
               sizes="(max-width: 768px) 100vw, 1200px"
+              errorText="तस्बिर लोड हुन सकेन"
             />
           </div>
         ) : null}

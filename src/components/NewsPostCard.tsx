@@ -27,16 +27,27 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
   const readingMinutes = useMemo(() => estimateReadingMinutes(post.content || ""), [post.content]);
 
   const categoryLabel = useMemo(
-    () => getCategoryLabel((post.category as any) || "latest"),
+    () => getCategoryLabel((post.category as any) || "latest", "ne"),
     [post.category]
   );
 
   const formatDate = (dateString: string) =>
-    new Date(dateString).toLocaleDateString("en-US", {
+    new Date(dateString).toLocaleDateString("ne-NP", {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
+
+  const formatDateTime = (dateString: string) =>
+    new Date(dateString).toLocaleString("ne-NP", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+  const hasUpdatedAt = Boolean(post.updated_at && post.updated_at !== post.created_at);
 
   const copyLink = async () => {
     try {
@@ -61,16 +72,20 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
   };
 
   return (
-    <article className="story" aria-labelledby={`story-title-${post.id}`}>
+    <article
+      className={`story ${expanded ? "story--expanded" : ""}`}
+      aria-labelledby={`story-title-${post.id}`}
+    >
       {post.image_url ? (
-        <a className="story__media" href={`/posts/${post.id}`} aria-label={`Open article: ${post.title}`}>
+        <a className="story__media" href={`/posts/${post.id}`} aria-label={`समाचार खोल्नुहोस्: ${post.title}`}>
           <LazyImage
             src={post.image_url}
-            alt={`Featured image for: ${post.title}`}
+            alt={`समाचारको तस्बिर: ${post.title}`}
             width={720}
             height={420}
             priority={priority}
-            sizes="(max-width: 768px) 100vw, 420px"
+            sizes="(max-width: 768px) 100vw, 720px"
+            errorText="तस्बिर लोड हुन सकेन"
           />
         </a>
       ) : null}
@@ -79,7 +94,16 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
         <div className="story__metaRow">
           <span className="story__badge">{categoryLabel}</span>
           <span className="story__meta">
-            {formatDate(post.created_at)} | {readingMinutes} min read
+            {expanded ? (
+              <>
+                {formatDateTime(post.created_at)} · {new Intl.NumberFormat("ne-NP").format(readingMinutes)} मिनेट पढाइ
+                {hasUpdatedAt ? ` · अपडेट: ${formatDateTime(post.updated_at)}` : ""}
+              </>
+            ) : (
+              <>
+                {formatDate(post.created_at)} | {new Intl.NumberFormat("ne-NP").format(readingMinutes)} मिनेट पढाइ
+              </>
+            )}
           </span>
         </div>
 
@@ -87,24 +111,28 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
           <a href={`/posts/${post.id}`}>{post.title}</a>
         </h2>
 
-        {!expanded ? (
-          <p className="story__deck">{post.summary}</p>
-        ) : (
-          <div className="story__full">{post.content}</div>
-        )}
+        <p className="story__deck">{post.summary}</p>
+
+        {expanded ? (
+          <>
+            <div className="story__full" role="region" aria-label="समाचारको विस्तृत पूर्वावलोकन">
+              {post.content}
+            </div>
+          </>
+        ) : null}
 
         <div className="story__actions">
           <button type="button" className="btn btn-ghost" onClick={() => setExpanded((v) => !v)}>
-            {expanded ? "Hide" : "Quick Read"}
+            {expanded ? "कम पढ्नुहोस्" : "थप पढ्नुहोस्"}
           </button>
 
-          <div className="story__share" aria-label="Share actions">
+          <div className="story__share" aria-label="सेयर विकल्पहरू">
             <button
               type="button"
               className="icon-btn share"
               onClick={systemShare}
-              aria-label="Share this article"
-              title="Share"
+              aria-label="यो समाचार सेयर गर्नुहोस्"
+              title="सेयर"
             >
               <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M4 12v8a2 2 0 0 0 2 2h12" />
@@ -113,7 +141,7 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
               </svg>
             </button>
 
-            <button type="button" className="icon-btn copy" onClick={copyLink} aria-label="Copy link" title="Copy link">
+            <button type="button" className="icon-btn copy" onClick={copyLink} aria-label="लिङ्क कपी गर्नुहोस्" title="लिङ्क कपी गर्नुहोस्">
               <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M10 13a5 5 0 0 1 7 0l1 1a5 5 0 0 1-7 7l-1-1" />
                 <path d="M14 11a5 5 0 0 1-7 0l-1-1a5 5 0 0 1 7-7l1 1" />
@@ -125,7 +153,7 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Share on Facebook"
+              aria-label="फेसबुकमा सेयर गर्नुहोस्"
               title="Facebook"
             >
               <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -139,7 +167,7 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
               href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Share on X"
+              aria-label="X मा सेयर गर्नुहोस्"
               title="X"
             >
               <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -152,7 +180,7 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
               href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " " + shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Share on WhatsApp"
+              aria-label="WhatsApp मा सेयर गर्नुहोस्"
               title="WhatsApp"
             >
               <svg className="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -162,7 +190,7 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
           </div>
         </div>
 
-        {copied ? <div className="story__toast">Link copied</div> : null}
+        {copied ? <div className="story__toast">लिङ्क कपी गरियो</div> : null}
       </div>
     </article>
   );

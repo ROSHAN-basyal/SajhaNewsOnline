@@ -30,8 +30,9 @@
   --gutter: clamp(16px, 2vw, 24px);
   --grid-gap: clamp(12px, 1.6vw, 24px);
   --side-col: clamp(240px, 20vw, 320px);
-  --header-h: 112px;
+  --header-h: 124px;
   --sticky-top: calc(var(--header-h) + var(--space-4));
+  --header-bar-h: 84px;
 }
 
 * {
@@ -79,6 +80,7 @@ textarea {
 /* App shell */
 .site-shell {
   min-height: 100vh;
+  padding-top: var(--header-bar-h);
 }
 
 .page-grid {

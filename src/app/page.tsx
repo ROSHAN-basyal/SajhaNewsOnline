@@ -16,7 +16,7 @@ const NewsFeed = dynamic(() => import("../components/NewsFeed"), {
 
 const Sidebar = dynamic(() => import("../components/Sidebar"), {
   ssr: true,
-  loading: () => <div className="sidebar-loading">Loading sidebar...</div>,
+  loading: () => <div className="sidebar-loading">साइडबार लोड हुँदैछ...</div>,
 });
 
 export default function Home() {

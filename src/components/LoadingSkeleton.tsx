@@ -1,6 +1,6 @@
 export default function LoadingSkeleton() {
   return (
-    <div className="feed" aria-label="Loading news">
+    <div className="feed" aria-label="समाचार लोड हुँदैछ">
       <div className="feed__header">
         <div className="skeleton-line skeleton-line--title" />
       </div>
@@ -25,4 +25,3 @@ export default function LoadingSkeleton() {
     </div>
   );
 }
-

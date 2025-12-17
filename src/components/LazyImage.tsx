@@ -11,6 +11,7 @@ interface LazyImageProps {
   className?: string
   sizes?: string
   priority?: boolean
+  errorText?: string
 }
 
 export default function LazyImage({ 
@@ -20,7 +21,8 @@ export default function LazyImage({
   height, 
   className = '', 
   sizes = '(max-width: 768px) 100vw, 800px',
-  priority = false 
+  priority = false,
+  errorText = 'Failed to load image'
 }: LazyImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isInView, setIsInView] = useState(priority)
@@ -63,7 +65,7 @@ export default function LazyImage({
     return (
       <div ref={imgRef} className={`lazy-image-container ${className}`}>
         <div className="image-error">
-          <span>Failed to load image</span>
+          <span>{errorText}</span>
         </div>
       </div>
     )

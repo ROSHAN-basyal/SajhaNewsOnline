@@ -1,6 +1,6 @@
 "use client";
 
-import { NEWS_CATEGORIES, NewsCategory, getCategoryLabel } from "../lib/supabase";
+import { ConsumerLocale, NEWS_CATEGORIES, NewsCategory, getCategoryLabel } from "../lib/supabase";
 import "../styles/category-nav.css";
 
 type CategoryNavProps = {
@@ -8,6 +8,7 @@ type CategoryNavProps = {
   onCategoryChange: (category: NewsCategory | "all") => void;
   variant?: "header" | "sidebar";
   className?: string;
+  locale?: ConsumerLocale;
 };
 
 export default function CategoryNav({
@@ -15,11 +16,12 @@ export default function CategoryNav({
   onCategoryChange,
   variant = "sidebar",
   className = "",
+  locale = "en",
 }: CategoryNavProps) {
   return (
     <nav
       className={`category-nav category-nav--${variant} ${className}`.trim()}
-      aria-label="News categories"
+      aria-label={locale === "ne" ? "समाचार श्रेणीहरू" : "News categories"}
     >
       <button
         type="button"
@@ -27,7 +29,7 @@ export default function CategoryNav({
         onClick={() => onCategoryChange("all")}
         aria-current={activeCategory === "all" ? "page" : undefined}
       >
-        {getCategoryLabel("all")}
+        {getCategoryLabel("all", locale)}
       </button>
 
       {NEWS_CATEGORIES.map((category) => (
@@ -38,7 +40,7 @@ export default function CategoryNav({
           onClick={() => onCategoryChange(category)}
           aria-current={activeCategory === category ? "page" : undefined}
         >
-          {getCategoryLabel(category)}
+          {getCategoryLabel(category, locale)}
         </button>
       ))}
     </nav>

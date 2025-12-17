@@ -56,7 +56,7 @@ export default function NewsFeed({ activeCategory }: NewsFeedProps) {
       setHasMore((data as any[])?.length === POSTS_PER_PAGE);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch posts");
+      setError(err instanceof Error ? err.message : "समाचार ल्याउन समस्या भयो");
     } finally {
       setLoading(false);
       setLoadingMore(false);
@@ -70,55 +70,54 @@ export default function NewsFeed({ activeCategory }: NewsFeedProps) {
   };
 
   const title = useMemo(() => {
-    if (activeCategory === "all") return "Latest Updates";
-    return `${getCategoryLabel(activeCategory)} News`;
+    if (activeCategory === "all") return "ताजा अपडेट";
+    return `${getCategoryLabel(activeCategory, "ne")} समाचार`;
   }, [activeCategory]);
 
   if (loading) {
     return (
-      <main className="feed" aria-label="News feed">
+      <main className="feed" aria-label="समाचार फिड">
         <div className="feed__header">
           <h2 className="feed__title">{title}</h2>
         </div>
-        <div className="feed__status">Loading news...</div>
+        <div className="feed__status">समाचार लोड हुँदैछ...</div>
       </main>
     );
   }
 
   if (error) {
     return (
-      <main className="feed" aria-label="News feed">
+      <main className="feed" aria-label="समाचार फिड">
         <div className="feed__header">
           <h2 className="feed__title">{title}</h2>
         </div>
-        <div className="error">Error: {error}</div>
+        <div className="error">त्रुटि: {error}</div>
       </main>
     );
   }
 
   return (
-    <main className="feed" role="main" aria-label="News feed">
+    <main className="feed" role="main" aria-label="समाचार फिड">
       <div className="feed__header">
         <h2 className="feed__title" id="feed-title">
           {title}
         </h2>
       </div>
 
-      <div className="feed__list" role="feed" aria-labelledby="feed-title" aria-busy={loading}>
+        <div className="feed__list" role="feed" aria-labelledby="feed-title" aria-busy={loading}>
+        <div className="feed__ad">
+          <AdSlot placement="in_content" label="विज्ञापन" />
+        </div>
+
         {posts.length === 0 ? (
           <div className="feed__empty">
-            <h3>No articles found</h3>
-            <p>Try changing category or adjusting your search.</p>
+            <h3>समाचार फेला परेन</h3>
+            <p>कृपया श्रेणी परिवर्तन गरेर फेरि प्रयास गर्नुहोस्।</p>
           </div>
         ) : (
           posts.map((post, index) => (
             <Fragment key={post.id}>
               <NewsPostCard post={post} priority={index === 0} />
-              {index === 2 && (
-                <div className="feed__ad">
-                  <AdSlot placement="in_content" label="Sponsored" />
-                </div>
-              )}
             </Fragment>
           ))
         )}
@@ -126,14 +125,14 @@ export default function NewsFeed({ activeCategory }: NewsFeedProps) {
         {hasMore && posts.length > 0 && (
           <div className="feed__more">
             <button className="btn btn-primary" onClick={loadMore} disabled={loadingMore}>
-              {loadingMore ? "Loading..." : "Load More"}
+              {loadingMore ? "लोड हुँदैछ..." : "थप लोड गर्नुहोस्"}
             </button>
           </div>
         )}
 
         {!hasMore && posts.length > 0 && (
           <div className="feed__more">
-            <p className="feed__end">You&apos;ve reached the end.</p>
+            <p className="feed__end">समाचार सकियो।</p>
           </div>
         )}
       </div>

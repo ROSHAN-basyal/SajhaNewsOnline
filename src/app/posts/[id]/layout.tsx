@@ -10,10 +10,10 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       .eq("id", params.id)
       .maybeSingle();
 
-    if (!data) return { title: "Article", alternates: { canonical: `/posts/${params.id}` } };
+    if (!data) return { title: "समाचार", alternates: { canonical: `/posts/${params.id}` } };
 
-    const title = data.title || "Article";
-    const description = data.summary || "Read the latest article on Sajha News Online.";
+    const title = data.title || "समाचार";
+    const description = data.summary || "साझा न्यूज अनलाइनमा ताजा समाचार पढ्नुहोस्।";
     const url = `${base}/posts/${data.id}`;
 
     return {
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
         description,
         images: data.image_url
           ? [{ url: data.image_url, width: 1200, height: 630, alt: title }]
-          : [{ url: "/images/logo.png", width: 512, height: 512, alt: "Sajha News Online" }],
+          : [{ url: "/images/logo.png", width: 512, height: 512, alt: "साझा न्यूज अनलाइन" }],
       },
       twitter: {
         card: "summary_large_image",
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       },
     };
   } catch {
-    return { title: "Article" };
+    return { title: "समाचार" };
   }
 }
 

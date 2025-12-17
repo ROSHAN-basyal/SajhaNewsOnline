@@ -1,0 +1,194 @@
+.cs {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  max-width: 220px;
+}
+
+.cs__pill {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  border-radius: 999px;
+  padding: 8px 12px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  cursor: pointer;
+  min-width: 0;
+}
+
+.cs__pill:hover {
+  border-color: rgba(37, 99, 235, 0.28);
+}
+
+.cs__pill.is-loading {
+  opacity: 0.9;
+}
+
+.cs__city {
+  font-weight: 950;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: rgba(15, 23, 42, 1);
+  flex: 0 0 auto;
+}
+
+.cs__sep {
+  width: 1px;
+  height: 16px;
+  background: rgba(15, 23, 42, 0.10);
+  flex: 0 0 auto;
+}
+
+.cs__wx {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cs__wxIcon {
+  width: 16px;
+  height: 16px;
+  color: rgba(2, 132, 199, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.cs__icon {
+  width: 16px;
+  height: 16px;
+}
+
+.cs__temp {
+  font-weight: 950;
+  font-size: 12px;
+  color: rgba(2, 132, 199, 1);
+  white-space: nowrap;
+}
+
+.cs__aqi {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+}
+
+.cs__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(51, 65, 85, 1);
+  box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.04);
+}
+
+.cs__dot--good {
+  background: rgba(22, 163, 74, 1);
+}
+.cs__dot--moderate {
+  background: rgba(234, 179, 8, 1);
+}
+.cs__dot--sensitive {
+  background: rgba(249, 115, 22, 1);
+}
+.cs__dot--unhealthy {
+  background: rgba(239, 68, 68, 1);
+}
+.cs__dot--very-unhealthy {
+  background: rgba(147, 51, 234, 1);
+}
+.cs__dot--hazard {
+  background: rgba(17, 24, 39, 1);
+}
+
+.cs__aqiLabel {
+  font-weight: 900;
+  font-size: 11px;
+  color: rgba(51, 65, 85, 1);
+  letter-spacing: 0.08em;
+}
+
+.cs__aqiValue {
+  font-weight: 950;
+  font-size: 12px;
+  color: rgba(15, 23, 42, 1);
+  white-space: nowrap;
+}
+
+.cs__menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 60;
+  width: 220px;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.14);
+  padding: 8px;
+  display: grid;
+  gap: 6px;
+}
+
+.cs--right .cs__menu {
+  left: auto;
+  right: 0;
+}
+
+.cs__item {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(15, 23, 42, 0.02);
+  border-radius: 12px;
+  padding: 10px 10px;
+  font-weight: 850;
+  font-size: 13px;
+  color: rgba(15, 23, 42, 1);
+}
+
+.cs__item:hover {
+  border-color: rgba(37, 99, 235, 0.30);
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.cs__item.is-active {
+  border-color: rgba(37, 99, 235, 0.40);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.10), rgba(249, 115, 22, 0.06));
+}
+
+@media (max-width: 520px) {
+  .cs {
+    max-width: 100%;
+  }
+
+  .cs__pill {
+    padding: 6px 10px;
+    gap: 8px;
+  }
+
+  .cs__city,
+  .cs__temp,
+  .cs__aqiValue {
+    font-size: 11px;
+  }
+
+  .cs__icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .cs__menu {
+    width: 100%;
+  }
+
+  .cs__aqiLabel {
+    display: none;
+  }
+}

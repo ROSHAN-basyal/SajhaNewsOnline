@@ -1,6 +1,7 @@
 "use client";
 
 import AdSlot from "./ads/AdSlot";
+import ElectionCountdown from "./ElectionCountdown";
 import "../styles/sidebar.css";
 
 const trendingTopics = [
@@ -14,19 +15,21 @@ const trendingTopics = [
 
 export default function Sidebar() {
   return (
-    <aside className="sidebar" aria-label="Sidebar">
-      <section className="sidebar-block" aria-label="Advertisement">
+    <aside className="sidebar" aria-label="साइडबार">
+      <ElectionCountdown />
+
+      <section className="sidebar-block" aria-label="विज्ञापन">
         <header className="sidebar-block__header">
-          <h3 className="sidebar-block__title">Sponsored</h3>
+          <h3 className="sidebar-block__title">विज्ञापन</h3>
         </header>
         <div className="sidebar-block__body">
-          <AdSlot placement="sidebar_top" />
+          <AdSlot placement="sidebar_top" label="विज्ञापन" />
         </div>
       </section>
 
-      <section className="sidebar-block" aria-label="Trending now">
+      <section className="sidebar-block" aria-label="ट्रेन्डिङ">
         <header className="sidebar-block__header">
-          <h3 className="sidebar-block__title">Trending Now</h3>
+          <h3 className="sidebar-block__title">ट्रेन्डिङ</h3>
         </header>
         <div className="sidebar-block__body">
           <ol className="trend-list">
@@ -40,21 +43,21 @@ export default function Sidebar() {
         </div>
       </section>
 
-      <section className="sidebar-block" aria-label="Advertisement">
+      <section className="sidebar-block" aria-label="विज्ञापन">
         <header className="sidebar-block__header">
-          <h3 className="sidebar-block__title">Sponsored</h3>
+          <h3 className="sidebar-block__title">विज्ञापन</h3>
         </header>
         <div className="sidebar-block__body">
-          <AdSlot placement="sidebar_mid" />
+          <AdSlot placement="sidebar_mid" label="विज्ञापन" />
         </div>
       </section>
 
-      <section className="sidebar-block" aria-label="Advertisement">
+      <section className="sidebar-block" aria-label="विज्ञापन">
         <header className="sidebar-block__header">
-          <h3 className="sidebar-block__title">Sponsored</h3>
+          <h3 className="sidebar-block__title">विज्ञापन</h3>
         </header>
         <div className="sidebar-block__body">
-          <AdSlot placement="footer" />
+          <AdSlot placement="footer" label="विज्ञापन" />
         </div>
       </section>
     </aside>
