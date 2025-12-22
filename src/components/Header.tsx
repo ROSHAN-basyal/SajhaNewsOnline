@@ -49,16 +49,8 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
           </div>
 
           <Link href="/" aria-label="Sajha News Online - Home" className="site-header__title">
-            <span className="site-header__titleRow">
-              <span className="site-header__titleIcon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
-                  <path d="M8 8h8M8 12h8M8 16h6" strokeLinecap="round" />
-                </svg>
-              </span>
-              <span className="brand__name">Sajha News Online</span>
-            </span>
-            <span className="brand__tagline">नेपाललाई जोड्ने समाचार।</span>
+            <img className="brand__logo" src="/images/logo.png" alt="Sajha News Online logo" />
+            <span className="brand__tagline">नेपाललाई जोडने समाचार।</span>
           </Link>
 
           <div className="site-header__side">
@@ -84,3 +76,4 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
     </>
   );
 }
+

@@ -11,7 +11,7 @@
 .ad-form-container .form-header {
   padding: 14px 16px;
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(249, 115, 22, 0.06));
+  background: linear-gradient(135deg, rgba(1, 104, 179, 0.08), rgba(9, 151, 66, 0.06));
 }
 
 .ad-form-container .form-header h3 {
@@ -212,25 +212,25 @@
 }
 
 .ad-form-container .upload-area {
-  border: 1px dashed rgba(37, 99, 235, 0.28);
+  border: 1px dashed rgba(1, 104, 179, 0.28);
   border-radius: 18px;
   padding: 20px;
-  background: rgba(37, 99, 235, 0.04);
+  background: rgba(1, 104, 179, 0.04);
   text-align: center;
   cursor: pointer;
   margin-top: 12px;
 }
 
 .ad-form-container .upload-area.dragover {
-  background: rgba(37, 99, 235, 0.08);
-  border-color: rgba(37, 99, 235, 0.45);
+  background: rgba(1, 104, 179, 0.08);
+  border-color: rgba(1, 104, 179, 0.45);
 }
 
 .ad-form-container .upload-icon {
   display: block;
   font-size: 14px;
   font-weight: 950;
-  color: rgba(37, 99, 235, 1);
+  color: rgba(1, 104, 179, 1);
   margin-bottom: 8px;
 }
 
@@ -253,9 +253,9 @@
   font-weight: 900;
   font-size: 13px;
   letter-spacing: 0.01em;
-  background: rgba(37, 99, 235, 0.12);
-  color: rgba(37, 99, 235, 1);
-  border: 1px solid rgba(37, 99, 235, 0.22);
+  background: rgba(1, 104, 179, 0.12);
+  color: rgba(1, 104, 179, 1);
+  border: 1px solid rgba(1, 104, 179, 0.22);
 }
 
 .ad-form-container .upload-btn:disabled {
@@ -283,12 +283,12 @@
 }
 
 .ad-form-container .progress-native::-webkit-progress-value {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 1), rgba(2, 132, 199, 1));
+  background: linear-gradient(135deg, rgba(1, 104, 179, 1), rgba(1, 104, 179, 1));
   border-radius: 999px;
 }
 
 .ad-form-container .progress-native::-moz-progress-bar {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 1), rgba(2, 132, 199, 1));
+  background: linear-gradient(135deg, rgba(1, 104, 179, 1), rgba(1, 104, 179, 1));
   border-radius: 999px;
 }
 
@@ -317,7 +317,7 @@
 .ad-form-container .toggle-btn {
   background: transparent;
   border: none;
-  color: rgba(37, 99, 235, 1);
+  color: rgba(1, 104, 179, 1);
   text-decoration: underline;
   text-underline-offset: 3px;
   padding: 8px;
@@ -328,3 +328,6 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+
+

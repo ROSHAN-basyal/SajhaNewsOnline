@@ -57,15 +57,15 @@ interface AdPlacementSelectorProps {
 }
 
 const IMPACT_COLORS: Record<AdPlacement['impact'], string> = {
-  high: '#2563eb',
-  medium: '#f97316',
-  low: '#16a34a'
+  high: '#0168b3',
+  medium: '#099742',
+  low: '#099742'
 }
 
 function getPlacementStatus(existingAds: { [key: string]: number }, placementId: string) {
   const count = existingAds[placementId] || 0
-  if (count === 0) return { status: 'Available', color: '#16a34a' }
-  if (count < 3) return { status: `${count} existing`, color: '#f97316' }
+  if (count === 0) return { status: 'Available', color: '#099742' }
+  if (count < 3) return { status: `${count} existing`, color: '#099742' }
   return { status: 'Full (3+)', color: '#ef4444' }
 }
 
@@ -151,4 +151,3 @@ export default function AdPlacementSelector({
     </div>
   )
 }
-

@@ -52,10 +52,10 @@
   padding: 16px 12px;
   background: repeating-linear-gradient(
     135deg,
-    rgba(2, 132, 199, 0.05),
-    rgba(2, 132, 199, 0.05) 10px,
-    rgba(2, 132, 199, 0.02) 10px,
-    rgba(2, 132, 199, 0.02) 20px
+    rgba(1, 104, 179, 0.05),
+    rgba(1, 104, 179, 0.05) 10px,
+    rgba(1, 104, 179, 0.02) 10px,
+    rgba(1, 104, 179, 0.02) 20px
   );
 }
 
@@ -85,4 +85,7 @@
     background-position: 200% 0;
   }
 }
+
+
+
 

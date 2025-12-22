@@ -1,16 +1,16 @@
 /* Critical CSS (above-the-fold) */
 :root {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #f1f5f9;
+  --bg-primary: #f2f8fc;
+  --bg-secondary: #f1fbf4;
   --bg-card: #ffffff;
 
   --text-primary: #0f172a;
   --text-secondary: #334155;
   --text-muted: #64748b;
 
-  --border-color: rgba(15, 23, 42, 0.1);
-  --accent-primary: #2563eb;
-  --accent-secondary: #f97316;
+  --border-color: rgba(1, 104, 179, 0.12);
+  --accent-primary: #0168b3;
+  --accent-secondary: #099742;
 
   /* Geometric layout scale (4px baseline) */
   --space-unit: 4px;
@@ -60,7 +60,7 @@ body {
   right: 0;
   z-index: 60;
   background: rgba(248, 250, 252, 0.9);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(1, 104, 179, 0.18);
 }
 
 .loading {
@@ -90,11 +90,14 @@ body {
 }
 
 .backToTop:hover {
-  border-color: rgba(37, 99, 235, 0.5);
+  border-color: rgba(1, 104, 179, 0.5);
   color: var(--accent-primary);
 }
 
 .backToTop:focus-visible {
-  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline: 3px solid rgba(1, 104, 179, 0.35);
   outline-offset: 3px;
 }
+
+
+

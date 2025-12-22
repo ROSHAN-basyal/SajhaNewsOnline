@@ -16,32 +16,34 @@ export interface NewsPost {
   updated_at: string
 }
 
-export const NEWS_CATEGORIES = ['latest', 'breaking', 'politics', 'sports', 'business', 'entertainment'] as const
+export const NEWS_CATEGORIES = ['health', 'latest', 'international', 'cooperative', 'miscellaneous', 'sports', 'education'] as const
 
 export type NewsCategory = typeof NEWS_CATEGORIES[number]
 
 export type ConsumerLocale = 'en' | 'ne'
 
 export const CATEGORY_LABELS_EN: Record<NewsCategory, string> = {
-  latest: 'Latest',
-  breaking: 'Breaking',
-  politics: 'Politics',
+  health: 'Health',
+  latest: 'Latest News',
+  international: 'International',
+  cooperative: 'Cooperative',
+  miscellaneous: 'Miscellaneous',
   sports: 'Sports',
-  business: 'Business',
-  entertainment: 'Entertainment',
+  education: 'Education',
 }
 
 export const CATEGORY_LABELS_NE: Record<NewsCategory, string> = {
-  latest: 'ताजा',
-  breaking: 'तत्काल',
-  politics: 'राजनीति',
+  health: 'स्वास्थ्य',
+  latest: 'ताजा समाचार',
+  international: 'अन्तर्राष्ट्रिय',
+  cooperative: 'सहकारी',
+  miscellaneous: 'विविध',
   sports: 'खेलकुद',
-  business: 'अर्थ/व्यापार',
-  entertainment: 'मनोरञ्जन',
+  education: 'शिक्षा',
 }
 
 export const getCategoryLabel = (category: NewsCategory | 'all', locale: ConsumerLocale = 'en'): string => {
-  if (category === 'all') return locale === 'ne' ? 'सबै' : 'All'
+  if (category === 'all') return locale === 'ne' ? '\u0938\u092c\u0948' : 'All'
   const labels = locale === 'ne' ? CATEGORY_LABELS_NE : CATEGORY_LABELS_EN
   return labels[category] || category
 }

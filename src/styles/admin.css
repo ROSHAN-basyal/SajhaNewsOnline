@@ -5,8 +5,8 @@
   place-items: center;
   padding: 24px;
   background:
-    radial-gradient(900px 520px at 15% 10%, rgba(37, 99, 235, 0.12), transparent 55%),
-    radial-gradient(900px 520px at 85% 20%, rgba(249, 115, 22, 0.10), transparent 55%),
+    radial-gradient(900px 520px at 15% 10%, rgba(1, 104, 179, 0.12), transparent 55%),
+    radial-gradient(900px 520px at 85% 20%, rgba(9, 151, 66, 0.10), transparent 55%),
     var(--bg-primary, #f8fafc);
 }
 
@@ -85,7 +85,7 @@
 }
 
 .auth-input:focus {
-  outline: 3px solid rgba(37, 99, 235, 0.22);
+  outline: 3px solid rgba(1, 104, 179, 0.22);
   outline-offset: 2px;
 }
 
@@ -98,8 +98,8 @@
 
 .auth-password__toggle {
   border: none;
-  background: rgba(2, 132, 199, 0.08);
-  color: rgba(2, 132, 199, 1);
+  background: rgba(1, 104, 179, 0.08);
+  color: rgba(1, 104, 179, 1);
   border-radius: 10px;
   padding: 10px 12px;
   font-weight: 850;
@@ -237,10 +237,10 @@
 }
 
 .admin-tabs__tab.is-active {
-  background: rgba(37, 99, 235, 0.08);
-  color: rgba(37, 99, 235, 1);
+  background: rgba(1, 104, 179, 0.08);
+  color: rgba(1, 104, 179, 1);
   box-shadow:
-    0 6px 18px rgba(37, 99, 235, 0.16),
+    0 6px 18px rgba(1, 104, 179, 0.16),
     0 1px 0 rgba(255, 255, 255, 0.78) inset;
 }
 
@@ -290,9 +290,9 @@
   height: 54px;
   border: none;
   border-radius: 14px;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 1), rgba(2, 132, 199, 1));
+  background: linear-gradient(135deg, rgba(1, 104, 179, 1), rgba(1, 104, 179, 1));
   color: #ffffff;
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.28);
+  box-shadow: 0 10px 30px rgba(1, 104, 179, 0.28);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -312,7 +312,7 @@
 }
 
 .admin-fab:hover {
-  box-shadow: 0 14px 38px rgba(37, 99, 235, 0.34);
+  box-shadow: 0 14px 38px rgba(1, 104, 179, 0.34);
   transform: translateY(-1px);
 }
 
@@ -362,3 +362,6 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+
+

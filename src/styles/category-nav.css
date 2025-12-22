@@ -25,12 +25,12 @@
 
 .category-nav__item:hover {
   transform: translateY(-1px);
-  border-color: rgba(37, 99, 235, 0.35);
+  border-color: rgba(1, 104, 179, 0.35);
 }
 
 .category-nav__item.is-active {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(249, 115, 22, 0.08));
-  border-color: rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, rgba(1, 104, 179, 0.12), rgba(9, 151, 66, 0.08));
+  border-color: rgba(1, 104, 179, 0.4);
 }
 
 .category-nav--header {
@@ -61,3 +61,6 @@
     padding: 12px 14px;
   }
 }
+
+
+

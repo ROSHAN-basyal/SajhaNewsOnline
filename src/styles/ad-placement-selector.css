@@ -85,8 +85,8 @@
 }
 
 .site-map .is-selected {
-  border-color: rgba(37, 99, 235, 0.35) !important;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(249, 115, 22, 0.08)) !important;
+  border-color: rgba(1, 104, 179, 0.35) !important;
+  background: linear-gradient(135deg, rgba(1, 104, 179, 0.12), rgba(9, 151, 66, 0.08)) !important;
   color: var(--text-primary, #0f172a) !important;
 }
 
@@ -109,12 +109,12 @@
 
 .placement-card:hover {
   transform: translateY(-1px);
-  border-color: rgba(37, 99, 235, 0.35);
+  border-color: rgba(1, 104, 179, 0.35);
 }
 
 .placement-card.is-active {
-  border-color: rgba(37, 99, 235, 0.45);
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(249, 115, 22, 0.06));
+  border-color: rgba(1, 104, 179, 0.45);
+  background: linear-gradient(135deg, rgba(1, 104, 179, 0.08), rgba(9, 151, 66, 0.06));
 }
 
 .placement-card__top {
@@ -163,4 +163,7 @@
   font-size: 13px;
   color: var(--text-secondary, #334155);
 }
+
+
+
 

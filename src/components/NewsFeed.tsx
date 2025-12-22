@@ -71,7 +71,8 @@ export default function NewsFeed({ activeCategory }: NewsFeedProps) {
 
   const title = useMemo(() => {
     if (activeCategory === "all") return "ताजा अपडेट";
-    return `${getCategoryLabel(activeCategory, "ne")} समाचार`;
+    const label = getCategoryLabel(activeCategory, "ne");
+    return label.includes("समाचार") ? label : `${label} समाचार`;
   }, [activeCategory]);
 
   if (loading) {

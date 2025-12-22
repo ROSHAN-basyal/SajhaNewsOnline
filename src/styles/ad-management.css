@@ -95,8 +95,8 @@
 }
 
 .ad-nav .nav-btn.active {
-  background: rgba(37, 99, 235, 0.12);
-  color: rgba(37, 99, 235, 1);
+  background: rgba(1, 104, 179, 0.12);
+  color: rgba(1, 104, 179, 1);
 }
 
 .ad-content {
@@ -149,8 +149,8 @@
   border-radius: 16px;
   display: grid;
   place-items: center;
-  background: rgba(37, 99, 235, 0.12);
-  color: rgba(37, 99, 235, 1);
+  background: rgba(1, 104, 179, 0.12);
+  color: rgba(1, 104, 179, 1);
   font-weight: 950;
 }
 
@@ -228,3 +228,6 @@
 .recommendation-card p + p {
   margin-top: 6px;
 }
+
+
+

@@ -67,7 +67,7 @@
 .ad-card-header {
   padding: 14px 16px;
   border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(249, 115, 22, 0.06));
+  background: linear-gradient(135deg, rgba(1, 104, 179, 0.08), rgba(9, 151, 66, 0.06));
 }
 
 .ad-title {
@@ -97,8 +97,8 @@
 }
 
 .status-badge.active {
-  background: rgba(22, 163, 74, 0.10);
-  border-color: rgba(22, 163, 74, 0.18);
+  background: rgba(9, 151, 66, 0.10);
+  border-color: rgba(9, 151, 66, 0.18);
   color: rgba(21, 128, 61, 1);
 }
 
@@ -116,14 +116,14 @@
 }
 
 .placement-badge {
-  background: rgba(2, 132, 199, 0.10);
-  border-color: rgba(2, 132, 199, 0.18);
-  color: rgba(2, 132, 199, 1);
+  background: rgba(1, 104, 179, 0.10);
+  border-color: rgba(1, 104, 179, 0.18);
+  color: rgba(1, 104, 179, 1);
 }
 
 .priority-badge {
-  background: rgba(249, 115, 22, 0.10);
-  border-color: rgba(249, 115, 22, 0.18);
+  background: rgba(9, 151, 66, 0.10);
+  border-color: rgba(9, 151, 66, 0.18);
   color: rgba(194, 65, 12, 1);
 }
 
@@ -176,7 +176,7 @@
 }
 
 .click-url {
-  color: rgba(37, 99, 235, 1);
+  color: rgba(1, 104, 179, 1);
   word-break: break-word;
 }
 
@@ -188,8 +188,8 @@
 }
 
 .scheduled-notice {
-  background: rgba(249, 115, 22, 0.10);
-  border: 1px solid rgba(249, 115, 22, 0.18);
+  background: rgba(9, 151, 66, 0.10);
+  border: 1px solid rgba(9, 151, 66, 0.18);
   color: rgba(194, 65, 12, 1);
 }
 
@@ -237,7 +237,7 @@
 }
 
 .btn-edit {
-  color: rgba(37, 99, 235, 1);
+  color: rgba(1, 104, 179, 1);
 }
 
 .btn-delete,
@@ -251,4 +251,7 @@
   color: rgba(51, 65, 85, 1);
   background: rgba(15, 23, 42, 0.06);
 }
+
+
+
 

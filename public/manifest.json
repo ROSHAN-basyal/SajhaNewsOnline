@@ -4,7 +4,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
-  "theme_color": "#2563eb",
+  "theme_color": "#0168b3",
   "description": "Sajha News Online - Latest news from Nepal and beyond.",
   "icons": [
     { "src": "/images/logo.png", "sizes": "any", "type": "image/png" }

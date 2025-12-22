@@ -39,14 +39,14 @@
 }
 
 .range-btn.active {
-  background: rgba(37, 99, 235, 0.12);
-  color: rgba(37, 99, 235, 1);
+  background: rgba(1, 104, 179, 0.12);
+  color: rgba(1, 104, 179, 1);
 }
 
 .refresh-btn {
   border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(2, 132, 199, 0.08);
-  color: rgba(2, 132, 199, 1);
+  background: rgba(1, 104, 179, 0.08);
+  color: rgba(1, 104, 179, 1);
   border-radius: 999px;
   padding: 10px 12px;
   font-weight: 950;
@@ -65,8 +65,8 @@
   width: 26px;
   height: 26px;
   border-radius: 999px;
-  border: 3px solid rgba(37, 99, 235, 0.18);
-  border-top-color: rgba(37, 99, 235, 1);
+  border: 3px solid rgba(1, 104, 179, 0.18);
+  border-top-color: rgba(1, 104, 179, 1);
   animation: ads-spin 0.9s linear infinite;
 }
 
@@ -105,7 +105,7 @@
   border-radius: 18px;
   display: grid;
   place-items: center;
-  background: rgba(37, 99, 235, 0.12);
+  background: rgba(1, 104, 179, 0.12);
 }
 
 .stat-value {
@@ -198,7 +198,7 @@
 
 .placement-bar-fill {
   height: 100%;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 1), rgba(2, 132, 199, 1));
+  background: linear-gradient(135deg, rgba(1, 104, 179, 1), rgba(1, 104, 179, 1));
 }
 
 .section-header-with-controls {
@@ -226,8 +226,8 @@
 }
 
 .metric-btn.active {
-  background: rgba(249, 115, 22, 0.10);
-  border-color: rgba(249, 115, 22, 0.18);
+  background: rgba(9, 151, 66, 0.10);
+  border-color: rgba(9, 151, 66, 0.18);
   color: rgba(194, 65, 12, 1);
 }
 
@@ -252,8 +252,8 @@
   border-radius: 18px;
   display: grid;
   place-items: center;
-  background: rgba(37, 99, 235, 0.12);
-  color: rgba(37, 99, 235, 1);
+  background: rgba(1, 104, 179, 0.12);
+  color: rgba(1, 104, 179, 1);
   font-weight: 950;
 }
 
@@ -349,7 +349,7 @@
   border-radius: 18px;
   display: grid;
   place-items: center;
-  background: rgba(249, 115, 22, 0.10);
+  background: rgba(9, 151, 66, 0.10);
 }
 
 .insight-content h4 {
@@ -370,4 +370,7 @@
   color: var(--text-muted, #64748b);
   font-weight: 750;
 }
+
+
+
 

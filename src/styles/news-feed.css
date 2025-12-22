@@ -60,7 +60,7 @@
   border: 1px dashed var(--border-color, rgba(0, 0, 0, 0.18));
   border-radius: 16px;
   padding: 18px;
-  background: rgba(2, 132, 199, 0.03);
+  background: rgba(1, 104, 179, 0.03);
 }
 
 .feed__empty h3 {
@@ -124,8 +124,8 @@
   align-items: center;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(37, 99, 235, 0.12);
-  color: rgba(37, 99, 235, 1);
+  background: rgba(1, 104, 179, 0.12);
+  color: rgba(1, 104, 179, 1);
   font-weight: 800;
   font-size: 12px;
   letter-spacing: 0.02em;
@@ -198,7 +198,7 @@
 .story__toast {
   margin-top: 10px;
   font-size: 13px;
-  color: rgba(22, 163, 74, 1);
+  color: rgba(9, 151, 66, 1);
   font-weight: 700;
 }
 
@@ -215,7 +215,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: rgba(37, 99, 235, 1);
+  color: rgba(1, 104, 179, 1);
   text-decoration: none;
   font-weight: 750;
   font-size: 14px;
@@ -266,7 +266,7 @@
   margin: 10px 0 0;
   font-size: 13px;
   font-weight: 750;
-  color: rgba(22, 163, 74, 1);
+  color: rgba(9, 151, 66, 1);
 }
 
 .article__hero {
@@ -281,8 +281,8 @@
   margin: 12px 0 0;
   padding: 14px 16px;
   border-radius: 16px;
-  border: 1px solid rgba(249, 115, 22, 0.18);
-  background: rgba(249, 115, 22, 0.06);
+  border: 1px solid rgba(9, 151, 66, 0.18);
+  background: rgba(9, 151, 66, 0.06);
   color: var(--text-secondary, #334155);
   line-height: 1.7;
   font-size: 16px;
@@ -313,23 +313,23 @@
 }
 
 .btn.btn-primary {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 1), rgba(2, 132, 199, 1));
+  background: linear-gradient(135deg, rgba(1, 104, 179, 1), rgba(1, 104, 179, 1));
   color: #ffffff;
-  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 10px 24px rgba(1, 104, 179, 0.25);
 }
 
 .btn.btn-primary:hover {
-  box-shadow: 0 14px 34px rgba(37, 99, 235, 0.32);
+  box-shadow: 0 14px 34px rgba(1, 104, 179, 0.32);
 }
 
 .btn.btn-ghost {
-  background: rgba(2, 132, 199, 0.08);
-  color: rgba(2, 132, 199, 1);
-  border: 1px solid rgba(2, 132, 199, 0.18);
+  background: rgba(1, 104, 179, 0.08);
+  color: rgba(1, 104, 179, 1);
+  border: 1px solid rgba(1, 104, 179, 0.18);
 }
 
 .btn.btn-ghost:hover {
-  background: rgba(2, 132, 199, 0.12);
+  background: rgba(1, 104, 179, 0.12);
 }
 
 .btn.btn-secondary {
@@ -396,7 +396,7 @@
 }
 
 .icon-btn.share {
-  color: rgba(2, 132, 199, 1);
+  color: rgba(1, 104, 179, 1);
 }
 
 @media (min-width: 900px) {
@@ -516,3 +516,6 @@
     background-position: 200% 0;
   }
 }
+
+
+
