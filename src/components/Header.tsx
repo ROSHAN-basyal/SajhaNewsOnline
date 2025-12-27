@@ -13,7 +13,10 @@ type HeaderProps = {
   onCategoryChange: (category: NewsCategory | "all") => void;
 };
 
-export default function Header({ activeCategory, onCategoryChange }: HeaderProps) {
+export default function Header({
+  activeCategory,
+  onCategoryChange,
+}: HeaderProps) {
   const barRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -22,7 +25,10 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
 
     const update = () => {
       const height = el.getBoundingClientRect().height;
-      document.documentElement.style.setProperty("--header-bar-h", `${Math.ceil(height)}px`);
+      document.documentElement.style.setProperty(
+        "--header-bar-h",
+        `${Math.ceil(height)}px`
+      );
     };
 
     update();
@@ -48,9 +54,17 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
             <NepaliClock />
           </div>
 
-          <Link href="/" aria-label="Sajha News Online - Home" className="site-header__title">
-            <img className="brand__logo" src="/images/logo.png" alt="Sajha News Online logo" />
-            <span className="brand__tagline">नेपाललाई जोडने समाचार।</span>
+          <Link
+            href="/"
+            aria-label="Sajha News Online - Home"
+            className="site-header__title"
+          >
+            <img
+              className="brand__logo"
+              src="/images/logo.png"
+              alt="Sajha News Online logo"
+            />
+            <span className="brand__tagline">नेपाललाई जोडने समाचार</span>
           </Link>
 
           <div className="site-header__side">
@@ -76,4 +90,3 @@ export default function Header({ activeCategory, onCategoryChange }: HeaderProps
     </>
   );
 }
-
