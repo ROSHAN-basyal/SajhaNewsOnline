@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Advertisement } from "../app/api/ads/route";
 import "../styles/ad-analytics.css";
 
@@ -24,11 +24,7 @@ export default function AdAnalytics({ ads }: AdAnalyticsProps) {
     "impressions" | "clicks" | "ctr"
   >("impressions");
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [timeRange, ads]);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(`/api/ads/track?range=${timeRange}`);
@@ -52,7 +48,11 @@ export default function AdAnalytics({ ads }: AdAnalyticsProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [timeRange]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics, ads]);
 
   const getTotalMetrics = () => {
     return analyticsData.reduce(

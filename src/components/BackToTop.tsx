@@ -6,10 +6,14 @@ import { usePathname } from "next/navigation";
 export default function BackToTop() {
   const [visible, setVisible] = useState(false);
   const pathname = usePathname();
-
-  if (pathname?.startsWith("/secret-admin-portal")) return null;
+  const isHidden = pathname?.startsWith("/secret-admin-portal");
 
   useEffect(() => {
+    if (isHidden) {
+      setVisible(false);
+      return;
+    }
+
     let ticking = false;
 
     const update = () => {
@@ -26,9 +30,9 @@ export default function BackToTop() {
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHidden]);
 
-  if (!visible) return null;
+  if (isHidden || !visible) return null;
 
   const onClick = () => {
     const prefersReducedMotion =

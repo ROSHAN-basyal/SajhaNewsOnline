@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import CategoryNav from "./CategoryNav";
 import { NewsCategory } from "../lib/supabase";
@@ -59,10 +60,13 @@ export default function Header({
             aria-label="Sajha News Online - Home"
             className="site-header__title"
           >
-            <img
+            <Image
               className="brand__logo"
               src="/images/logo.png"
               alt="Sajha News Online logo"
+              width={128}
+              height={128}
+              priority
             />
             <span className="brand__tagline">नेपाललाई जोडने समाचार</span>
           </Link>

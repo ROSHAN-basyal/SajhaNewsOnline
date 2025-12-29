@@ -29,21 +29,25 @@ function getBikramSambatParts(now: Date): BsParts {
 }
 
 export default function NepaliClock() {
-  const [now, setNow] = useState(() => new Date());
-  const [bs, setBs] = useState<BsParts>(() => getBikramSambatParts(new Date()));
+  const [now, setNow] = useState<Date | null>(null);
+  const [bs, setBs] = useState<BsParts | null>(null);
 
   useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), 1000);
+    const update = () => setNow(new Date());
+    update();
+    const id = window.setInterval(update, 1000);
     return () => window.clearInterval(id);
   }, []);
 
   useEffect(() => {
-    const id = window.setInterval(() => setBs(getBikramSambatParts(new Date())), 60_000);
+    const update = () => setBs(getBikramSambatParts(new Date()));
+    update();
+    const id = window.setInterval(update, 60_000);
     return () => window.clearInterval(id);
   }, []);
 
-  const time = useMemo(() => formatNepalTime(now), [now]);
-  const bsDate = useMemo(() => `${bs.year}/${bs.month}/${bs.day}`, [bs]);
+  const time = useMemo(() => (now ? formatNepalTime(now) : "--:--:--"), [now]);
+  const bsDate = useMemo(() => (bs ? `${bs.year}/${bs.month}/${bs.day}` : "----/--/--"), [bs]);
 
   return (
     <div className="np-clock" aria-label="Nepali date and time">
@@ -52,4 +56,3 @@ export default function NepaliClock() {
     </div>
   );
 }
-
