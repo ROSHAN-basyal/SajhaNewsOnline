@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { supabase } from "../../../lib/supabase";
+import { getSiteUrl, resolveSocialImageUrl } from "../../../lib/metadata";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://sajhanewsonline.com";
+  const base = getSiteUrl();
   try {
     const { data } = await supabase
       .from("news_posts")
@@ -15,8 +16,11 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     const title = data.title || "समाचार";
     const description = data.summary || "साझा न्यूज अनलाइनमा ताजा समाचार पढ्नुहोस्।";
     const url = `${base}/posts/${data.id}`;
+    const imageUrl = data.image_url ? resolveSocialImageUrl(data.image_url) : null;
+    const logoUrl = resolveSocialImageUrl("/images/logo.png");
 
     return {
+      metadataBase: new URL(base),
       title,
       description,
       alternates: { canonical: `/posts/${data.id}` },
@@ -25,15 +29,15 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
         url,
         title,
         description,
-        images: data.image_url
-          ? [{ url: data.image_url, width: 1200, height: 630, alt: title }]
-          : [{ url: "/images/logo.png", width: 512, height: 512, alt: "साझा न्यूज अनलाइन" }],
+        images: imageUrl
+          ? [{ url: imageUrl, width: 1200, height: 630, alt: title }]
+          : [{ url: logoUrl, width: 512, height: 512, alt: "साझा न्यूज अनलाइन" }],
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
-        images: data.image_url ? [data.image_url] : ["/images/logo.png"],
+        images: imageUrl ? [imageUrl] : [logoUrl],
       },
     };
   } catch {
