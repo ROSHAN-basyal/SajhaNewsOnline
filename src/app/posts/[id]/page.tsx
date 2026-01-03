@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { supabase, NewsPost } from "../../../lib/supabase";
+import { getPostUrl } from "../../../lib/metadata";
 import LazyImage from "../../../components/LazyImage";
 
 interface PageProps {
@@ -15,8 +16,7 @@ export default function PostPage({ params }: PageProps) {
   const [copied, setCopied] = useState(false);
 
   const shareUrl = useMemo(() => {
-    const base = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
-    return base ? `${base}/posts/${params.id}` : `/posts/${params.id}`;
+    return getPostUrl(params.id);
   }, [params.id]);
 
   useEffect(() => {
@@ -165,7 +165,7 @@ export default function PostPage({ params }: PageProps) {
               </a>
               <a
                 className="icon-btn wa"
-                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " " + shareUrl)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(`${post.title}\n${shareUrl}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp मा सेयर गर्नुहोस्"

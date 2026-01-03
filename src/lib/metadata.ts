@@ -21,3 +21,17 @@ export const resolveSocialImageUrl = (rawUrl?: string | null) => {
 
   return `${siteUrl}/${trimmed}`;
 };
+
+export const resolveSiteUrl = (path = "") => {
+  const siteUrl = getSiteUrl();
+  const trimmed = path.trim();
+
+  if (!trimmed) return siteUrl;
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+  if (trimmed.startsWith("//")) return `https:${trimmed}`;
+  if (trimmed.startsWith("/")) return `${siteUrl}${trimmed}`;
+
+  return `${siteUrl}/${trimmed}`;
+};
+
+export const getPostUrl = (id: string) => resolveSiteUrl(`/posts/${id}`);

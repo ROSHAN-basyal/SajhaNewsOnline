@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import LazyImage from "./LazyImage";
 import { getCategoryLabel, NewsPost } from "../lib/supabase";
+import { getPostUrl } from "../lib/metadata";
 import "../styles/news-feed.css";
 
 interface NewsPostCardProps {
@@ -20,8 +21,7 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
   const [copied, setCopied] = useState(false);
 
   const shareUrl = useMemo(() => {
-    const base = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
-    return base ? `${base}/posts/${post.id}` : `/posts/${post.id}`;
+    return getPostUrl(post.id);
   }, [post.id]);
 
   const readingMinutes = useMemo(() => estimateReadingMinutes(post.content || ""), [post.content]);
@@ -177,7 +177,7 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
 
             <a
               className="icon-btn wa"
-              href={`https://api.whatsapp.com/send?text=${encodeURIComponent(post.title + " " + shareUrl)}`}
+              href={`https://wa.me/?text=${encodeURIComponent(`${post.title}\n${shareUrl}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp मा सेयर गर्नुहोस्"
