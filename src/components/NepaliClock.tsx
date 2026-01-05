@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ADToBS } from "bikram-sambat-js";
+import { getBikramSambatParts, BsParts } from "../lib/nepaliDate";
 
 function formatNepalTime(now: Date) {
   return new Intl.DateTimeFormat("ne-NP", {
@@ -11,21 +11,6 @@ function formatNepalTime(now: Date) {
     second: "2-digit",
     hour12: true,
   }).format(now);
-}
-
-type BsParts = { year: string; month: string; day: string };
-
-function getBikramSambatParts(now: Date): BsParts {
-  const adInNepal = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Kathmandu",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(now);
-
-  const bs = ADToBS(adInNepal);
-  const [year = "", month = "", day = ""] = bs.split("-");
-  return { year, month, day };
 }
 
 export default function NepaliClock() {
