@@ -1,7 +1,6 @@
 "use client";
 
 import AdSlot from "./ads/AdSlot";
-import ElectionCountdown from "./ElectionCountdown";
 import "../styles/sidebar.css";
 
 const trendingTopics = [
@@ -16,8 +15,6 @@ const trendingTopics = [
 export default function Sidebar() {
   return (
     <aside className="sidebar" aria-label="साइडबार">
-      <ElectionCountdown />
-
       <section className="sidebar-block" aria-label="विज्ञापन">
         <header className="sidebar-block__header">
           <h3 className="sidebar-block__title">विज्ञापन</h3>

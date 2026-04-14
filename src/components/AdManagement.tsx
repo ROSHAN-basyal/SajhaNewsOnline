@@ -5,7 +5,7 @@ import AdPlacementSelector from "./AdPlacementSelector";
 import AdForm from "./AdForm";
 import AdsList from "./Adslist";
 import AdAnalytics from "./AdAnalytics";
-import { Advertisement } from "../app/api/ads/route";
+import type { Advertisement } from "../lib/ads";
 import "../styles/ad-management.css";
 
 type AdView = "list" | "create" | "edit" | "analytics" | "placement";

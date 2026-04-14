@@ -1,23 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../lib/supabase'
+import { isSupabaseConfigured, supabase } from '../../../lib/supabase'
+import { getLocalAdminUser, isLocalAdminSession } from '../../../lib/devAdmin'
 import { cookies } from 'next/headers'
-
-export interface Advertisement {
-  id?: string
-  title: string
-  description?: string
-  image_url: string
-  click_url: string
-  placement: 'header' | 'sidebar_top' | 'in_content' | 'sidebar_mid' | 'footer'
-  status: 'active' | 'paused' | 'expired' | 'draft'
-  priority: number
-  start_date?: string
-  end_date?: string
-  target_impressions: number
-  target_clicks: number
-  created_at?: string
-  updated_at?: string
-}
+import type { Advertisement } from '../../../lib/ads'
+import {
+  createLocalAd,
+  deleteLocalAd,
+  getLocalAdById,
+  listLocalAds,
+  updateLocalAd,
+} from '../../../lib/localDb'
 
 // Verify admin session
 async function verifyAdminSession(request: NextRequest) {
@@ -25,6 +17,17 @@ async function verifyAdminSession(request: NextRequest) {
   const sessionCookie = cookieStore.get('admin_session')
   
   if (!sessionCookie) {
+    return null
+  }
+
+  if (isLocalAdminSession(sessionCookie.value)) {
+    return {
+      user_id: getLocalAdminUser().id,
+      admin_users: { username: getLocalAdminUser().username }
+    }
+  }
+
+  if (!isSupabaseConfigured) {
     return null
   }
 
@@ -49,6 +52,17 @@ export async function GET(request: NextRequest) {
     // Check if admin is authenticated
     const adminSession = await verifyAdminSession(request)
     const isAdmin = !!adminSession
+
+    if (!isSupabaseConfigured) {
+      return NextResponse.json({
+        ads: listLocalAds({
+          placement,
+          status,
+          isAdmin,
+          includeAnalytics,
+        }),
+      })
+    }
 
     let query = supabase.from('advertisements').select('*')
 
@@ -125,7 +139,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate placement
     const validPlacements = ['header', 'sidebar_top', 'in_content', 'sidebar_mid', 'footer']
     if (!validPlacements.includes(adData.placement)) {
       return NextResponse.json(
@@ -147,6 +160,15 @@ export async function POST(request: NextRequest) {
       end_date: adData.end_date || null,
       target_impressions: adData.target_impressions || 0,
       target_clicks: adData.target_clicks || 0
+    }
+
+    if (!isSupabaseConfigured) {
+      const ad = createLocalAd(newAd)
+
+      return NextResponse.json({
+        message: 'Advertisement created successfully',
+        ad,
+      })
     }
 
     const { data: ad, error } = await supabase
@@ -198,6 +220,22 @@ export async function PUT(request: NextRequest) {
     delete updateData.created_at // Remove timestamp fields
     delete updateData.updated_at
 
+    if (!isSupabaseConfigured) {
+      const ad = updateLocalAd(adId, updateData)
+
+      if (!ad) {
+        return NextResponse.json(
+          { error: 'Advertisement not found' },
+          { status: 404 }
+        )
+      }
+
+      return NextResponse.json({
+        message: 'Advertisement updated successfully',
+        ad,
+      })
+    }
+
     const { data: ad, error } = await supabase
       .from('advertisements')
       .update(updateData)
@@ -248,6 +286,23 @@ export async function DELETE(request: NextRequest) {
         { error: 'Advertisement ID is required' },
         { status: 400 }
       )
+    }
+
+    if (!isSupabaseConfigured) {
+      const ad = getLocalAdById(adId)
+      const deleted = deleteLocalAd(adId)
+
+      if (!deleted) {
+        return NextResponse.json(
+          { error: 'Advertisement not found' },
+          { status: 404 }
+        )
+      }
+
+      console.log(`✅ Advertisement deleted: ${ad?.title || adId}`)
+      return NextResponse.json({
+        message: 'Advertisement deleted successfully',
+      })
     }
 
     // First get the ad data for logging

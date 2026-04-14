@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useState } from "react";
-import { supabase, NewsPost, getCategoryLabel, NewsCategory } from "../lib/supabase";
+import { NewsPost, getCategoryLabel, NewsCategory } from "../lib/supabase";
 import NewsPostCard from "./NewsPostCard";
 import AdSlot from "./ads/AdSlot";
 import "../styles/news-feed.css";
@@ -30,30 +30,34 @@ export default function NewsFeed({ activeCategory }: NewsFeedProps) {
       if (!append) setLoading(true);
       else setLoadingMore(true);
 
-      let query = supabase
-        .from("news_posts")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const params = new URLSearchParams({
+        page: String(pageNumber),
+        limit: String(POSTS_PER_PAGE),
+      });
 
       if (activeCategory !== "all") {
-        query = query.eq("category", activeCategory);
+        params.set("category", activeCategory);
       }
 
-      const { data, error } = await query.range(
-        pageNumber * POSTS_PER_PAGE,
-        (pageNumber + 1) * POSTS_PER_PAGE - 1
-      );
+      const response = await fetch(`/api/posts?${params.toString()}`, {
+        cache: "no-store",
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+
+      const payload = (await response.json()) as { posts?: NewsPost[] };
+      const data = payload.posts || [];
 
       if (append) {
-        setPosts((prev) => [...prev, ...(data as NewsPost[])]);
+        setPosts((prev) => [...prev, ...data]);
       } else {
-        setPosts(data as NewsPost[]);
+        setPosts(data);
         setPage(0);
       }
 
-      setHasMore((data as any[])?.length === POSTS_PER_PAGE);
+      setHasMore(data.length === POSTS_PER_PAGE);
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "समाचार ल्याउन समस्या भयो");

@@ -1,9 +1,10 @@
-/* Sidebar */
+/* ── Sidebar ─────────────────────────────────────────────────── */
+
 .sidebar {
   min-width: 0;
   display: grid;
   padding: 18px 0;
-  gap: 14px;
+  gap: 16px;
 }
 
 @media (min-width: 1024px) {
@@ -13,120 +14,113 @@
 }
 
 .sidebar-block {
-  border-radius: 18px;
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
-  background: var(--bg-card, #ffffff);
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--transition-normal),
+    border-color var(--transition-normal);
+}
+
+.sidebar-block:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
 }
 
 .sidebar-block__header {
-  padding: 12px 14px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
-  background: linear-gradient(135deg, rgba(1, 104, 179, 0.08), rgba(9, 151, 66, 0.06));
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(18, 59, 131, 0.06);
+  background: var(--bg-card);
+  position: relative;
+  padding-left: 20px;
+}
+
+.sidebar-block__header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(180deg, var(--green-700) 0%, var(--green-500) 62%, var(--teal-700) 100%);
 }
 
 .sidebar-block__title {
   margin: 0;
   font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
+  font-weight: 800;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: var(--text-primary, #0f172a);
+  color: var(--teal-900);
 }
 
 .sidebar-block__body {
-  padding: 12px;
+  padding: 14px;
 }
 
-/* Election countdown */
-.countdown {
-  display: grid;
-  gap: 8px;
-}
+/* ── Trending List ── */
 
-.countdown__label {
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
-  font-size: 13px;
-}
-
-.countdown__value {
-  font-variant-numeric: tabular-nums;
-  font-weight: 950;
-  font-size: 18px;
-  letter-spacing: -0.01em;
-  color: rgba(1, 104, 179, 1);
-}
-
-.countdown__num {
-  font-weight: 950;
-}
-
-.countdown__unit {
-  font-size: 12px;
-  font-weight: 900;
-  color: rgba(51, 65, 85, 1);
-  margin: 0 6px 0 4px;
-}
-
-.countdown__sep {
-  color: rgba(15, 23, 42, 0.22);
-  margin: 0 4px;
-}
-
-.countdown__note {
-  font-size: 12px;
-  font-weight: 650;
-  color: var(--text-muted, #64748b);
-}
-
-.countdown__loading {
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--text-secondary, #334155);
-}
-
-/* Trending list */
 .trend-list {
   list-style: none;
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .trend-item {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 30px 1fr;
   gap: 10px;
   align-items: center;
-  padding: 10px 10px;
-  border-radius: 14px;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  background: rgba(15, 23, 42, 0.02);
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform 0.12s var(--ease-spring);
+  cursor: default;
+}
+
+.trend-item:hover {
+  background: var(--teal-50);
+  border-color: rgba(18, 59, 131, 0.08);
+  transform: translateX(2px);
 }
 
 .trend-index {
-  width: 28px;
-  height: 28px;
-  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
   display: grid;
   place-items: center;
-  background: rgba(1, 104, 179, 0.14);
-  color: rgba(1, 104, 179, 1);
-  font-weight: 900;
+  background: var(--teal-100);
+  color: var(--teal-800);
+  font-weight: 800;
   font-size: 12px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.trend-item:hover .trend-index {
+  background: var(--green-600);
+  color: #ffffff;
 }
 
 .trend-topic {
-  font-weight: 800;
-  color: rgba(1, 104, 179, 1);
-  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal-800);
+  font-size: 13.5px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  transition: color var(--transition-fast);
 }
 
-
-
+.trend-item:hover .trend-topic {
+  color: var(--teal-900);
+}

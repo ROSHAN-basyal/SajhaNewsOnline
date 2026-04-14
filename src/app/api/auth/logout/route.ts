@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../../lib/supabase'
+import { isSupabaseConfigured, supabase } from '../../../../lib/supabase'
+import { isLocalAdminSession } from '../../../../lib/devAdmin'
 
 export async function POST(request: NextRequest) {
   try {
     const sessionToken = request.cookies.get('admin_session')?.value
 
-    if (sessionToken) {
+    if (sessionToken && !isLocalAdminSession(sessionToken) && isSupabaseConfigured) {
       // Delete the session from database
       await supabase
         .from('admin_sessions')

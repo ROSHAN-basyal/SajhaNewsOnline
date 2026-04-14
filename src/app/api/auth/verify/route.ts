@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../../lib/supabase'
+import { getSupabaseConfigError, isSupabaseConfigured, supabase } from '../../../../lib/supabase'
+import { getLocalAdminUser, isLocalAdminSession } from '../../../../lib/devAdmin'
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,6 +10,20 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         { authenticated: false },
         { status: 401 }
+      )
+    }
+
+    if (isLocalAdminSession(sessionToken)) {
+      return NextResponse.json({
+        authenticated: true,
+        user: getLocalAdminUser()
+      })
+    }
+
+    if (!isSupabaseConfigured) {
+      return NextResponse.json(
+        { authenticated: false, error: getSupabaseConfigError() },
+        { status: 503 }
       )
     }
 
@@ -53,6 +68,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { authenticated: false },
         { status: 401 }
+      )
+    }
+
+    if (isLocalAdminSession(sessionToken)) {
+      return NextResponse.json({
+        authenticated: true,
+        user: getLocalAdminUser()
+      })
+    }
+
+    if (!isSupabaseConfigured) {
+      return NextResponse.json(
+        { authenticated: false, error: getSupabaseConfigError() },
+        { status: 503 }
       )
     }
 

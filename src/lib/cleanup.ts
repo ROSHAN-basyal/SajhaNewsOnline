@@ -1,39 +1,78 @@
 import { supabase } from './supabase'
+import type { NewsPost } from './supabase'
+
+const DEFAULT_POST_DURATION_DAYS = 30
+
+export function clampDurationDays(value?: number | null): number {
+  if (!Number.isFinite(value)) return DEFAULT_POST_DURATION_DAYS
+  return Math.min(300, Math.max(1, Math.round(value as number)))
+}
+
+export function getPostDurationDays(post: Pick<NewsPost, 'duration_days'> | number | null | undefined): number {
+  if (typeof post === 'number') return clampDurationDays(post)
+  return clampDurationDays(post?.duration_days)
+}
+
+export function getPostExpirationDate(
+  post: Pick<NewsPost, 'created_at' | 'duration_days' | 'expires_at'>
+): Date {
+  if (post.expires_at) {
+    const parsedExpiry = new Date(post.expires_at)
+    if (!Number.isNaN(parsedExpiry.getTime())) return parsedExpiry
+  }
+
+  const created = new Date(post.created_at)
+  const expiry = new Date(created)
+  expiry.setDate(expiry.getDate() + getPostDurationDays(post))
+  return expiry
+}
 
 /**
- * Deletes news posts that are older than 30 days
+ * Deletes news posts that have passed their expiry date
  * Also deletes associated images from storage
  */
 export async function cleanupExpiredPosts() {
   try {
-    // Calculate the date 30 days ago
-    const thirtyDaysAgo = new Date()
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+    const now = new Date()
     
-    console.log(`🧹 Cleaning up posts older than ${thirtyDaysAgo.toISOString()}`)
+    console.log(`🧹 Cleaning up posts expired before ${now.toISOString()}`)
     
-    // First, get all posts that are older than 30 days to delete their images
+    // First, get all posts and calculate expiry per post.
     const { data: expiredPosts, error: fetchError } = await supabase
       .from('news_posts')
-      .select('id, title, image_url, created_at')
-      .lt('created_at', thirtyDaysAgo.toISOString())
+      .select('id, title, image_url, image_urls, created_at, expires_at, duration_days')
     
     if (fetchError) {
       console.error('❌ Error fetching expired posts:', fetchError)
       return { success: false, error: fetchError.message }
     }
+
+    const postsToDelete = (expiredPosts || []).filter((post) => {
+      return getPostExpirationDate(post).getTime() <= now.getTime()
+    })
     
-    if (!expiredPosts || expiredPosts.length === 0) {
+    if (postsToDelete.length === 0) {
       console.log('✅ No expired posts found')
       return { success: true, deletedCount: 0, message: 'No expired posts to delete' }
     }
     
-    console.log(`📝 Found ${expiredPosts.length} expired posts to delete`)
+    console.log(`📝 Found ${postsToDelete.length} expired posts to delete`)
     
     // Delete associated images from storage
-    const imageUrls = expiredPosts
-      .filter(post => post.image_url)
-      .map(post => post.image_url)
+    const imageUrls = Array.from(
+      new Set(
+        postsToDelete.flatMap((post) => {
+          const urls = [
+            post.image_url,
+            ...(Array.isArray((post as { image_urls?: string[] }).image_urls)
+              ? (post as { image_urls?: string[] }).image_urls || []
+              : []),
+          ];
+
+          return urls.filter((value): value is string => Boolean(value));
+        })
+      )
+    )
     
     if (imageUrls.length > 0) {
       console.log(`🖼️ Deleting ${imageUrls.length} associated images`)
@@ -60,10 +99,11 @@ export async function cleanupExpiredPosts() {
     }
     
     // Delete the posts from database
+    const postIds = postsToDelete.map((post) => post.id)
     const { error: deleteError, count } = await supabase
       .from('news_posts')
-      .delete({ count: 'exact' })
-      .lt('created_at', thirtyDaysAgo.toISOString())
+      .delete({ count: 'exact' as const })
+      .in('id', postIds)
     
     if (deleteError) {
       console.error('❌ Error deleting expired posts:', deleteError)
@@ -76,7 +116,7 @@ export async function cleanupExpiredPosts() {
     return { 
       success: true, 
       deletedCount, 
-      message: `Deleted ${deletedCount} posts older than 30 days` 
+      message: `Deleted ${deletedCount} expired posts` 
     }
     
   } catch (error) {
@@ -100,16 +140,18 @@ export function getPostAge(createdAt: string): number {
 }
 
 /**
- * Checks if a post is expired (older than 30 days)
+ * Checks if a post is expired based on its configured duration
  */
-export function isPostExpired(createdAt: string): boolean {
-  return getPostAge(createdAt) >= 30
+export function isPostExpired(post: Pick<NewsPost, 'created_at' | 'duration_days' | 'expires_at'>): boolean {
+  return getPostExpirationDate(post).getTime() <= Date.now()
 }
 
 /**
  * Gets days remaining before post expires
  */
-export function getDaysUntilExpiration(createdAt: string): number {
-  const age = getPostAge(createdAt)
-  return Math.max(0, 30 - age)
+export function getDaysUntilExpiration(post: Pick<NewsPost, 'created_at' | 'duration_days' | 'expires_at'>): number {
+  const now = Date.now()
+  const expiry = getPostExpirationDate(post).getTime()
+  const diff = expiry - now
+  return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)))
 }

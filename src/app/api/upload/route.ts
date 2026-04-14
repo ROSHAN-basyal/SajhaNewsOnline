@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../lib/supabase'
+import { mkdir, unlink, writeFile } from 'node:fs/promises'
+import { join, basename } from 'node:path'
+import { isSupabaseConfigured, supabase } from '../../../lib/supabase'
+import { isLocalAdminSession } from '../../../lib/devAdmin'
 
 // Helper function to verify admin session
 async function verifyAdminSession(sessionToken: string) {
+  if (isLocalAdminSession(sessionToken)) {
+    return true
+  }
+
+  if (!isSupabaseConfigured) {
+    return false
+  }
+
   try {
     const { data: session, error } = await supabase
       .from('admin_sessions')
@@ -62,6 +73,21 @@ export async function POST(request: NextRequest) {
     const randomString = Math.random().toString(36).substring(2, 15)
     const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'jpg'
     const fileName = `${timestamp}-${randomString}.${fileExtension}`
+
+    if (!isSupabaseConfigured) {
+      const uploadsDir = join(process.cwd(), 'public', 'local-uploads')
+      await mkdir(uploadsDir, { recursive: true })
+
+      const arrayBuffer = await file.arrayBuffer()
+      const fileBuffer = Buffer.from(arrayBuffer)
+      await writeFile(join(uploadsDir, fileName), fileBuffer)
+
+      return NextResponse.json({
+        success: true,
+        fileName,
+        url: `/local-uploads/${fileName}`
+      })
+    }
 
     console.log('Uploading file:', fileName, 'Size:', file.size, 'Type:', file.type)
 
@@ -137,6 +163,16 @@ export async function DELETE(request: NextRequest) {
         { error: 'No filename provided' },
         { status: 400 }
       )
+    }
+
+    if (!isSupabaseConfigured) {
+      const safeName = basename(fileName)
+      const uploadsDir = join(process.cwd(), 'public', 'local-uploads')
+      try {
+        await unlink(join(uploadsDir, safeName))
+      } catch {}
+
+      return NextResponse.json({ success: true })
     }
 
     // Delete from Supabase Storage

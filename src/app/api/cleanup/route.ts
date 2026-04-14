@@ -1,9 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../lib/supabase'
-import { cleanupExpiredPosts } from '../../../lib/cleanup'
+import { getSupabaseConfigError, isSupabaseConfigured, supabase } from '../../../lib/supabase'
+import { isLocalAdminSession } from '../../../lib/devAdmin'
+import { cleanupLocalExpiredPosts } from '../../../lib/localDb'
+
+export const dynamic = 'force-dynamic'
 
 // Verify admin session
 async function verifyAdminSession(sessionToken: string) {
+  if (isLocalAdminSession(sessionToken)) {
+    return true
+  }
+
+  if (!isSupabaseConfigured) {
+    return false
+  }
+
   const { data, error } = await supabase
     .from('admin_sessions')
     .select('user_id')
@@ -26,7 +37,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (!isSupabaseConfigured) {
+      return NextResponse.json(cleanupLocalExpiredPosts())
+    }
+
     console.log('🔧 Manual cleanup initiated by admin')
+    const { cleanupExpiredPosts } = await import('../../../lib/cleanup')
     const result = await cleanupExpiredPosts()
 
     return NextResponse.json(result)
@@ -45,7 +61,10 @@ export async function GET(request: NextRequest) {
   try {
     // Check for cleanup secret key to prevent unauthorized access
     const authHeader = request.headers.get('authorization')
-    const cleanupSecret = process.env.CLEANUP_SECRET || 'your-secret-cleanup-key'
+    const cleanupSecret =
+      process.env.CRON_SECRET ||
+      process.env.CLEANUP_SECRET ||
+      'your-secret-cleanup-key'
     
     if (authHeader !== `Bearer ${cleanupSecret}`) {
       return NextResponse.json(
@@ -54,7 +73,12 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    if (!isSupabaseConfigured) {
+      return NextResponse.json(cleanupLocalExpiredPosts())
+    }
+
     console.log('🤖 Automatic cleanup initiated')
+    const { cleanupExpiredPosts } = await import('../../../lib/cleanup')
     const result = await cleanupExpiredPosts()
 
     return NextResponse.json(result)

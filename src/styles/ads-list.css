@@ -1,22 +1,22 @@
-/* Ads: list */
+/* ── Ads: List ───────────────────────────────────────────────── */
+
 .ads-list-container {
   display: grid;
   gap: 14px;
 }
 
 .ads-list-container .list-controls {
-  border-radius: 22px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
-  padding: 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
 }
 
 .ads-list-container .filters {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 14px;
 }
 
 @media (min-width: 860px) {
@@ -26,21 +26,28 @@
 }
 
 .ads-list-container .filter-group label {
-  font-weight: 850;
+  font-weight: 700;
   font-size: 13px;
-  color: var(--text-secondary, #334155);
+  color: var(--text-secondary);
 }
 
 .ads-list-container .filter-select {
   width: 100%;
-  margin-top: 8px;
-  border-radius: 16px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
+  margin-top: 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
   background: #fff;
   padding: 10px 12px;
   font-size: 14px;
+  transition: border-color var(--transition-fast);
 }
 
+.ads-list-container .filter-select:focus {
+  outline: none;
+  border-color: var(--teal-400);
+}
+
+/* ── Ads Grid ── */
 .ads-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -54,79 +61,87 @@
 }
 
 .ad-card {
-  border-radius: 22px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
+  transition:
+    box-shadow var(--transition-normal),
+    border-color var(--transition-normal);
+}
+
+.ad-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
 }
 
 .ad-card-header {
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
-  background: linear-gradient(135deg, rgba(1, 104, 179, 0.08), rgba(9, 151, 66, 0.06));
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-card);
 }
 
 .ad-title {
   margin: 0;
   font-size: 15px;
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .ad-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin-top: 10px;
 }
 
 .status-badge,
 .placement-badge,
 .priority-badge {
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 900;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(15, 23, 42, 0.02);
-  color: var(--text-secondary, #334155);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11.5px;
+  font-weight: 700;
+  border: 1px solid var(--border-color);
+  background: var(--slate-50);
+  color: var(--text-secondary);
 }
 
 .status-badge.active {
-  background: rgba(9, 151, 66, 0.10);
-  border-color: rgba(9, 151, 66, 0.18);
-  color: rgba(21, 128, 61, 1);
+  background: var(--green-50);
+  border-color: rgba(26, 107, 60, 0.15);
+  color: var(--green-700);
 }
 
 .status-badge.paused,
 .status-badge.draft {
-  background: rgba(100, 116, 139, 0.10);
-  border-color: rgba(100, 116, 139, 0.18);
-  color: rgba(51, 65, 85, 1);
+  background: var(--slate-100);
+  border-color: var(--slate-200);
+  color: var(--slate-600);
 }
 
 .status-badge.expired {
-  background: rgba(239, 68, 68, 0.10);
-  border-color: rgba(239, 68, 68, 0.18);
-  color: rgba(185, 28, 28, 1);
+  background: var(--red-50);
+  border-color: rgba(220, 38, 38, 0.12);
+  color: var(--red-600);
 }
 
 .placement-badge {
-  background: rgba(1, 104, 179, 0.10);
-  border-color: rgba(1, 104, 179, 0.18);
-  color: rgba(1, 104, 179, 1);
+  background: var(--teal-50);
+  border-color: rgba(27, 77, 92, 0.12);
+  color: var(--teal-800);
 }
 
 .priority-badge {
-  background: rgba(9, 151, 66, 0.10);
-  border-color: rgba(9, 151, 66, 0.18);
+  background: rgba(234, 88, 12, 0.06);
+  border-color: rgba(234, 88, 12, 0.12);
   color: rgba(194, 65, 12, 1);
 }
 
+/* ── Ad Preview ── */
 .ad-preview {
   padding: 14px 16px 0;
 }
@@ -135,36 +150,37 @@
   width: 100%;
   height: 160px;
   object-fit: cover;
-  border-radius: 18px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: #e2e8f0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--slate-200);
 }
 
 .no-image {
   height: 160px;
-  border-radius: 18px;
-  border: 1px dashed rgba(15, 23, 42, 0.18);
-  background: rgba(15, 23, 42, 0.02);
+  border-radius: var(--radius-md);
+  border: 2px dashed rgba(27, 77, 92, 0.12);
+  background: var(--teal-50);
   display: grid;
   place-items: center;
-  color: var(--text-muted, #64748b);
-  font-weight: 750;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 13px;
 }
 
-.ad-info {
-  padding: 14px 16px;
-}
+/* ── Ad Info ── */
+.ad-info { padding: 14px 16px; }
 
 .ad-description {
   margin: 0 0 10px;
-  color: var(--text-secondary, #334155);
+  color: var(--text-secondary);
   line-height: 1.6;
+  font-size: 13.5px;
 }
 
 .ad-details {
   display: grid;
-  gap: 8px;
-  color: var(--text-secondary, #334155);
+  gap: 6px;
+  color: var(--text-secondary);
   font-size: 13px;
 }
 
@@ -175,83 +191,108 @@
   align-items: start;
 }
 
+.detail-row strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 .click-url {
-  color: rgba(1, 104, 179, 1);
+  color: var(--teal-700);
   word-break: break-word;
 }
 
 .scheduled-notice,
 .expired-notice {
   padding: 10px 12px;
-  border-radius: 16px;
-  font-weight: 800;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 10px;
 }
 
 .scheduled-notice {
-  background: rgba(9, 151, 66, 0.10);
-  border: 1px solid rgba(9, 151, 66, 0.18);
+  background: rgba(234, 88, 12, 0.06);
+  border: 1px solid rgba(234, 88, 12, 0.12);
   color: rgba(194, 65, 12, 1);
 }
 
 .expired-notice {
-  background: rgba(239, 68, 68, 0.10);
-  border: 1px solid rgba(239, 68, 68, 0.18);
-  color: rgba(185, 28, 28, 1);
+  background: var(--red-50);
+  border: 1px solid rgba(220, 38, 38, 0.12);
+  color: var(--red-600);
 }
 
+/* ── Ad Card Footer ── */
 .ad-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
   padding: 12px 16px;
-  border-top: 1px solid rgba(15, 23, 42, 0.08);
-  background: rgba(15, 23, 42, 0.02);
+  border-top: 1px solid var(--border-color);
+  background: var(--slate-50);
 }
 
 .ad-dates {
   display: grid;
-  gap: 4px;
-  color: var(--text-muted, #64748b);
-  font-size: 12px;
-  font-weight: 650;
+  gap: 3px;
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-weight: 500;
 }
 
 .ad-actions {
   display: inline-flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .btn-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: #ffffff;
-  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
-  font-weight: 950;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-xs);
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.12s var(--ease-spring),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
 }
 
 .btn-icon:hover {
   transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-edit {
-  color: rgba(1, 104, 179, 1);
+  color: var(--teal-700);
+}
+
+.btn-edit:hover {
+  border-color: var(--teal-400);
+  background: var(--teal-50);
 }
 
 .btn-delete,
 .btn-confirm-delete {
-  color: rgba(185, 28, 28, 1);
-  border-color: rgba(239, 68, 68, 0.22);
-  background: rgba(239, 68, 68, 0.08);
+  color: var(--red-600);
+  border-color: rgba(220, 38, 38, 0.15);
+  background: var(--red-50);
+}
+
+.btn-delete:hover,
+.btn-confirm-delete:hover {
+  background: var(--red-100);
 }
 
 .btn-cancel {
-  color: rgba(51, 65, 85, 1);
-  background: rgba(15, 23, 42, 0.06);
+  color: var(--slate-600);
+  background: var(--slate-100);
 }
 
-
-
-
+.btn-cancel:hover {
+  background: var(--slate-200);
+}

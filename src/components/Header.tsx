@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { BRAND_LOGO_PATH, BRAND_NAME, BRAND_TAGLINE } from "../lib/brand";
 import CategoryNav from "./CategoryNav";
 import { NewsCategory } from "../lib/supabase";
 import "../styles/header.css";
@@ -57,18 +58,18 @@ export default function Header({
 
           <Link
             href="/"
-            aria-label="Sajha News Online - Home"
+            aria-label={`${BRAND_NAME} - Home`}
             className="site-header__title"
           >
             <Image
               className="brand__logo"
-              src="/images/logo.png"
-              alt="Sajha News Online logo"
-              width={128}
-              height={128}
+              src={BRAND_LOGO_PATH}
+              alt={`${BRAND_NAME} logo`}
+              width={1032}
+              height={242}
               priority
             />
-            <span className="brand__tagline">नेपाललाई जोडने समाचार</span>
+            <span className="brand__tagline">{BRAND_TAGLINE}</span>
           </Link>
 
           <div className="site-header__side">

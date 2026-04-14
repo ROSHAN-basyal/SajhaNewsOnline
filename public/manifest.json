@@ -1,13 +1,12 @@
 {
-  "name": "Sajha News Online",
-  "short_name": "SajhaNews",
+  "name": "Khabar Mulbata",
+  "short_name": "Khabar",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
   "theme_color": "#0168b3",
-  "description": "Sajha News Online - Latest news from Nepal and beyond.",
+  "description": "Khabar Mulbata - grounded news and updates from Nepal and beyond.",
   "icons": [
-    { "src": "/images/logo.png", "sizes": "any", "type": "image/png" }
+    { "src": "/images/khabarmulbata-logo.png", "sizes": "any", "type": "image/png" }
   ]
 }
-

@@ -1,9 +1,12 @@
+/* ── Category Navigation ─────────────────────────────────────── */
+
 .category-nav {
   display: flex;
-  gap: 10px;
-  padding: 12px 0;
+  gap: 8px;
+  padding: 10px 0;
   overflow-x: auto;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .category-nav::-webkit-scrollbar {
@@ -12,27 +15,51 @@
 
 .category-nav__item {
   flex: 0 0 auto;
-  border: 1px solid var(--border-color, rgba(0, 0, 0, 0.08));
-  background: var(--bg-card, #ffffff);
-  color: var(--text-primary, #0f172a);
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-weight: 650;
-  font-size: 14px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  font-size: 13.5px;
   letter-spacing: 0.01em;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    transform 0.12s var(--ease-spring),
+    box-shadow var(--transition-fast);
+  position: relative;
 }
 
 .category-nav__item:hover {
   transform: translateY(-1px);
-  border-color: rgba(1, 104, 179, 0.35);
+  border-color: var(--teal-400);
+  background: var(--teal-50);
+  color: var(--teal-800);
+  box-shadow: 0 2px 8px rgba(18, 59, 131, 0.10);
+}
+
+.category-nav__item:active {
+  transform: translateY(0);
 }
 
 .category-nav__item.is-active {
-  background: linear-gradient(135deg, rgba(1, 104, 179, 0.12), rgba(9, 151, 66, 0.08));
-  border-color: rgba(1, 104, 179, 0.4);
+  background: var(--green-600);
+  border-color: var(--green-600);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.22);
+  font-weight: 700;
 }
 
+.category-nav__item.is-active:hover {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #ffffff;
+}
+
+/* Header variant */
 .category-nav--header {
   padding: 0;
   justify-content: center;
@@ -44,6 +71,7 @@
   }
 }
 
+/* Sidebar variant */
 @media (min-width: 1024px) {
   .category-nav--sidebar {
     flex-direction: column;
@@ -57,10 +85,11 @@
   .category-nav--sidebar .category-nav__item {
     width: 100%;
     text-align: left;
-    border-radius: 14px;
+    border-radius: var(--radius-md);
     padding: 12px 14px;
   }
+
+  .category-nav--sidebar .category-nav__item.is-active {
+    border-radius: var(--radius-md);
+  }
 }
-
-
-

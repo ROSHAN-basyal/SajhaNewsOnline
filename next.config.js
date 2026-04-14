@@ -25,6 +25,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ["react", "react-dom", "@supabase/supabase-js"],
+    webpackBuildWorker: false,
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",

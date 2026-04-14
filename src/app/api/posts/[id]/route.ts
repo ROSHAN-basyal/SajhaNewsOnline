@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '../../../../lib/supabase'
+import { getSupabaseConfigError, isSupabaseConfigured, supabase } from '../../../../lib/supabase'
+import { isLocalAdminSession } from '../../../../lib/devAdmin'
+import { clampDurationDays, getPostExpirationDate } from '../../../../lib/cleanup'
+import { deleteLocalPost, getLocalPostById, updateLocalPost } from '../../../../lib/localDb'
+import { normalizePostImages } from '../../../../lib/postImages'
 
 // Helper function to verify admin session
 async function verifyAdminSession(sessionToken: string) {
+  if (isLocalAdminSession(sessionToken)) {
+    return true
+  }
+
+  if (!isSupabaseConfigured) {
+    return false
+  }
+
   const { data: session, error } = await supabase
     .from('admin_sessions')
     .select('user_id')
@@ -11,6 +23,46 @@ async function verifyAdminSession(sessionToken: string) {
     .single()
 
   return !error && session
+}
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    if (!isSupabaseConfigured) {
+      const post = getLocalPostById(params.id)
+      if (!post) {
+        return NextResponse.json(
+          { error: 'Post not found' },
+          { status: 404 }
+        )
+      }
+
+      return NextResponse.json({ post })
+    }
+
+    const { data, error } = await supabase
+      .from('news_posts')
+      .select('*')
+      .eq('id', params.id)
+      .single()
+
+    if (error || !data) {
+      return NextResponse.json(
+        { error: 'Post not found' },
+        { status: 404 }
+      )
+    }
+
+    return NextResponse.json({ post: data })
+  } catch (error) {
+    console.error('Get post error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
 }
 
 export async function PUT(
@@ -27,13 +79,48 @@ export async function PUT(
       )
     }
 
-    const { title, content, summary, category, image_url } = await request.json()
+    const { title, content, summary, category, image_url, image_urls, duration_days } = await request.json()
 
     if (!title || !content || !summary || !category) {
       return NextResponse.json(
         { error: 'Title, content, summary, and category are required' },
         { status: 400 }
       )
+    }
+
+    const normalizedImages = normalizePostImages({
+      image_url,
+      image_urls,
+    })
+
+    const normalizedDurationDays = clampDurationDays(duration_days)
+    const existingPost = !isSupabaseConfigured ? getLocalPostById(params.id) : null
+    const createdAtForExpiry = existingPost?.created_at || new Date().toISOString()
+    const expiresAt = getPostExpirationDate({
+      created_at: createdAtForExpiry,
+      duration_days: normalizedDurationDays,
+    }).toISOString()
+
+    if (!isSupabaseConfigured) {
+      const post = updateLocalPost(params.id, {
+        title,
+        content,
+        summary,
+        category,
+        image_url: normalizedImages.image_url,
+        image_urls: normalizedImages.image_urls,
+        duration_days: normalizedDurationDays,
+        expires_at: expiresAt,
+      })
+
+      if (!post) {
+        return NextResponse.json(
+          { error: 'Post not found' },
+          { status: 404 }
+        )
+      }
+
+      return NextResponse.json({ post })
     }
 
     const { data, error } = await supabase
@@ -43,7 +130,10 @@ export async function PUT(
         content,
         summary,
         category,
-        image_url
+        image_url: normalizedImages.image_url,
+        image_urls: normalizedImages.image_urls,
+        duration_days: normalizedDurationDays,
+        expires_at: expiresAt,
       })
       .eq('id', params.id)
       .select()
@@ -79,6 +169,19 @@ export async function DELETE(
         { error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
+    if (!isSupabaseConfigured) {
+      const deleted = deleteLocalPost(params.id)
+
+      if (!deleted) {
+        return NextResponse.json(
+          { error: 'Failed to delete post' },
+          { status: 500 }
+        )
+      }
+
+      return NextResponse.json({ success: true })
     }
 
     const { error } = await supabase

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Advertisement } from "../app/api/ads/route";
+import type { Advertisement } from "../lib/ads";
 import "../styles/ad-analytics.css";
 
 interface AdAnalyticsProps {

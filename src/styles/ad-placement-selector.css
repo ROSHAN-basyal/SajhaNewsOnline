@@ -1,31 +1,31 @@
-/* Ads: placement selector */
+/* ── Ads: Placement Selector ─────────────────────────────────── */
+
 .placement-picker {
-  border-radius: 22px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
 }
 
 .placement-picker__header h3 {
   margin: 0;
   font-size: 16px;
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .placement-picker__header p {
-  margin: 6px 0 0;
+  margin: 4px 0 0;
   font-size: 13px;
-  font-weight: 650;
-  color: var(--text-muted, #64748b);
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
 .placement-picker__layout {
-  margin-top: 14px;
+  margin-top: 16px;
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 @media (min-width: 980px) {
@@ -35,25 +35,27 @@
   }
 }
 
-/* Preview map */
+/* ── Site Map (Visual Preview) ── */
 .site-map {
-  border-radius: 22px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(15, 23, 42, 0.02);
-  padding: 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--slate-50);
+  padding: 16px;
   display: grid;
   gap: 10px;
 }
 
 .site-map__row {
-  height: 44px;
-  border-radius: 18px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
+  height: 42px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
   display: grid;
   place-items: center;
-  font-weight: 900;
-  color: var(--text-secondary, #334155);
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--text-secondary);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
 }
 
 .site-map__middle {
@@ -64,57 +66,66 @@
 
 .site-map__content,
 .site-map__sidebar {
-  border-radius: 20px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
   padding: 12px;
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .site-map__story,
 .site-map__ad,
 .site-map__widget {
-  border-radius: 18px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(15, 23, 42, 0.02);
-  padding: 10px;
-  font-weight: 850;
-  color: var(--text-secondary, #334155);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--slate-50);
+  padding: 8px;
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--text-secondary);
   text-align: center;
+  transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 }
 
 .site-map .is-selected {
-  border-color: rgba(1, 104, 179, 0.35) !important;
-  background: linear-gradient(135deg, rgba(1, 104, 179, 0.12), rgba(9, 151, 66, 0.08)) !important;
-  color: var(--text-primary, #0f172a) !important;
+  border-color: var(--teal-400) !important;
+  background: linear-gradient(135deg, var(--teal-50), rgba(26, 107, 60, 0.04)) !important;
+  color: var(--teal-900) !important;
+  box-shadow: 0 0 0 2px rgba(42, 122, 138, 0.10);
 }
 
-/* Placement cards */
+/* ── Placement Cards ── */
 .placement-grid {
   display: grid;
-  gap: 12px;
+  gap: 10px;
 }
 
 .placement-card {
   width: 100%;
   text-align: left;
-  border-radius: 22px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-xs);
   padding: 14px;
-  transition: transform 0.08s ease, border-color 0.15s ease;
+  cursor: pointer;
+  transition:
+    transform 0.12s var(--ease-spring),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .placement-card:hover {
   transform: translateY(-1px);
-  border-color: rgba(1, 104, 179, 0.35);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 .placement-card.is-active {
-  border-color: rgba(1, 104, 179, 0.45);
-  background: linear-gradient(135deg, rgba(1, 104, 179, 0.08), rgba(9, 151, 66, 0.06));
+  border-color: var(--teal-500);
+  background: var(--teal-50);
+  box-shadow: 0 0 0 2px rgba(42, 122, 138, 0.10), var(--shadow-sm);
 }
 
 .placement-card__top {
@@ -125,35 +136,36 @@
 }
 
 .placement-card__title {
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
+  font-weight: 800;
+  color: var(--text-primary);
   letter-spacing: -0.01em;
+  font-size: 14px;
 }
 
 .placement-card__impact {
   color: #fff;
-  font-weight: 950;
+  font-weight: 700;
   font-size: 11px;
-  padding: 6px 10px;
-  border-radius: 999px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
 }
 
 .placement-card__desc {
-  margin-top: 8px;
-  color: var(--text-muted, #64748b);
-  font-weight: 650;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-weight: 500;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .placement-card__meta {
   margin-top: 12px;
-  border-radius: 18px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: rgba(15, 23, 42, 0.02);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--slate-50);
   padding: 10px 12px;
   display: grid;
-  gap: 8px;
+  gap: 6px;
 }
 
 .placement-card__metaRow {
@@ -161,9 +173,9 @@
   justify-content: space-between;
   gap: 10px;
   font-size: 13px;
-  color: var(--text-secondary, #334155);
+  color: var(--text-secondary);
 }
 
-
-
-
+.placement-card__metaRow strong {
+  font-weight: 700;
+}

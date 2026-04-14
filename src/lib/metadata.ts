@@ -1,4 +1,6 @@
-const DEFAULT_SITE_URL = "https://sajhanewsonline.com";
+import { BRAND_LOGO_PATH, BRAND_SITE_URL } from "./brand";
+
+const DEFAULT_SITE_URL = BRAND_SITE_URL;
 
 const trimTrailingSlash = (value: string) => value.replace(/\/$/, "");
 
@@ -9,7 +11,7 @@ export const resolveSocialImageUrl = (rawUrl?: string | null) => {
   const siteUrl = getSiteUrl();
   const trimmed = (rawUrl || "").trim();
 
-  if (!trimmed) return `${siteUrl}/images/logo.png`;
+  if (!trimmed) return `${siteUrl}${BRAND_LOGO_PATH}`;
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
   if (trimmed.startsWith("//")) return `https:${trimmed}`;
   if (trimmed.startsWith("/")) return `${siteUrl}${trimmed}`;

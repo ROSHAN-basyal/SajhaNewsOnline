@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getDaysUntilExpiration, getPostAge, isPostExpired } from "../lib/cleanup";
+import { getDaysUntilExpiration, getPostAge, getPostExpirationDate, getPostDurationDays, isPostExpired } from "../lib/cleanup";
 import { getCategoryLabel, NewsCategory, NewsPost, NEWS_CATEGORIES } from "../lib/supabase";
 import LazyImage from "./LazyImage";
 import "../styles/admin-panel.css";
@@ -105,7 +105,7 @@ export default function PostsList({ onEditPost, refreshTrigger }: PostsListProps
   };
 
   const handleManualCleanup = async () => {
-    if (!confirm("Delete all expired posts (older than 30 days)?")) return;
+    if (!confirm("Delete all expired posts?")) return;
 
     try {
       setIsCleaningUp(true);
@@ -186,9 +186,11 @@ export default function PostsList({ onEditPost, refreshTrigger }: PostsListProps
         <>
           <div className="posts-grid">
             {currentPagePosts.map((post) => {
-              const expired = isPostExpired(post.created_at);
-              const daysUntilExpiration = getDaysUntilExpiration(post.created_at);
+              const expired = isPostExpired(post);
+              const daysUntilExpiration = getDaysUntilExpiration(post);
               const ageDays = getPostAge(post.created_at);
+              const durationDays = getPostDurationDays(post);
+              const expiresAt = getPostExpirationDate(post);
 
               const statusClass = expired ? "is-expired" : daysUntilExpiration <= 3 ? "is-warning" : "is-ok";
               const statusText = expired ? "Expired" : `Expires in ${daysUntilExpiration}d`;
@@ -235,10 +237,10 @@ export default function PostsList({ onEditPost, refreshTrigger }: PostsListProps
                     </div>
 
                     <div className="post-card__statusRow">
-                      <span className={`post-card__status ${statusClass}`} title={`Age: ${ageDays} days`}>
+                      <span className={`post-card__status ${statusClass}`} title={`Live for ${durationDays} days`}>
                         {statusText}
                       </span>
-                      <span className="post-card__statusHint">Age {ageDays}d</span>
+                      <span className="post-card__statusHint">Duration {durationDays}d</span>
                     </div>
 
                     <h3 className="post-card__title">{post.title}</h3>
@@ -246,6 +248,7 @@ export default function PostsList({ onEditPost, refreshTrigger }: PostsListProps
 
                     <div className="post-card__meta">
                       <span className="post-card__metaText">Created {formatDateTime(post.created_at)}</span>
+                      <span className="post-card__metaText">Expires {formatDateTime(expiresAt.toISOString())}</span>
                       <span className="post-card__metaText">Updated {formatDateTime(post.updated_at)}</span>
                       <button type="button" className="post-card__edit" onClick={() => onEditPost(post)}>
                         Edit

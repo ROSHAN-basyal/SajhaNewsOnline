@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { supabase, NewsPost } from "../../../lib/supabase";
+import { BRAND_LOGO_PATH, BRAND_NAME, BRAND_NAME_DEVANAGARI } from "../../../lib/brand";
+import { NewsPost } from "../../../lib/supabase";
 import { getPostUrl } from "../../../lib/metadata";
 import LazyImage from "../../../components/LazyImage";
+import { getPostCoverImage, getPostImageMap } from "../../../lib/postImages";
 
 interface PageProps {
   params: { id: string };
@@ -18,17 +20,64 @@ export default function PostPage({ params }: PageProps) {
   const shareUrl = useMemo(() => {
     return getPostUrl(params.id);
   }, [params.id]);
+  const coverImage = useMemo(() => getPostCoverImage(post), [post]);
+  const postImages = useMemo(() => getPostImageMap(post), [post]);
+
+  const contentBlocks = useMemo(() => {
+    if (!post) return [];
+
+    const tokenRegex = /(\/img[23])/g;
+    const usedAliases = new Set<string>();
+    const blocks: Array<
+      | { type: "paragraph"; text: string }
+      | { type: "image"; alias: "img2" | "img3"; url: string }
+    > = [];
+
+    const pushParagraphs = (value: string) => {
+      value
+        .split(/\n+/)
+        .map((part) => part.trim())
+        .filter(Boolean)
+        .forEach((text) => blocks.push({ type: "paragraph", text }));
+    };
+
+    let lastIndex = 0;
+    for (const match of post.content.matchAll(tokenRegex)) {
+      const matchIndex = match.index ?? 0;
+      pushParagraphs(post.content.slice(lastIndex, matchIndex));
+
+      const alias = match[1].slice(1) as "img2" | "img3";
+      const imageUrl = postImages[alias];
+
+      if (imageUrl && !usedAliases.has(alias)) {
+        blocks.push({ type: "image", alias, url: imageUrl });
+        usedAliases.add(alias);
+      } else {
+        blocks.push({ type: "paragraph", text: match[1] });
+      }
+
+      lastIndex = matchIndex + match[1].length;
+    }
+
+    pushParagraphs(post.content.slice(lastIndex));
+    return blocks;
+  }, [post, postImages]);
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const { data, error } = await supabase
-          .from("news_posts")
-          .select("*")
-          .eq("id", params.id)
-          .single();
-        if (error) throw error;
-        setPost(data as NewsPost);
+        const response = await fetch(`/api/posts/${params.id}`, {
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("समाचार लोड हुन सकेन");
+        }
+
+        const data = (await response.json()) as { post?: NewsPost };
+        if (!data.post) throw new Error("समाचार फेला परेन");
+
+        setPost(data.post);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : "समाचार लोड हुन सकेन");
@@ -108,13 +157,14 @@ export default function PostPage({ params }: PageProps) {
                   typeof window !== "undefined" ? window.location.origin : ""
                 }/posts/${post.id}`,
                 description: post.summary,
-                author: { "@type": "Organization", name: "Sajha News Online" },
+                author: { "@type": "Organization", name: BRAND_NAME },
                 publisher: {
                   "@type": "Organization",
-                  name: "Sajha News Online",
-                  logo: { "@type": "ImageObject", url: "/images/logo.png" },
+                  name: BRAND_NAME,
+                  alternateName: BRAND_NAME_DEVANAGARI,
+                  logo: { "@type": "ImageObject", url: BRAND_LOGO_PATH },
                 },
-                image: post.image_url ? [post.image_url] : ["/images/logo.png"],
+                image: coverImage ? [coverImage] : [BRAND_LOGO_PATH],
               }),
             }}
           />
@@ -181,10 +231,10 @@ export default function PostPage({ params }: PageProps) {
 
         {copied ? <div className="article__toast">लिङ्क कपी गरियो</div> : null}
 
-        {post.image_url ? (
+        {coverImage ? (
           <div className="article__hero">
             <LazyImage
-              src={post.image_url}
+              src={coverImage}
               alt={`समाचारको तस्बिर: ${post.title}`}
               width={1200}
               height={675}
@@ -197,7 +247,25 @@ export default function PostPage({ params }: PageProps) {
 
         {post.summary ? <p className="article__summary">{post.summary}</p> : null}
 
-        <div className="article__content">{post.content}</div>
+        <div className="article__content">
+          {contentBlocks.map((block, index) =>
+            block.type === "paragraph" ? (
+              <p key={`p-${index}`} className="article__paragraph">
+                {block.text}
+              </p>
+            ) : (
+              <div key={`img-${block.alias}-${index}`} className="article__inlineImage">
+                <LazyImage
+                  src={block.url}
+                  alt={`${post.title} ${block.alias}`}
+                  width={1200}
+                  height={800}
+                  sizes="(max-width: 768px) 100vw, 960px"
+                />
+              </div>
+            )
+          )}
+        </div>
       </div>
     </main>
   );

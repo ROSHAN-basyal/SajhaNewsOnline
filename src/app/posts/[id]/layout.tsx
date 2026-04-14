@@ -1,23 +1,30 @@
 import type { Metadata } from "next";
-import { supabase } from "../../../lib/supabase";
+import { BRAND_LOGO_PATH, BRAND_NAME, BRAND_NAME_DEVANAGARI } from "../../../lib/brand";
 import { getSiteUrl, resolveSocialImageUrl } from "../../../lib/metadata";
+import { getLocalPostById } from "../../../lib/localDb";
+import { getPostCoverImage } from "../../../lib/postImages";
+import { isSupabaseConfigured, supabase } from "../../../lib/supabase";
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const base = getSiteUrl();
   try {
-    const { data } = await supabase
-      .from("news_posts")
-      .select("id, title, summary, image_url, updated_at, created_at")
-      .eq("id", params.id)
-      .maybeSingle();
+    const data = isSupabaseConfigured
+      ? (
+          await supabase
+            .from("news_posts")
+            .select("id, title, summary, image_url, updated_at, created_at")
+            .eq("id", params.id)
+            .maybeSingle()
+        ).data
+      : getLocalPostById(params.id);
 
     if (!data) return { title: "समाचार", alternates: { canonical: `/posts/${params.id}` } };
 
     const title = data.title || "समाचार";
-    const description = data.summary || "साझा न्यूज अनलाइनमा ताजा समाचार पढ्नुहोस्।";
+    const description = data.summary || `${BRAND_NAME_DEVANAGARI} मा ताजा समाचार पढ्नुहोस्।`;
     const url = `${base}/posts/${data.id}`;
-    const imageUrl = data.image_url ? resolveSocialImageUrl(data.image_url) : null;
-    const logoUrl = resolveSocialImageUrl("/images/logo.png");
+    const imageUrl = getPostCoverImage(data) ? resolveSocialImageUrl(getPostCoverImage(data)) : null;
+    const logoUrl = resolveSocialImageUrl(BRAND_LOGO_PATH);
 
     return {
       metadataBase: new URL(base),
@@ -31,7 +38,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
         description,
         images: imageUrl
           ? [{ url: imageUrl, width: 1200, height: 630, alt: title }]
-          : [{ url: logoUrl, width: 512, height: 512, alt: "साझा न्यूज अनलाइन" }],
+          : [{ url: logoUrl, width: 1032, height: 242, alt: `${BRAND_NAME} logo` }],
       },
       twitter: {
         card: "summary_large_image",
@@ -48,4 +55,3 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
 export default function PostLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
-

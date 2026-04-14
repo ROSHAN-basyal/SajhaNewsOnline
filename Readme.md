@@ -1,4 +1,4 @@
-# Sajha News Online
+# Khabar Mulbata
 
 A modern Nepali news portal built with Next.js (App Router) + Supabase (Postgres), including a hidden admin portal for managing posts and advertisements.
 
@@ -40,22 +40,29 @@ Create `.env.local`:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=...
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-NEXT_PUBLIC_SITE_URL=http://localhost:443
+NEXT_PUBLIC_SITE_URL=http://localhost:8443
+CLEANUP_SECRET=...
+ENABLE_LOCAL_ADMIN_LOGIN=true
+LOCAL_ADMIN_USERNAME=admin
+LOCAL_ADMIN_PASSWORD=admin
 ```
+
+If Supabase credentials are not available yet, the site can still boot locally for UI/code changes, but news data, admin auth, uploads, and ads will stay unavailable until those values are added.
+For local development only, the repo can also accept the fallback admin login from `.env.local`. Keep that disabled or removed for any real deployment.
 
 ## Run locally
 
 ```bash
-npm run dev
+npm run dev-alt
 ```
 
-- Public site: `http://localhost:443`
-- Admin portal: `http://localhost:443/secret-admin-portal`
+- Public site: `http://localhost:8443`
+- Admin portal: `http://localhost:8443/secret-admin-portal`
 
 Alternate port:
 
 ```bash
-npm run dev-alt
+npm run dev
 ```
 
 ## Images (uploads)

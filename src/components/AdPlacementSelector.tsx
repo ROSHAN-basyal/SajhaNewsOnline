@@ -1,5 +1,6 @@
 'use client'
 
+import { BRAND_NAME } from "../lib/brand";
 import '../styles/ad-placement-selector.css'
 
 type PlacementId = 'header' | 'sidebar_top' | 'in_content' | 'sidebar_mid' | 'footer'
@@ -80,7 +81,7 @@ export default function AdPlacementSelector({
     <div className="placement-picker">
       <div className="placement-picker__header">
         <h3>Choose Placement</h3>
-        <p>Pick where the ad should appear on Sajha News Online.</p>
+        <p>Pick where the ad should appear on {BRAND_NAME}.</p>
       </div>
 
       <div className="placement-picker__layout">

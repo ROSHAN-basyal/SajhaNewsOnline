@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import LazyImage from "./LazyImage";
 import { getCategoryLabel, NewsPost } from "../lib/supabase";
 import { getPostUrl } from "../lib/metadata";
+import { getPostCoverImage } from "../lib/postImages";
 import "../styles/news-feed.css";
 
 interface NewsPostCardProps {
@@ -23,6 +24,7 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
   const shareUrl = useMemo(() => {
     return getPostUrl(post.id);
   }, [post.id]);
+  const coverImage = useMemo(() => getPostCoverImage(post), [post]);
 
   const readingMinutes = useMemo(() => estimateReadingMinutes(post.content || ""), [post.content]);
 
@@ -76,10 +78,10 @@ export default function NewsPostCard({ post, priority = false }: NewsPostCardPro
       className={`story ${expanded ? "story--expanded" : ""}`}
       aria-labelledby={`story-title-${post.id}`}
     >
-      {post.image_url ? (
+      {coverImage ? (
         <a className="story__media" href={`/posts/${post.id}`} aria-label={`समाचार खोल्नुहोस्: ${post.title}`}>
           <LazyImage
-            src={post.image_url}
+            src={coverImage}
             alt={`समाचारको तस्बिर: ${post.title}`}
             width={720}
             height={420}

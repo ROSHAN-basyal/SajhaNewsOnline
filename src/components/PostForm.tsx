@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getCategoryLabel, NewsCategory, NEWS_CATEGORIES, NewsPost } from "../lib/supabase";
+import { getPostImageMap, POST_IMAGE_ALIASES, PostImageAlias } from "../lib/postImages";
 import "../styles/admin-panel.css";
 
 interface PostFormProps {
@@ -11,21 +12,23 @@ interface PostFormProps {
   loading?: boolean;
 }
 
-type ImageMode = "upload" | "url";
-
 export default function PostForm({ post, onSubmit, onCancel, loading = false }: PostFormProps) {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState<NewsCategory>("latest");
-  const [imageUrl, setImageUrl] = useState("");
+  const [durationDays, setDurationDays] = useState(30);
+  const [imageSlots, setImageSlots] = useState<Record<PostImageAlias, string>>({
+    img1: "",
+    img2: "",
+    img3: "",
+  });
   const [error, setError] = useState("");
 
   const [uploadError, setUploadError] = useState("");
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [dragOver, setDragOver] = useState(false);
-  const [imageMode, setImageMode] = useState<ImageMode>("upload");
+  const [activeAlias, setActiveAlias] = useState<PostImageAlias>("img1");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,8 +38,8 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
     setSummary(post.summary || "");
     setContent(post.content || "");
     setCategory((post.category as NewsCategory) || "latest");
-    setImageUrl(post.image_url || "");
-    setImageMode(post.image_url ? "url" : "upload");
+    setDurationDays(post.duration_days || 30);
+    setImageSlots(getPostImageMap(post));
   }, [post]);
 
   const submitDisabled = useMemo(() => {
@@ -78,8 +81,7 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
         throw new Error(data?.error || "Upload failed");
       }
 
-      setImageUrl(data.url);
-      setImageMode("url");
+      setImageSlots((prev) => ({ ...prev, [activeAlias]: data.url }));
       setUploadProgress(100);
       setTimeout(() => setUploadProgress(0), 700);
     } catch (err) {
@@ -90,16 +92,21 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
     }
   };
 
-  const handleRemoveImage = async () => {
-    if (imageUrl) {
-      const urlParts = imageUrl.split("/");
+  const handleSelectAlias = (alias: PostImageAlias) => {
+    setActiveAlias(alias);
+    fileInputRef.current?.click();
+  };
+
+  const handleRemoveImage = async (alias: PostImageAlias) => {
+    const currentUrl = imageSlots[alias];
+    if (currentUrl) {
+      const urlParts = currentUrl.split("/");
       const fileName = urlParts[urlParts.length - 1];
       try {
         await fetch(`/api/upload?fileName=${encodeURIComponent(fileName)}`, { method: "DELETE" });
       } catch {}
     }
-    setImageUrl("");
-    setImageMode("upload");
+    setImageSlots((prev) => ({ ...prev, [alias]: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -112,13 +119,22 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
       return;
     }
 
+    if (durationDays < 1 || durationDays > 300) {
+      setError("Please enter a valid duration.");
+      return;
+    }
+
+    const imageUrls = POST_IMAGE_ALIASES.map((alias) => imageSlots[alias]).filter(Boolean);
+
     try {
       const success = await onSubmit({
         title: title.trim(),
         summary: summary.trim(),
         content: content.trim(),
         category,
-        image_url: imageUrl.trim() || undefined,
+        duration_days: durationDays,
+        image_url: imageUrls[0] || undefined,
+        image_urls: imageUrls.length > 0 ? imageUrls : undefined,
       });
 
       if (success && !post) {
@@ -126,8 +142,8 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
         setSummary("");
         setContent("");
         setCategory("latest");
-        setImageUrl("");
-        setImageMode("upload");
+        setDurationDays(30);
+        setImageSlots({ img1: "", img2: "", img3: "" });
       }
     } catch {
       setError("Failed to save post. Please try again.");
@@ -140,6 +156,24 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
         <div className="post-form__headerCopy">
           <h2 className="post-form__title">{post ? "Edit Post" : "Create New Post"}</h2>
           <div className="post-form__subtitle">Fields marked with * are required.</div>
+        </div>
+        <div className="post-form__duration" aria-label="Post duration">
+          <label htmlFor="post-duration" className="post-form__durationLabel">
+            Duration
+          </label>
+          <div className="post-form__durationControl">
+            <input
+              id="post-duration"
+              type="number"
+              min={1}
+              max={300}
+              className="post-form__durationInput"
+              value={durationDays}
+              onChange={(e) => setDurationDays(Math.max(1, Math.min(300, Number(e.target.value) || 1)))}
+              disabled={loading || uploading}
+            />
+            <span className="post-form__durationSuffix">days</span>
+          </div>
         </div>
       </header>
 
@@ -212,127 +246,84 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
                 disabled={loading}
                 placeholder="Full article content…"
               />
+              <div className="form-hint">
+                Use <code>/img2</code> and <code>/img3</code> inside full content to place attached images inline.
+              </div>
             </div>
           </div>
 
           <aside className="post-form__side" aria-label="Article image">
             <div className="image-card">
               <div className="image-card__header">
-                <div className="image-card__title">Article Image</div>
-                <div className="image-card__mode" role="tablist" aria-label="Image input mode">
-                  <button
-                    type="button"
-                    className={`image-card__modeBtn ${imageMode === "upload" ? "is-active" : ""}`}
-                    onClick={() => setImageMode("upload")}
-                    disabled={loading || uploading}
-                  >
-                    Upload
-                  </button>
-                  <button
-                    type="button"
-                    className={`image-card__modeBtn ${imageMode === "url" ? "is-active" : ""}`}
-                    onClick={() => setImageMode("url")}
-                    disabled={loading || uploading}
-                  >
-                    URL
-                  </button>
-                </div>
+                <div className="image-card__title">Article Images</div>
+                <div className="image-card__hint">img1 is used as the cover image.</div>
+              </div>
+              <div className="image-slots" aria-label="Image attachment slots">
+                {POST_IMAGE_ALIASES.map((alias) => {
+                  const imageUrl = imageSlots[alias];
+                  const isCover = alias === "img1";
+
+                  return (
+                    <div key={alias} className="image-slot">
+                      <div className="image-slot__meta">
+                        <span className="image-slot__alias">{alias}</span>
+                        <span className="image-slot__role">
+                          {isCover ? "Cover" : "Inline"}
+                        </span>
+                      </div>
+                      <div className="image-slot__controls">
+                        <button
+                          type="button"
+                          className="upload-btn image-slot__attach"
+                          onClick={() => handleSelectAlias(alias)}
+                          disabled={loading || uploading}
+                        >
+                          {imageUrl ? "Replace" : "Attach"}
+                        </button>
+                        {imageUrl ? (
+                          <button
+                            type="button"
+                            className="image-slot__remove"
+                            onClick={() => handleRemoveImage(alias)}
+                            disabled={loading || uploading}
+                            aria-label={`Remove ${alias}`}
+                          >
+                            Remove
+                          </button>
+                        ) : null}
+                      </div>
+                      {imageUrl ? (
+                        <div className="image-slot__preview">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={imageUrl} alt={`${alias} preview`} className="image-slot__previewImg" />
+                        </div>
+                      ) : (
+                        <div className="image-slot__placeholder">No image attached</div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
 
-              {imageUrl ? (
-                <div className="image-card__preview">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={imageUrl} alt="Selected article image" className="image-card__previewImg" />
-                  <button
-                    type="button"
-                    className="image-card__remove icon-btn"
-                    onClick={handleRemoveImage}
-                    disabled={loading || uploading}
-                    aria-label="Remove image"
-                    title="Remove"
-                  >
-                    <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M3 6h18" strokeLinecap="round" />
-                      <path d="M8 6V4h8v2" />
-                      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                      <path d="M10 11v6M14 11v6" strokeLinecap="round" />
-                    </svg>
-                  </button>
-                </div>
-              ) : null}
-
-              {imageMode === "upload" ? (
-                <>
-                  <div
-                    className={`dropzone ${dragOver ? "is-dragOver" : ""}`}
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                      setDragOver(true);
-                    }}
-                    onDragLeave={(e) => {
-                      e.preventDefault();
-                      setDragOver(false);
-                    }}
-                    onDrop={(e) => {
-                      e.preventDefault();
-                      setDragOver(false);
-                      const file = e.dataTransfer.files?.[0];
-                      if (file) handleFileSelect(file);
-                    }}
-                    onClick={() => fileInputRef.current?.click()}
-                    role="button"
-                    tabIndex={0}
-                    aria-label="Upload image"
-                  >
-                    <div className="dropzone__icon" aria-hidden="true">
-                      <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M12 5v10" strokeLinecap="round" />
-                        <path d="M8 9l4-4 4 4" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M20 19H4" strokeLinecap="round" />
-                      </svg>
-                    </div>
-                    <div className="dropzone__text">
-                      {uploading ? "Uploading…" : "Click to upload or drag & drop"}
-                    </div>
-                    <div className="dropzone__subtext">JPEG, PNG, WebP, GIF • up to 5MB</div>
-                    <button type="button" className="upload-btn" disabled={loading || uploading}>
-                      Choose file
-                    </button>
-                  </div>
-
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    className="file-input"
-                    accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) handleFileSelect(file);
-                    }}
-                    disabled={loading || uploading}
-                  />
-                </>
-              ) : (
-                <div className="form-group">
-                  <label htmlFor="post-image-url" className="form-label">
-                    Image URL
-                  </label>
-                  <input
-                    id="post-image-url"
-                    type="url"
-                    className="form-input"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                    disabled={loading}
-                    placeholder="https://example.com/image.jpg"
-                  />
-                </div>
-              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                className="file-input"
+                accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleFileSelect(file);
+                  e.currentTarget.value = "";
+                }}
+                disabled={loading || uploading}
+              />
 
               {uploadProgress > 0 ? (
                 <div className="upload-progress">
                   <progress className="progress-native" max={100} value={uploadProgress} />
-                  <div className="progress-text">{uploadProgress < 100 ? `Uploading… ${uploadProgress}%` : "Uploaded"}</div>
+                  <div className="progress-text">
+                    {uploadProgress < 100 ? `Uploading ${activeAlias}… ${uploadProgress}%` : `${activeAlias} attached`}
+                  </div>
                 </div>
               ) : null}
 
@@ -353,4 +344,3 @@ export default function PostForm({ post, onSubmit, onCancel, loading = false }: 
     </section>
   );
 }
-

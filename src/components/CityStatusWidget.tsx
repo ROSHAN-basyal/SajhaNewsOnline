@@ -24,7 +24,7 @@ const CITY_PRESETS: Record<CityKey, { label: string; short: string; lat: number;
   Dharan: { label: "धरान", short: "DRN", lat: 26.8147, lon: 87.2836 },
 };
 
-const STORAGE_KEY = "sajha:selectedCity";
+const STORAGE_KEY = "khabarmulbata:selectedCity";
 
 function weatherCodeLabel(code: number | null | undefined) {
   const c = typeof code === "number" ? code : null;
@@ -247,4 +247,3 @@ export default function CityStatusWidget({ align = "right" }: { align?: "left" |
     </div>
   );
 }
-

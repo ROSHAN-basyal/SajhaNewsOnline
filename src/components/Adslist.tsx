@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Advertisement } from "../app/api/ads/route";
+import type { Advertisement } from "../lib/ads";
 import "../styles/ads-list.css";
 
 interface AdsListProps {

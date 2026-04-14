@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
-import { supabase } from '../../../../lib/supabase'
+import { getSupabaseConfigError, isSupabaseConfigured, supabase } from '../../../../lib/supabase'
+import {
+  getLocalAdminUser,
+  matchesLocalAdminCredentials,
+  setAdminSessionCookie,
+  setLocalAdminSessionCookie,
+} from '../../../../lib/devAdmin'
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,6 +16,24 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Username and password are required' },
         { status: 400 }
+      )
+    }
+
+    if (matchesLocalAdminCredentials(username, password)) {
+      const response = NextResponse.json({
+        success: true,
+        user: getLocalAdminUser(),
+        message: 'Local development login successful'
+      })
+
+      setLocalAdminSessionCookie(response)
+      return response
+    }
+
+    if (!isSupabaseConfigured) {
+      return NextResponse.json(
+        { error: getSupabaseConfigError() },
+        { status: 503 }
       )
     }
 
@@ -64,12 +88,7 @@ export async function POST(request: NextRequest) {
     })
 
     // Set HTTP-only cookie
-    response.cookies.set('admin_session', sessionToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 // 30 days in seconds
-    })
+    setAdminSessionCookie(response, sessionToken)
 
     return response
 

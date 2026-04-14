@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { BRAND_LOGO_PATH, BRAND_NAME, BRAND_NAME_DEVANAGARI } from "../lib/brand";
 import { useAuth } from "../lib/authContext";
 import "../styles/admin.css";
 
@@ -35,10 +36,11 @@ export default function AdminLogin() {
       <div className="auth-card">
         <div className="auth-brand">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="auth-brand__logo" src="/images/logo.png" alt="" />
+          <img className="auth-brand__logo" src={BRAND_LOGO_PATH} alt={`${BRAND_NAME} logo`} />
           <div className="auth-brand__copy">
-            <div className="auth-brand__title">Sajha Admin</div>
-            <div className="auth-brand__subtitle">Manage posts and advertisements</div>
+            <div className="auth-brand__eyebrow">{BRAND_NAME_DEVANAGARI}</div>
+            <div className="auth-brand__title">{BRAND_NAME} Admin</div>
+            <div className="auth-brand__subtitle">Manage posts and advertisements for {BRAND_NAME}.</div>
           </div>
         </div>
 

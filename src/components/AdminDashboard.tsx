@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { BRAND_NAME } from "../lib/brand";
 import { useAuth } from "../lib/authContext";
 import { NewsPost } from "../lib/supabase";
 import AdManagement from "./AdManagement";
@@ -136,7 +137,7 @@ export default function AdminDashboard() {
 
           <div className="admin-header__center" aria-label="Admin portal title">
             <div className="admin-header__titleRow">
-              <span className="admin-header__title">Sajha Admin</span>
+              <span className="admin-header__title">{BRAND_NAME} Admin</span>
               <span className="admin-header__divider" aria-hidden="true">
                 ·
               </span>
@@ -207,4 +208,3 @@ export default function AdminDashboard() {
     </div>
   );
 }
-

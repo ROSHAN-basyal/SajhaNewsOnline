@@ -1,9 +1,35 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim()
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey)
+
+const missingSupabaseMessage =
+  'Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to .env.local.'
+
+const createMissingSupabaseProxy = () => {
+  const throwMissingConfig = () => {
+    throw new Error(missingSupabaseMessage)
+  }
+
+  const handler: ProxyHandler<() => never> = {
+    get() {
+      return new Proxy(throwMissingConfig, handler)
+    },
+    apply() {
+      throw new Error(missingSupabaseMessage)
+    },
+  }
+
+  return new Proxy(throwMissingConfig, handler)
+}
+
+export const supabase = isSupabaseConfigured
+  ? createClient(supabaseUrl!, supabaseAnonKey!)
+  : (createMissingSupabaseProxy() as unknown as ReturnType<typeof createClient>)
+
+export const getSupabaseConfigError = () => missingSupabaseMessage
 
 export interface NewsPost {
   id: string
@@ -12,6 +38,9 @@ export interface NewsPost {
   summary: string
   category: string
   image_url?: string
+  image_urls?: string[]
+  duration_days?: number
+  expires_at?: string
   created_at: string
   updated_at: string
 }

@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase } from "../../../../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../../../../lib/supabase";
 import { headers } from "next/headers";
+import {
+  getLocalAdAnalyticsSummary,
+  trackLocalAdEvent,
+} from "../../../../lib/localDb";
 
 // POST /api/ads/track - Track ad impressions and clicks
 export async function POST(request: NextRequest) {
@@ -20,6 +24,36 @@ export async function POST(request: NextRequest) {
         { error: 'Invalid event_type. Must be "impression" or "click"' },
         { status: 400 }
       );
+    }
+
+    if (!isSupabaseConfigured) {
+      const headersList = headers();
+      const forwarded = headersList.get("x-forwarded-for");
+      const realIp = headersList.get("x-real-ip");
+      const result = trackLocalAdEvent({
+        adId: ad_id,
+        eventType: event_type,
+        userIp: forwarded?.split(",")[0] || realIp || "127.0.0.1",
+        userAgent: headersList.get("user-agent") || "Unknown",
+        referrer: headersList.get("referer") || null,
+      });
+
+      if (!result.ok) {
+        return NextResponse.json(
+          { error: result.error },
+          { status: result.status }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        message:
+          event_type === "click"
+            ? "Click tracked successfully"
+            : "Impression tracked successfully",
+        redirect_url:
+          event_type === "click" && result.ad ? result.ad.click_url : undefined,
+      });
     }
 
     // Verify the ad exists and is active
@@ -152,6 +186,19 @@ export async function GET(request: NextRequest) {
         break;
       default:
         dateFilter = ""; // No filter for 'all'
+    }
+
+    if (!isSupabaseConfigured) {
+      const local = getLocalAdAnalyticsSummary({
+        adId,
+        dateFilter: dateFilter || undefined,
+      });
+
+      return NextResponse.json({
+        summary: local.summary,
+        total_records: local.total_records,
+        time_range: timeRange,
+      });
     }
 
     let query = supabase.from("ad_analytics").select(`

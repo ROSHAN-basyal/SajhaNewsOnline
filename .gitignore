@@ -40,3 +40,6 @@ next-env.d.ts
 #local_files
 /local_files
 
+# local tooling / debug assets
+/.codex
+/public/local-uploads

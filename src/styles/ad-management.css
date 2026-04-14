@@ -1,35 +1,36 @@
-/* Ads: management shell */
+/* ── Ads: Management Shell ───────────────────────────────────── */
+
 .ad-management {
   display: grid;
   gap: 16px;
 }
 
+/* ── Header with Stats ── */
 .ad-management-header {
-  border-radius: 22px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-md);
+  padding: 18px;
 }
 
 .ad-management-header .header-content {
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 .ad-management-header .header-title h2 {
   margin: 0;
   font-size: 18px;
-  font-weight: 950;
+  font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--text-primary, #0f172a);
+  color: var(--text-primary);
 }
 
 .ad-management-header .header-title p {
-  margin: 6px 0 0;
-  color: var(--text-muted, #64748b);
-  font-weight: 650;
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-weight: 500;
   font-size: 13px;
 }
 
@@ -46,27 +47,33 @@
 }
 
 .stat-card {
-  border-radius: 18px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  background: rgba(15, 23, 42, 0.02);
-  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--slate-50);
+  padding: 14px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.stat-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 .stat-number {
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
-  font-size: 18px;
+  font-weight: 800;
+  color: var(--teal-900);
+  font-size: 20px;
   letter-spacing: -0.02em;
 }
 
 .stat-label {
-  margin-top: 2px;
-  color: var(--text-muted, #64748b);
-  font-weight: 750;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-weight: 500;
   font-size: 12px;
 }
 
-/* Ads nav */
+/* ── Ads Nav ── */
 .ad-nav {
   display: flex;
   justify-content: flex-start;
@@ -74,29 +81,35 @@
 
 .ad-nav-buttons {
   display: inline-flex;
-  gap: 6px;
-  padding: 6px;
-  border-radius: 999px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
   flex-wrap: wrap;
 }
 
 .ad-nav .nav-btn {
   border: none;
   background: transparent;
-  color: var(--text-secondary, #334155);
-  border-radius: 999px;
-  padding: 10px 12px;
-  font-weight: 900;
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: 9px 14px;
+  font-weight: 700;
   font-size: 13px;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.ad-nav .nav-btn:hover {
+  background: var(--slate-100);
 }
 
 .ad-nav .nav-btn.active {
-  background: rgba(1, 104, 179, 0.12);
-  color: rgba(1, 104, 179, 1);
+  background: var(--teal-800);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(27, 77, 92, 0.15);
 }
 
 .ad-content {
@@ -106,65 +119,64 @@
 
 .ad-create-section,
 .ad-edit-section,
-.placement-guide-section,
-.analytics-section {
+.placement-guide-section {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .section-header h3 {
   margin: 0;
   font-size: 16px;
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .section-header p {
-  margin: 6px 0 0;
-  color: var(--text-muted, #64748b);
-  font-weight: 650;
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-weight: 500;
   font-size: 13px;
 }
 
-/* Workflow */
+/* ── Workflow Steps ── */
 .create-workflow {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
 .workflow-step {
   display: grid;
-  gap: 12px;
-  border-radius: 22px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
-  padding: 16px;
+  gap: 14px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
 }
 
 .workflow-step .step-number {
   width: 40px;
   height: 40px;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   display: grid;
   place-items: center;
-  background: rgba(1, 104, 179, 0.12);
-  color: rgba(1, 104, 179, 1);
-  font-weight: 950;
+  background: var(--teal-100);
+  color: var(--teal-800);
+  font-weight: 800;
+  font-size: 15px;
 }
 
 .workflow-step .step-content h4 {
   margin: 0 0 8px;
   font-size: 14px;
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .workflow-step .step-content p {
   margin: 0;
-  color: var(--text-muted, #64748b);
-  font-weight: 650;
+  color: var(--text-muted);
+  font-weight: 500;
   font-size: 13px;
 }
 
@@ -175,21 +187,20 @@
   }
 }
 
-/* Placement guide recommendations */
+/* ── Placement Recommendations ── */
 .placement-recommendations {
-  border-radius: 22px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.10);
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+  padding: 18px;
 }
 
 .placement-recommendations h4 {
-  margin: 0 0 12px;
+  margin: 0 0 14px;
   font-size: 14px;
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .recommendations-grid {
@@ -205,29 +216,32 @@
 }
 
 .recommendation-card {
-  border-radius: 18px;
-  border: 1px solid rgba(15, 23, 42, 0.10);
-  background: rgba(15, 23, 42, 0.02);
-  padding: 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: var(--slate-50);
+  padding: 14px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.recommendation-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 .recommendation-card h5 {
   margin: 0 0 8px;
   font-size: 13px;
-  font-weight: 950;
-  color: var(--text-primary, #0f172a);
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .recommendation-card p {
   margin: 0;
-  color: var(--text-secondary, #334155);
+  color: var(--text-secondary);
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .recommendation-card p + p {
   margin-top: 6px;
 }
-
-
-

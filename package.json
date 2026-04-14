@@ -1,10 +1,14 @@
 {
-  "name": "sajhanewsonline",
+  "name": "khabarmulbata",
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "sync-brand-assets": "mkdir -p public/images && cp resource/logo.png public/images/khabarmulbata-logo.png",
+    "predev": "npm run sync-brand-assets",
     "dev": "next dev -p 443",
+    "predev-alt": "npm run sync-brand-assets",
     "dev-alt": "next dev -p 8443",
+    "prebuild": "npm run sync-brand-assets",
     "build": "next build",
     "start": "next start -p 443",
     "start-alt": "next start -p 8443",

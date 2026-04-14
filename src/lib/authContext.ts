@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, createElement, useContext, useState, useEffect, ReactNode } from 'react'
 
 interface User {
   id: string
@@ -158,7 +158,5 @@ export function AuthProvider({ children }: AuthProviderProps) {
     loading,
   }
 
-  // Use createElement to avoid JSX syntax issues
-  const { createElement } = require('react')
   return createElement(AuthContext.Provider, { value }, children)
 }
